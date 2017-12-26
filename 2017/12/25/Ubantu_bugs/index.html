@@ -10,7 +10,7 @@
   
   <title>
     
-      Hello World | tracyliu
+      Ubantu16.04踩坑小记（没有wifi，无法apt update） | tracyliu
     
   </title>
   <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
@@ -112,8 +112,8 @@
 </header>
 
     <div id="article-banner">
-  <h2>Hello World</h2>
-  <p class="post-date">2017-12-19</p>
+  <h2>Ubantu16.04踩坑小记（没有wifi，无法apt update）</h2>
+  <p class="post-date">2017-12-25</p>
   <div class="arrow-down">
     <a href="javascript:;"></a>
   </div>
@@ -121,15 +121,57 @@
 <main class="app-body flex-box">
   <!-- Article START -->
   <article class="post-article">
-    <section class="markdown-content"><p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="noopener">Deployment</a></p>
+    <section class="markdown-content"><p>####1.装机后，无法连接wifi.</p>
+<p>因为ubantu系统没有识别到无线网卡，需要在“设置”——“附加驱动”中 勾选Broadcom。</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/1984280-c4b305cbcc3799c1.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="微信图片_20170927110623.jpg"></p>
+<p>无法连接wifi.因为ubantu系统没有识别到无线网卡，需要在“设置”——“附加驱动”中 勾选Broadcom。</p>
+<p>#如果还不行，尝试禁用secure boot<br><a href="http://forum.ubuntu.org.cn/viewtopic.php?f=48&amp;t=477854" target="_blank" rel="noopener">Ubuntu 16.04 禁用 Secure boot 问题</a></p>
+<p>我的密码是装系统的时候设置的，该密码并不是每次开机的要输入的密码。</p>
+<p>####2.apt-get update 无法执行</p>
+<pre><code>E: Problem executing scripts APT::Update::Post-Invoke-Success
+&apos;if /usr/bin/test -w /var/cache/app-info -a -e /usr/bin/appstreamcli;
+ then appstreamcli refresh &gt; /dev/null;
+ fi&apos;
+E: Sub-process returned an error code
+</code></pre><p>在运行sudo apt-get update时出现如上信息，解决方法如下：</p>
+<pre><code>sudo pkill -KILL appstreamcli
+
+wget -P /tmp https://launchpad.net/ubuntu/+archive/primary/+files/appstream_0.9.4-1ubuntu1_amd64.deb https://launchpad.net/ubuntu/+archive/primary/+files/libappstream3_0.9.4-1ubuntu1_amd64.deb
+
+sudo dpkg -i /tmp/appstream_0.9.4-1ubuntu1_amd64.deb /tmp/libappstream3_0.9.4-1ubuntu1_amd64.deb
+</code></pre><p>执行完上述命令之后再次运行sudo apt-get update就不会再出现上面的错误。</p>
+<p>#####特别注意这一步需要翻墙<br><a href="http://www.cnblogs.com/EasonJim/p/7343892.html" target="_blank" rel="noopener"><a href="http://www.cnblogs.com/EasonJim/p/7343892.html" target="_blank" rel="noopener">Ubuntu 16.04出现：Problem executing scripts APT::Update::Post-Invoke-Success ‘if /usr/bin/test -w /var/cache/app-info -a -e /usr/bin/appstreamcli; then appstreamcli refresh &gt; /dev/null; fi’</a></a></p>
+<p>####安装ssh</p>
+<p>判断是否安装ssh服务，可以通过如下命令进行：</p>
+<pre><code>ps -e|grep ssh
+</code></pre><p>ssh-agent表示ssh-client启动，sshd表示ssh-server启动了。</p>
+<pre><code> 输出如下：
+root@tracyliu:~$ ps -e|grep ssh
+ 2151 ?        00:00:00 ssh-agent
+ 5313 ?        00:00:00 sshd
+</code></pre><p>如果缺少sshd，说明ssh服务没有启动或者没有安装。</p>
+<p>安装ssh-client命令：</p>
+<pre><code>sudo apt-get install openssh-client
+</code></pre><p>安装ssh-server命令：</p>
+<pre><code>sudo apt-get install openssh-server
+</code></pre><p>安装完成以后，先启动服务：</p>
+<pre><code>sudo /etc/init.d/ssh start
+</code></pre><p>启动后，可以通过“ps -e|grep ssh”查看是否正确启动。</p>
+<p>ssh服务默认的端口是22，可以更改端口，使用如下命令打开ssh配置文件：</p>
+<pre><code>sudo gedit /etc/ssh/sshd_config
+</code></pre><p>配置文件内容如下：</p>
+<pre><code># Package generated configuration file   
+# See the sshd(8) manpage for details   
+# What ports, IPs and protocols we listen for  
+Port 22
+# Package generated configuration file
+# See the sshd(8) manpage for details
+# What ports, IPs and protocols we listen for
+</code></pre><p>修改端口号（Port）后，重启ssh服务即可生效，命令如下：</p>
+<pre><code>sudo /etc/init.d/ssh restart
+</code></pre><p>ssh服务启动后，即可登陆，登陆命令格式为：ssh 帐号@IP地址<br>例如：ssh test@192.168.135.249<br>根据提示输入test的密码，即可远程登陆。</p>
+<p>####4.安装samba</p>
+<p> <a href="http://www.jianshu.com/p/c4579605a737" target="_blank" rel="noopener">Ubuntu下配置Samba服务器</a><br><a href="http://blog.csdn.net/u011091632/article/details/21887385" target="_blank" rel="noopener"> <a href="http://blog.csdn.net/u011091632/article/details/21887385" target="_blank" rel="noopener">ubuntu下samba服务器配置</a></a></p>
 </section>
     <!-- Tags START -->
     
@@ -175,7 +217,7 @@
   <div class="toc-main">
     <strong class="toc-title">Catalog</strong>
     
-      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Quick-Start"><span class="toc-nav-text"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#Create-a-new-post"><span class="toc-nav-text"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#Run-server"><span class="toc-nav-text"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#Generate-static-files"><span class="toc-nav-text"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#Deploy-to-remote-sites"><span class="toc-nav-text"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</span></a></li></ol></li></ol>
+      <ol class="nav">none</ol>
     
   </div>
 </aside>
@@ -185,7 +227,7 @@
 
 <script>
   (function () {
-    var url = 'http://yoursite.com/2017/12/19/hello-world/';
+    var url = 'http://yoursite.com/2017/12/25/Ubantu_bugs/';
     var banner = ''
     if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
       $('#article-banner').css({
@@ -241,7 +283,7 @@
     var gitmentConfig = "yanm1ng";
     if (gitmentConfig !== 'undefined') {
       var gitment = new Gitment({
-        id: "Hello World",
+        id: "Ubantu16.04踩坑小记（没有wifi，无法apt update）",
         owner: "yanm1ng",
         repo: "yanm1ng.github.io",
         oauth: {
