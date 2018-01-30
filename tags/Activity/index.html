@@ -39,7 +39,7 @@
       
         <li class="list-item">
           
-            <a href="/" class="item-link active">Home</a>
+            <a href="/" class="item-link">Home</a>
           
         </li>
       
@@ -78,7 +78,7 @@
         
           <li class="menu-item">
             
-              <a href="/" class="menu-link mobile-active">Home</a>
+              <a href="/" class="menu-link">Home</a>
             
           </li>
         
@@ -111,118 +111,63 @@
   </div>
 </header>
 
-    <main class="app-body">
+    <div id="article-banner">
+  <h2>Archives</h2>
+  <p class="post-date">文章归档</p>
+</div>
+<main class="app-body" id="archives">
   
-    <article class="article-card">
-      <h2 class="article-head">
-        <a href="/2018/01/30/Instrumentation-click-drag-keycode-foucs-loss/">Android Instrumentation 模拟点击、拖拽、发送keycode、焦点异常丢失。</a>
-      </h2>
-      <p class="article-date">2018年1月30日</p>
-      
-        
-  <a href="/tags#instrumentation" >
-    <span class="tag-code">instrumentation</span>
-  </a>
-
-      
-      <div class="article-summary">
-        
-          
-Instrumentation模拟点击，拖拽，向系统发送keycode。
-
-需要注意的几点： 
-
-Android系统坐标系，X轴正方向为右，Y轴正方向为下（与数学坐标系相反)
-
-所有事件在发送时均需要在Thread中执行，否则会报异常。
-
-模拟输入法种特殊符号时，需要带上shift，同正常 ...
-        
+  
+  
+    <section class="time-section">
+  <h1 class="section-year">
+    2018
+  </h1>
+  <div class="section-list">
+    
+    
+      <div class="section-list-item">
+        <a href="/2018/01/30/Instrumentation-click-drag-keycode-foucs-loss/" class="archive-title">Android Instrumentation 模拟点击、拖拽、发送keycode、焦点异常丢失。</a>
+        <p class="archive-date">01-30</p>
       </div>
-      <a class="more" href="/2018/01/30/Instrumentation-click-drag-keycode-foucs-loss/">Read more</a>
-    </article>
-  
-    <article class="article-card">
-      <h2 class="article-head">
-        <a href="/2018/01/30/HLS-protocol-basic-knowledge/">HTTP Live Streaming (HLS) 协议科普扫盲</a>
-      </h2>
-      <p class="article-date">2018年1月30日</p>
-      
-        
-  <a href="/tags#hls stream" >
-    <span class="tag-code">hls stream</span>
-  </a>
-
-      
-      <div class="article-summary">
-        
-          ####HTTP Live Streaming: HLS是一个由苹果公司提出的基于HTTP的流媒体网络传输协议，可以实现流媒体的直播（live）和点播(vod)。
-#####HLS协议规定：
-
-HLS协议由HTTP+M3U8+TS三部分组成，其中，HTTP是传输协议，M3U8是索引文件，TS ...
-        
+    
+      <div class="section-list-item">
+        <a href="/2018/01/30/HLS-protocol-basic-knowledge/" class="archive-title">HTTP Live Streaming (HLS) 协议科普扫盲</a>
+        <p class="archive-date">01-30</p>
       </div>
-      <a class="more" href="/2018/01/30/HLS-protocol-basic-knowledge/">Read more</a>
-    </article>
-  
-    <article class="article-card">
-      <h2 class="article-head">
-        <a href="/2018/01/29/Activity-LifeCycle-and-Launch-Mode/">Android开发艺术探索—一、Activity的生命周期全面分析</a>
-      </h2>
-      <p class="article-date">2018年1月29日</p>
-      
-        
-  <a href="/tags#Activity" >
-    <span class="tag-code">Activity</span>
-  </a>
-
-  <a href="/tags#Android开发艺术探索" >
-    <span class="tag-code">Android开发艺术探索</span>
-  </a>
-
-      
-      <div class="article-summary">
-        
-          1.1 Activity的生命周期全面分析1.1.1典型情况下生命周期典型情况下生命周期是指有用户参与的情况下，Activity所经过的生命周期的改变。
-onCreate()
-表示Activity正在创建，生命周期的第一个方法。
-
-onRestart()
-表示Activity正在重新启动。一 ...
-        
+    
+      <div class="section-list-item">
+        <a href="/2018/01/29/Activity-LifeCycle-and-Launch-Mode/" class="archive-title">Android开发艺术探索—一、Activity的生命周期全面分析</a>
+        <p class="archive-date">01-29</p>
       </div>
-      <a class="more" href="/2018/01/29/Activity-LifeCycle-and-Launch-Mode/">Read more</a>
-    </article>
+    
+  </div>
+</section>
   
-    <article class="article-card">
-      <h2 class="article-head">
-        <a href="/2017/12/25/Ubantu_bugs/">Ubantu16.04踩坑小记（没有wifi，无法apt update）</a>
-      </h2>
-      <p class="article-date">2017年12月25日</p>
-      
-        
-  <a href="/tags#ubuntu" >
-    <span class="tag-code">ubuntu</span>
-  </a>
-
-      
-      <div class="article-summary">
-        
-          ####1.装机后，无法连接wifi.
-因为ubantu系统没有识别到无线网卡，需要在“设置”——“附加驱动”中 勾选Broadcom。
-
-无法连接wifi.因为ubantu系统没有识别到无线网卡，需要在“设置”——“附加驱动”中 勾选Broadcom。
-#如果还不行，尝试禁用secure  ...
-        
+    <section class="time-section">
+  <h1 class="section-year">
+    2017
+  </h1>
+  <div class="section-list">
+    
+    
+      <div class="section-list-item">
+        <a href="/2017/12/25/Ubantu_bugs/" class="archive-title">Ubantu16.04踩坑小记（没有wifi，无法apt update）</a>
+        <p class="archive-date">12-25</p>
       </div>
-      <a class="more" href="/2017/12/25/Ubantu_bugs/">Read more</a>
-    </article>
-  
-
+    
+  </div>
+</section>
   
 </main>
 
-
+<script>
+  (function () {
+    var url = 'http://yoursite.com/tags/Activity/index.html';
+    $('#article-banner').geopattern(url);
+    $('.header').removeClass('fixed-header');
+  })();
+</script>
     <div class="scroll-top">
   <span class="arrow-icon"></span>
 </div>
