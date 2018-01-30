@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="it is a personal blogs">
+  <meta name="keyword" content="hexo-theme, vuejs">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      HTTP Live Streaming (HLS) 协议科普扫盲 | tracyliu
+    
+  </title>
+  <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdn.bootcss.com/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/css/plugins/gitment.css">
+  <script src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdn.bootcss.com/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.js"></script>
+  <script src="/js/qrious.js"></script>
+<script src="/js/gitment.js"></script>
+</head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>tracyliu</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">Tags</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/project/" class="item-link">Projects</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">About</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">Tags</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">Archives</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/project/" class="menu-link">Projects</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">About</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>HTTP Live Streaming (HLS) 协议科普扫盲</h2>
+  <p class="post-date">2018-01-30</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><p>####HTTP Live Streaming:<br> HLS是一个由苹果公司提出的基于HTTP的<a href="https://zh.wikipedia.org/wiki/%E6%B5%81%E5%AA%92%E4%BD%93" target="_blank" rel="noopener">流媒体</a><a href="https://zh.wikipedia.org/wiki/%E7%BD%91%E7%BB%9C%E4%BC%A0%E8%BE%93%E5%8D%8F%E8%AE%AE" target="_blank" rel="noopener">网络传输协议</a>，可以实现流媒体的直播（live）和点播(vod)。</p>
+<p>#####HLS协议规定：</p>
+<blockquote>
+<p>HLS协议由HTTP+M3U8+TS三部分组成，其中，HTTP是传输协议，M3U8是索引文件，TS是视音频的媒体信息。<br>视频的编码格式为H264,音频编码格式为MP3、AAC或者AC-3。</p>
+</blockquote>
+<p>#####工作原理：</p>
+<blockquote>
+<p>把整个ts流分成一个个ts小文件供播放器按顺序下载播放。<br>在开始一个流媒体会话时，客户端会下载一个包含元数据的<a href="https://zh.wikipedia.org/w/index.php?title=Extended_M3U&amp;action=edit&amp;redlink=1" target="_blank" rel="noopener">extended M3U (m3u8)</a> <a href="https://zh.wikipedia.org/w/index.php?title=Playlist&amp;action=edit&amp;redlink=1" target="_blank" rel="noopener">playlist</a>文件，用于寻找可用的媒体流。<br><img src="http://upload-images.jianshu.io/upload_images/1984280-88f6ae5b4c00ae61?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="HLS 的请求流程"></p>
+</blockquote>
+<pre><code>1 http 请求 m3u8 的 url。
+2 服务端返回一个 m3u8 的播放列表，这个播放列表是实时更新的，一般一次给出5段数据的 url。
+3 客户端解析 m3u8 的播放列表，再按序请求每一段的 url，获取 ts 数据流。
+</code></pre><p><img src="http://upload-images.jianshu.io/upload_images/1984280-393db5a721a3fc7c.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png"></p>
+<p><img src="http://upload-images.jianshu.io/upload_images/1984280-ccb165b40606d30b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png"></p>
+<p>Media encoder将视频源中的视频数据转码到目标编码格式（H264）的视频数据，之后，在stream segmenter模块将视频切片。切片的结果就是index file（m3u8）和ts文件。</p>
+<p>####HLS的index文件（m3u8文件）<br><img src="http://upload-images.jianshu.io/upload_images/1984280-1a9607caa7d72134.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png"></p>
+<p><img src="http://upload-images.jianshu.io/upload_images/1984280-13edbf6aa98dd7a1.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="湖北卫视样例"></p>
+<p>播放模式</p>
+<blockquote>
+<p>点播VOD的特点就是当前时间点可以获取到所有index文件和ts文件，二级index文件中记录了所有ts文件的地址。这种模式允许客户端访问全部内容。<br>Live 模式就是实时生成M3u8和ts文件。它的索引文件一直处于动态变化的，播放的时候需要不断下载二级index文件，以获得最新生成的ts文件播放视频。如果一个二级index文件的末尾没有#EXT-X-ENDLIST标志，说明它是一个Live视频流。<br>m3u8的Tag，太多了，这里就不一一说明。<br>播放器拿到该m3u8列表之后，会请求一片ts后，间隔一段时间请求下一片ts。 这个间隔的时间的长短，一般是根据m3u8中的 #EXT-X-TARGETDURATION</p>
+</blockquote>
+<p>####优势：</p>
+<p>#####1.码率自适应（Adaptive Streaming） </p>
+<blockquote>
+<p>当媒体流正在播放时，客户端可以选择从许多不同的备用源中以不同的速率下载同样的资源，允许流媒体会话适应不同的数据速率。客户端可以很快的选择和切换码率，以适应不同带宽条件下的播放。</p>
+</blockquote>
+<p>#####2.基于HTTP(穿墙/性能高)</p>
+<blockquote>
+<p>HLS采取HTTP协议传输文件，所以可以穿过任何允许HTTP数据通过的防火墙或者代理服务器。相比之下，因为RTMP协议不使用标准的HTTP接口传输数据，所以在一些特殊的网络环境下可能被防火墙屏蔽掉。</p>
+</blockquote>
+<p>#####3.跨平台性：</p>
+<blockquote>
+<p>支持PC/Android/IOS平台，并在移动端趋势明显。（PC主要的直播方案是RTMP）</p>
+</blockquote>
+<p>#####4.充分利用CDN（负载均衡）：</p>
+<blockquote>
+<p>CDN即Content Delivery Network （内容分发网络）。CDN包含两大核心技术：负载均衡和分发网络<br>于负载，RTMP是一种有状态协议，很难对视频服务器进行平滑扩展，因为需要为每一个播放视频流的客户端维护状态。而HLS基于无状态协议（HTTP），客户端只是按照顺序使用下载存储在服务器的普通TS文件，做负责均衡如同普通的HTTP文件服务器的负载均衡一样简单。</p>
+</blockquote>
+<p>####劣势：</p>
+<p>#####1.实时性差：</p>
+<blockquote>
+<p>基本上HLS的延迟在10秒以上,而RTMP协议的延迟最低可以到3、4秒左右。</p>
+<p>#####2.文件碎片：<br>若分发HLS，码流低，切片较小时，小文件分发不是很友好。特别是一些对存储比较敏感的情况，譬如源站的存储，嵌入式的SD卡。</p>
+</blockquote>
+<p>####HLS延时分析</p>
+<blockquote>
+<p>HLS理论上延时=1个切片的时长+ 0-1个td + 0-n个启动切片 +网络连接耗时。</p>
+</blockquote>
+<p>td是EXT-X-TARGETDURATION，可简单理解为播放器取片的间隔时间<br>n:苹果官方建议是请求到3个片之后才开始播放</p>
+<p>假设列表里面的包含5个 ts 文件，每个 TS 文件包含5秒的视频内容，那么整体的延迟就是25秒。苹果官方推荐的ts时长时10s，所以这样就会大改有30s（n x 10）的延迟。</p>
+<p>为了追求低延时效果，我们可以将切片切的更小，取片间隔做的更小，播放器未取到3个片就启动播放。极致来说可以缩减列表长度为1，并且 ts 的时长为1s，但是这样会造成请求次数增加，增大服务器压力，当网速慢时回造成更多的缓冲，增加HLS不稳定和出现错误的风险。</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/1984280-809ff2b6e0af4615.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="HLS 和 DASH 的区别"></p>
+<p><img src="http://upload-images.jianshu.io/upload_images/1984280-7c790054216c2f35.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="hls 和 rtmp 对比"></p>
+<p>参考：<br><a href="http://www.jianshu.com/p/426425cad08a" target="_blank" rel="noopener">HLS协议介绍</a><br><a href="http://www.jianshu.com/p/2ce402a485ca" target="_blank" rel="noopener">HTTP Live Streaming (HLS) - 概念</a><br><a href="http://befo.io/4447.html#respond" target="_blank" rel="noopener">0</a><a href="http://befo.io/4447.html" target="_blank" rel="noopener">流媒体｜从入门到出家：流媒体协议—HLS</a><br><a href="http://mp.weixin.qq.com/s?__biz=MzA3NTYzODYzMg==&amp;mid=2653577297&amp;idx=1&amp;sn=a292ff3b499168f4eb589e40b7aa6d13&amp;mpshare=1&amp;scene=1&amp;srcid=0707bH9Td4NNpLVkkZlcTfHC#rd" target="_blank" rel="noopener">HTML 5 视频直播一站式扫盲</a></p>
+</section>
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a href="/tags#hls,stream" >
+    <span class="tag-code">hls,stream</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+      <div class="qrcode">
+        <canvas id="share-qrcode"></canvas>
+        <p class="notice">扫描二维码，分享此文章</p>
+      </div>
+    
+    <!-- 二维码 END -->
+    
+      <!-- Gitment START -->
+      <div id="comments"></div>
+      <!-- Gitment END -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="nav">none</ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'http://yoursite.com/2018/01/30/HLS-protocol-basic-knowledge/';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+     // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+        
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+
+    // qrcode
+    var qr = new QRious({
+      element: document.getElementById('share-qrcode'),
+      value: document.location.href
+    });
+
+    // gitment
+    var gitmentConfig = "tracyliu";
+    if (gitmentConfig !== 'undefined') {
+      var gitment = new Gitment({
+        id: "HTTP Live Streaming (HLS) 协议科普扫盲",
+        owner: "tracyliu",
+        repo: "git@github.com:tracyliu1/tracyliu1.github.io.git",
+        oauth: {
+          client_id: "0f87e490e00ee3fd87ef",
+          client_secret: "4a9d2b148e7971c2201ad12131ce8bf8159ccd2e"
+        },
+        theme: {
+          render(state, instance) {
+            const container = document.createElement('div')
+            container.lang = "en-US"
+            container.className = 'gitment-container gitment-root-container'
+            container.appendChild(instance.renderHeader(state, instance))
+            container.appendChild(instance.renderEditor(state, instance))
+            container.appendChild(instance.renderComments(state, instance))
+            container.appendChild(instance.renderFooter(state, instance))
+            return container;
+          }
+        }
+      })
+      gitment.render(document.getElementById('comments'))
+    }
+  })();
+</script>
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2018 | Proudly powered by <a href="https://hexo.io" target="_blank">Hexo</a>
+    <br>
+    Theme by <a href="https://github.com/yanm1ng">yanm1ng</a>
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+<script src="/js/script.js"></script>
+  </body>
+</html>
