@@ -10,7 +10,7 @@
   
   <title>
     
-      Ubantu16.04踩坑小记（没有wifi，无法apt update） | tracyliu
+      Android Instrumentation 模拟点击、拖拽、发送keycode、焦点异常丢失。 | tracyliu
     
   </title>
   <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
@@ -112,8 +112,8 @@
 </header>
 
     <div id="article-banner">
-  <h2>Ubantu16.04踩坑小记（没有wifi，无法apt update）</h2>
-  <p class="post-date">2017-12-25</p>
+  <h2>Android Instrumentation 模拟点击、拖拽、发送keycode、焦点异常丢失。</h2>
+  <p class="post-date">2018-01-30</p>
   <div class="arrow-down">
     <a href="javascript:;"></a>
   </div>
@@ -121,57 +121,28 @@
 <main class="app-body flex-box">
   <!-- Article START -->
   <article class="post-article">
-    <section class="markdown-content"><p>####1.装机后，无法连接wifi.</p>
-<p>因为ubantu系统没有识别到无线网卡，需要在“设置”——“附加驱动”中 勾选Broadcom。</p>
-<p><img src="http://upload-images.jianshu.io/upload_images/1984280-c4b305cbcc3799c1.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="微信图片_20170927110623.jpg"></p>
-<p>无法连接wifi.因为ubantu系统没有识别到无线网卡，需要在“设置”——“附加驱动”中 勾选Broadcom。</p>
-<p>#如果还不行，尝试禁用secure boot<br><a href="http://forum.ubuntu.org.cn/viewtopic.php?f=48&amp;t=477854" target="_blank" rel="noopener">Ubuntu 16.04 禁用 Secure boot 问题</a></p>
-<p>我的密码是装系统的时候设置的，该密码并不是每次开机的要输入的密码。</p>
-<p>####2.apt-get update 无法执行</p>
-<pre><code>E: Problem executing scripts APT::Update::Post-Invoke-Success
-&apos;if /usr/bin/test -w /var/cache/app-info -a -e /usr/bin/appstreamcli;
- then appstreamcli refresh &gt; /dev/null;
- fi&apos;
-E: Sub-process returned an error code
-</code></pre><p>在运行sudo apt-get update时出现如上信息，解决方法如下：</p>
-<pre><code>sudo pkill -KILL appstreamcli
-
-wget -P /tmp https://launchpad.net/ubuntu/+archive/primary/+files/appstream_0.9.4-1ubuntu1_amd64.deb https://launchpad.net/ubuntu/+archive/primary/+files/libappstream3_0.9.4-1ubuntu1_amd64.deb
-
-sudo dpkg -i /tmp/appstream_0.9.4-1ubuntu1_amd64.deb /tmp/libappstream3_0.9.4-1ubuntu1_amd64.deb
-</code></pre><p>执行完上述命令之后再次运行sudo apt-get update就不会再出现上面的错误。</p>
-<p>#####特别注意这一步需要翻墙<br><a href="http://www.cnblogs.com/EasonJim/p/7343892.html" target="_blank" rel="noopener"><a href="http://www.cnblogs.com/EasonJim/p/7343892.html" target="_blank" rel="noopener">Ubuntu 16.04出现：Problem executing scripts APT::Update::Post-Invoke-Success ‘if /usr/bin/test -w /var/cache/app-info -a -e /usr/bin/appstreamcli; then appstreamcli refresh &gt; /dev/null; fi’</a></a></p>
-<p>####安装ssh</p>
-<p>判断是否安装ssh服务，可以通过如下命令进行：</p>
-<pre><code>ps -e|grep ssh
-</code></pre><p>ssh-agent表示ssh-client启动，sshd表示ssh-server启动了。</p>
-<pre><code> 输出如下：
-root@tracyliu:~$ ps -e|grep ssh
- 2151 ?        00:00:00 ssh-agent
- 5313 ?        00:00:00 sshd
-</code></pre><p>如果缺少sshd，说明ssh服务没有启动或者没有安装。</p>
-<p>安装ssh-client命令：</p>
-<pre><code>sudo apt-get install openssh-client
-</code></pre><p>安装ssh-server命令：</p>
-<pre><code>sudo apt-get install openssh-server
-</code></pre><p>安装完成以后，先启动服务：</p>
-<pre><code>sudo /etc/init.d/ssh start
-</code></pre><p>启动后，可以通过“ps -e|grep ssh”查看是否正确启动。</p>
-<p>ssh服务默认的端口是22，可以更改端口，使用如下命令打开ssh配置文件：</p>
-<pre><code>sudo gedit /etc/ssh/sshd_config
-</code></pre><p>配置文件内容如下：</p>
-<pre><code># Package generated configuration file   
-# See the sshd(8) manpage for details   
-# What ports, IPs and protocols we listen for  
-Port 22
-# Package generated configuration file
-# See the sshd(8) manpage for details
-# What ports, IPs and protocols we listen for
-</code></pre><p>修改端口号（Port）后，重启ssh服务即可生效，命令如下：</p>
-<pre><code>sudo /etc/init.d/ssh restart
-</code></pre><p>ssh服务启动后，即可登陆，登陆命令格式为：ssh 帐号@IP地址<br>例如：ssh test@192.168.135.249<br>根据提示输入test的密码，即可远程登陆。</p>
-<p>####4.安装samba</p>
-<p> <a href="http://www.jianshu.com/p/c4579605a737" target="_blank" rel="noopener">Ubuntu下配置Samba服务器</a><br><a href="http://blog.csdn.net/u011091632/article/details/21887385" target="_blank" rel="noopener"> <a href="http://blog.csdn.net/u011091632/article/details/21887385" target="_blank" rel="noopener">ubuntu下samba服务器配置</a></a></p>
+    <section class="markdown-content"><blockquote>
+<p>Instrumentation模拟点击，拖拽，向系统发送keycode。</p>
+</blockquote>
+<p>需要注意的几点： </p>
+<ol>
+<li><p>Android系统坐标系，X轴正方向为右，Y轴正方向为下（与数学坐标系相反)</p>
+</li>
+<li><p>所有事件在发送时均需要在Thread中执行，否则会报异常。</p>
+</li>
+<li><p>模拟输入法种特殊符号时，需要带上shift，同正常键盘操作。</p>
+</li>
+</ol>
+<pre><code>​
+</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">public void simulateClick() &#123;</span><br><span class="line"></span><br><span class="line">        final float clickX = mPositionX + mHalfScreenWidth;</span><br><span class="line">        final float clickY = mPositionY + mHalfScreenHeight;</span><br><span class="line"></span><br><span class="line">        long downTime = SystemClock.uptimeMillis();</span><br><span class="line">        inst.sendPointerSync(MotionEvent.obtain(downTime, downTime + 100, MotionEvent.ACTION_DOWN, clickX, clickY, 0));</span><br><span class="line">        inst.sendPointerSync(MotionEvent.obtain(downTime, downTime + 100, MotionEvent.ACTION_UP, clickX, clickY, 0));</span><br><span class="line"></span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">public void simulateTouch(int event, float x, float y) &#123;</span><br><span class="line"></span><br><span class="line">       mPositionX += x;</span><br><span class="line">       mPositionY += y;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">       if (mPositionX &gt; mHalfScreenWidth) &#123;</span><br><span class="line">           mPositionX = mHalfScreenWidth;</span><br><span class="line">       &#125; else if (mPositionX &lt; (-mHalfScreenWidth)) &#123;</span><br><span class="line">           mPositionX = -mHalfScreenWidth;</span><br><span class="line">       &#125;</span><br><span class="line"></span><br><span class="line">       if (mPositionY &gt; mHalfScreenHeight) &#123;</span><br><span class="line">           mPositionY = mHalfScreenHeight;</span><br><span class="line">       &#125; else if (mPositionY &lt; (-mHalfScreenHeight)) &#123;</span><br><span class="line">           mPositionY = -mHalfScreenHeight;</span><br><span class="line">       &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">       float moveX = mPositionX + mHalfScreenWidth;</span><br><span class="line">       float moveY = mPositionY + mHalfScreenHeight;</span><br><span class="line"></span><br><span class="line">       long downTime = SystemClock.uptimeMillis();</span><br><span class="line">       MotionEvent motionEvent = MotionEvent.obtain(downTime, downTime + 100, event, moveX, moveY, 0);</span><br><span class="line"></span><br><span class="line">       try &#123;</span><br><span class="line">           inst.sendPointerSync(motionEvent);</span><br><span class="line">       &#125; catch (Exception e) &#123;</span><br><span class="line">           e.printStackTrace();</span><br><span class="line">           Log.e(TAG, &quot;Exception = &quot; + e);</span><br><span class="line">       &#125;</span><br><span class="line"></span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">private static boolean simulateKeystroke(int KeyCode) &#123;</span><br><span class="line"></span><br><span class="line">        try &#123;</span><br><span class="line">            Instrumentation inst = new Instrumentation();</span><br><span class="line"></span><br><span class="line">            if (shift) &#123;</span><br><span class="line">                inst.sendKeySync(new KeyEvent(0, 0, KeyEvent.ACTION_DOWN, KeyCode, 0, KeyEvent.META_SHIFT_ON));</span><br><span class="line">                inst.sendKeySync(new KeyEvent(0, 0, KeyEvent.ACTION_UP, KeyCode, 0, KeyEvent.META_SHIFT_ON));</span><br><span class="line">                //  shift = false;</span><br><span class="line">            &#125; else &#123;</span><br><span class="line">                inst.sendKeyDownUpSync(KeyCode);</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            return true;</span><br><span class="line">        &#125; catch (Exception e) &#123;</span><br><span class="line">            // TODO: handle exception</span><br><span class="line">            return false;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>Android 设备启动后，会默认为Touch模式。如果你做过Android TV开发，发现开机后launcher的焦点丢失，或者有异常情况。请参考如下代码。</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Instrumentation instrumentation = new Instrumentation();</span><br><span class="line">     instrumentation.setInTouchMode(false);</span><br></pre></td></tr></table></figure>
+<p><a href="http://aspook.com/2017/02/10/Android-Instrumentation%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90%EF%BC%88%E9%99%84Activity%E5%90%AF%E5%8A%A8%E6%B5%81%E7%A8%8B%EF%BC%89/" target="_blank" rel="noopener">Android Instrumentation源码分析（附Activity启动流程）</a></p>
+<p><a href="https://testerhome.com/topics/6592%20%E7%A7%BB%E5%8A%A8%E6%B5%8B%E8%AF%95%E5%9F%BA%E7%A1%80%20Android%20Instrumentation%20%E6%A1%86%E6%9E%B6%E7%AE%80%E5%8D%95%E8%AF%B4%E6%98%8E" target="_blank" rel="noopener">移动测试基础 Android Instrumentation 框架简单说明</a> </p>
 </section>
     <!-- Tags START -->
     
@@ -227,7 +198,7 @@ Port 22
 
 <script>
   (function () {
-    var url = 'http://yoursite.com/2017/12/25/Ubantu_bugs/';
+    var url = 'http://yoursite.com/2018/01/30/Instrumentation-click-drag-keycode-foucs-loss/';
     var banner = ''
     if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
       $('#article-banner').css({
@@ -283,7 +254,7 @@ Port 22
     var gitmentConfig = "tracyliu";
     if (gitmentConfig !== 'undefined') {
       var gitment = new Gitment({
-        id: "Ubantu16.04踩坑小记（没有wifi，无法apt update）",
+        id: "Android Instrumentation 模拟点击、拖拽、发送keycode、焦点异常丢失。",
         owner: "tracyliu",
         repo: "git@github.com:tracyliu1/tracyliu1.github.io.git",
         oauth: {
