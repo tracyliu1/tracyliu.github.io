@@ -121,14 +121,12 @@
 <main class="app-body flex-box">
   <!-- Article START -->
   <article class="post-article">
-    <section class="markdown-content"><p>####1.装机后，无法连接wifi.</p>
-<p>因为ubantu系统没有识别到无线网卡，需要在“设置”——“附加驱动”中 勾选Broadcom。</p>
+    <section class="markdown-content"><h3 id="1-装机后，无法连接wifi"><a href="#1-装机后，无法连接wifi" class="headerlink" title="1.装机后，无法连接wifi."></a>1.装机后，无法连接wifi.</h3><p>因为ubantu系统没有识别到无线网卡，需要在“设置”——“附加驱动”中 勾选Broadcom。</p>
 <p><img src="http://upload-images.jianshu.io/upload_images/1984280-c4b305cbcc3799c1.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="微信图片_20170927110623.jpg"></p>
 <p>无法连接wifi.因为ubantu系统没有识别到无线网卡，需要在“设置”——“附加驱动”中 勾选Broadcom。</p>
 <p>#如果还不行，尝试禁用secure boot<br><a href="http://forum.ubuntu.org.cn/viewtopic.php?f=48&amp;t=477854" target="_blank" rel="noopener">Ubuntu 16.04 禁用 Secure boot 问题</a></p>
 <p>我的密码是装系统的时候设置的，该密码并不是每次开机的要输入的密码。</p>
-<p>####2.apt-get update 无法执行</p>
-<pre><code>E: Problem executing scripts APT::Update::Post-Invoke-Success
+<h3 id="2-apt-get-update-无法执行"><a href="#2-apt-get-update-无法执行" class="headerlink" title="2.apt-get update 无法执行"></a>2.apt-get update 无法执行</h3><pre><code>E: Problem executing scripts APT::Update::Post-Invoke-Success
 &apos;if /usr/bin/test -w /var/cache/app-info -a -e /usr/bin/appstreamcli;
  then appstreamcli refresh &gt; /dev/null;
  fi&apos;
@@ -141,8 +139,7 @@ wget -P /tmp https://launchpad.net/ubuntu/+archive/primary/+files/appstream_0.9.
 sudo dpkg -i /tmp/appstream_0.9.4-1ubuntu1_amd64.deb /tmp/libappstream3_0.9.4-1ubuntu1_amd64.deb
 </code></pre><p>执行完上述命令之后再次运行sudo apt-get update就不会再出现上面的错误。</p>
 <p>#####特别注意这一步需要翻墙<br><a href="http://www.cnblogs.com/EasonJim/p/7343892.html" target="_blank" rel="noopener"><a href="http://www.cnblogs.com/EasonJim/p/7343892.html" target="_blank" rel="noopener">Ubuntu 16.04出现：Problem executing scripts APT::Update::Post-Invoke-Success ‘if /usr/bin/test -w /var/cache/app-info -a -e /usr/bin/appstreamcli; then appstreamcli refresh &gt; /dev/null; fi’</a></a></p>
-<p>####安装ssh</p>
-<p>判断是否安装ssh服务，可以通过如下命令进行：</p>
+<h3 id="3-安装ssh"><a href="#3-安装ssh" class="headerlink" title="3.安装ssh"></a>3.安装ssh</h3><p>判断是否安装ssh服务，可以通过如下命令进行：</p>
 <pre><code>ps -e|grep ssh
 </code></pre><p>ssh-agent表示ssh-client启动，sshd表示ssh-server启动了。</p>
 <pre><code> 输出如下：
@@ -170,8 +167,7 @@ Port 22
 </code></pre><p>修改端口号（Port）后，重启ssh服务即可生效，命令如下：</p>
 <pre><code>sudo /etc/init.d/ssh restart
 </code></pre><p>ssh服务启动后，即可登陆，登陆命令格式为：ssh 帐号@IP地址<br>例如：ssh test@192.168.135.249<br>根据提示输入test的密码，即可远程登陆。</p>
-<p>####4.安装samba</p>
-<p> <a href="http://www.jianshu.com/p/c4579605a737" target="_blank" rel="noopener">Ubuntu下配置Samba服务器</a><br><a href="http://blog.csdn.net/u011091632/article/details/21887385" target="_blank" rel="noopener"> <a href="http://blog.csdn.net/u011091632/article/details/21887385" target="_blank" rel="noopener">ubuntu下samba服务器配置</a></a></p>
+<h3 id="4-安装samba"><a href="#4-安装samba" class="headerlink" title="4.安装samba"></a>4.安装samba</h3><p> <a href="http://www.jianshu.com/p/c4579605a737" target="_blank" rel="noopener">Ubuntu下配置Samba服务器</a><br><a href="http://blog.csdn.net/u011091632/article/details/21887385" target="_blank" rel="noopener"> <a href="http://blog.csdn.net/u011091632/article/details/21887385" target="_blank" rel="noopener">ubuntu下samba服务器配置</a></a></p>
 </section>
     <!-- Tags START -->
     
@@ -226,7 +222,7 @@ Port 22
   <div class="toc-main">
     <strong class="toc-title">Catalog</strong>
     
-      <ol class="nav">none</ol>
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#1-装机后，无法连接wifi"><span class="toc-nav-text"><a href="#1-&#x88C5;&#x673A;&#x540E;&#xFF0C;&#x65E0;&#x6CD5;&#x8FDE;&#x63A5;wifi" class="headerlink" title="1.&#x88C5;&#x673A;&#x540E;&#xFF0C;&#x65E0;&#x6CD5;&#x8FDE;&#x63A5;wifi."></a>1.&#x88C5;&#x673A;&#x540E;&#xFF0C;&#x65E0;&#x6CD5;&#x8FDE;&#x63A5;wifi.</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2-apt-get-update-无法执行"><span class="toc-nav-text"><a href="#2-apt-get-update-&#x65E0;&#x6CD5;&#x6267;&#x884C;" class="headerlink" title="2.apt-get update &#x65E0;&#x6CD5;&#x6267;&#x884C;"></a>2.apt-get update &#x65E0;&#x6CD5;&#x6267;&#x884C;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#3-安装ssh"><span class="toc-nav-text"><a href="#3-&#x5B89;&#x88C5;ssh" class="headerlink" title="3.&#x5B89;&#x88C5;ssh"></a>3.&#x5B89;&#x88C5;ssh</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#4-安装samba"><span class="toc-nav-text"><a href="#4-&#x5B89;&#x88C5;samba" class="headerlink" title="4.&#x5B89;&#x88C5;samba"></a>4.&#x5B89;&#x88C5;samba</span></a></li></ol>
     
   </div>
 </aside>

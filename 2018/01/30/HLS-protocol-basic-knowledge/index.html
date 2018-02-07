@@ -121,13 +121,11 @@
 <main class="app-body flex-box">
   <!-- Article START -->
   <article class="post-article">
-    <section class="markdown-content"><p>####HTTP Live Streaming:<br> HLS是一个由苹果公司提出的基于HTTP的<a href="https://zh.wikipedia.org/wiki/%E6%B5%81%E5%AA%92%E4%BD%93" target="_blank" rel="noopener">流媒体</a><a href="https://zh.wikipedia.org/wiki/%E7%BD%91%E7%BB%9C%E4%BC%A0%E8%BE%93%E5%8D%8F%E8%AE%AE" target="_blank" rel="noopener">网络传输协议</a>，可以实现流媒体的直播（live）和点播(vod)。</p>
-<p>#####HLS协议规定：</p>
-<blockquote>
+    <section class="markdown-content"><h3 id="HTTP-Live-Streaming"><a href="#HTTP-Live-Streaming" class="headerlink" title="HTTP Live Streaming:"></a>HTTP Live Streaming:</h3><p> HLS是一个由苹果公司提出的基于HTTP的<a href="https://zh.wikipedia.org/wiki/%E6%B5%81%E5%AA%92%E4%BD%93" target="_blank" rel="noopener">流媒体</a><a href="https://zh.wikipedia.org/wiki/%E7%BD%91%E7%BB%9C%E4%BC%A0%E8%BE%93%E5%8D%8F%E8%AE%AE" target="_blank" rel="noopener">网络传输协议</a>，可以实现流媒体的直播（live）和点播(vod)。</p>
+<h5 id="HLS协议规定："><a href="#HLS协议规定：" class="headerlink" title="HLS协议规定："></a>HLS协议规定：</h5><blockquote>
 <p>HLS协议由HTTP+M3U8+TS三部分组成，其中，HTTP是传输协议，M3U8是索引文件，TS是视音频的媒体信息。<br>视频的编码格式为H264,音频编码格式为MP3、AAC或者AC-3。</p>
 </blockquote>
-<p>#####工作原理：</p>
-<blockquote>
+<h3 id="工作原理："><a href="#工作原理：" class="headerlink" title="工作原理："></a>工作原理：</h3><blockquote>
 <p>把整个ts流分成一个个ts小文件供播放器按顺序下载播放。<br>在开始一个流媒体会话时，客户端会下载一个包含元数据的<a href="https://zh.wikipedia.org/w/index.php?title=Extended_M3U&amp;action=edit&amp;redlink=1" target="_blank" rel="noopener">extended M3U (m3u8)</a> <a href="https://zh.wikipedia.org/w/index.php?title=Playlist&amp;action=edit&amp;redlink=1" target="_blank" rel="noopener">playlist</a>文件，用于寻找可用的媒体流。<br><img src="http://upload-images.jianshu.io/upload_images/1984280-88f6ae5b4c00ae61?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="HLS 的请求流程"></p>
 </blockquote>
 <pre><code>1 http 请求 m3u8 的 url。
@@ -142,31 +140,23 @@
 <blockquote>
 <p>点播VOD的特点就是当前时间点可以获取到所有index文件和ts文件，二级index文件中记录了所有ts文件的地址。这种模式允许客户端访问全部内容。<br>Live 模式就是实时生成M3u8和ts文件。它的索引文件一直处于动态变化的，播放的时候需要不断下载二级index文件，以获得最新生成的ts文件播放视频。如果一个二级index文件的末尾没有#EXT-X-ENDLIST标志，说明它是一个Live视频流。<br>m3u8的Tag，太多了，这里就不一一说明。<br>播放器拿到该m3u8列表之后，会请求一片ts后，间隔一段时间请求下一片ts。 这个间隔的时间的长短，一般是根据m3u8中的 #EXT-X-TARGETDURATION</p>
 </blockquote>
-<p>####优势：</p>
-<p>#####1.码率自适应（Adaptive Streaming） </p>
-<blockquote>
+<h3 id="优势："><a href="#优势：" class="headerlink" title="优势："></a>优势：</h3><h5 id="1-码率自适应（Adaptive-Streaming）"><a href="#1-码率自适应（Adaptive-Streaming）" class="headerlink" title="1.码率自适应（Adaptive Streaming）"></a>1.码率自适应（Adaptive Streaming）</h5><blockquote>
 <p>当媒体流正在播放时，客户端可以选择从许多不同的备用源中以不同的速率下载同样的资源，允许流媒体会话适应不同的数据速率。客户端可以很快的选择和切换码率，以适应不同带宽条件下的播放。</p>
 </blockquote>
-<p>#####2.基于HTTP(穿墙/性能高)</p>
-<blockquote>
+<h5 id="2-基于HTTP-穿墙-性能高"><a href="#2-基于HTTP-穿墙-性能高" class="headerlink" title="2.基于HTTP(穿墙/性能高)"></a>2.基于HTTP(穿墙/性能高)</h5><blockquote>
 <p>HLS采取HTTP协议传输文件，所以可以穿过任何允许HTTP数据通过的防火墙或者代理服务器。相比之下，因为RTMP协议不使用标准的HTTP接口传输数据，所以在一些特殊的网络环境下可能被防火墙屏蔽掉。</p>
 </blockquote>
-<p>#####3.跨平台性：</p>
-<blockquote>
+<h5 id="3-跨平台性："><a href="#3-跨平台性：" class="headerlink" title="3.跨平台性："></a>3.跨平台性：</h5><blockquote>
 <p>支持PC/Android/IOS平台，并在移动端趋势明显。（PC主要的直播方案是RTMP）</p>
 </blockquote>
-<p>#####4.充分利用CDN（负载均衡）：</p>
-<blockquote>
+<h5 id="4-充分利用CDN（负载均衡）："><a href="#4-充分利用CDN（负载均衡）：" class="headerlink" title="4.充分利用CDN（负载均衡）："></a>4.充分利用CDN（负载均衡）：</h5><blockquote>
 <p>CDN即Content Delivery Network （内容分发网络）。CDN包含两大核心技术：负载均衡和分发网络<br>于负载，RTMP是一种有状态协议，很难对视频服务器进行平滑扩展，因为需要为每一个播放视频流的客户端维护状态。而HLS基于无状态协议（HTTP），客户端只是按照顺序使用下载存储在服务器的普通TS文件，做负责均衡如同普通的HTTP文件服务器的负载均衡一样简单。</p>
 </blockquote>
-<p>####劣势：</p>
-<p>#####1.实时性差：</p>
-<blockquote>
+<h3 id="劣势："><a href="#劣势：" class="headerlink" title="劣势："></a>劣势：</h3><h5 id="1-实时性差："><a href="#1-实时性差：" class="headerlink" title="1.实时性差："></a>1.实时性差：</h5><blockquote>
 <p>基本上HLS的延迟在10秒以上,而RTMP协议的延迟最低可以到3、4秒左右。</p>
-<p>#####2.文件碎片：<br>若分发HLS，码流低，切片较小时，小文件分发不是很友好。特别是一些对存储比较敏感的情况，譬如源站的存储，嵌入式的SD卡。</p>
+<h5 id="2-文件碎片："><a href="#2-文件碎片：" class="headerlink" title="2.文件碎片："></a>2.文件碎片：</h5><p>若分发HLS，码流低，切片较小时，小文件分发不是很友好。特别是一些对存储比较敏感的情况，譬如源站的存储，嵌入式的SD卡。</p>
 </blockquote>
-<p>####HLS延时分析</p>
-<blockquote>
+<h4 id="HLS延时分析"><a href="#HLS延时分析" class="headerlink" title="HLS延时分析"></a>HLS延时分析</h4><blockquote>
 <p>HLS理论上延时=1个切片的时长+ 0-1个td + 0-n个启动切片 +网络连接耗时。</p>
 </blockquote>
 <p>td是EXT-X-TARGETDURATION，可简单理解为播放器取片的间隔时间<br>n:苹果官方建议是请求到3个片之后才开始播放</p>
@@ -181,8 +171,8 @@
       <div class="tags">
         <span>Tags:</span>
         
-  <a href="/tags#hls stream" >
-    <span class="tag-code">hls stream</span>
+  <a href="/tags#hls" >
+    <span class="tag-code">hls</span>
   </a>
 
       </div>
@@ -229,7 +219,7 @@
   <div class="toc-main">
     <strong class="toc-title">Catalog</strong>
     
-      <ol class="nav">none</ol>
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#HTTP-Live-Streaming"><span class="toc-nav-text"><a href="#HTTP-Live-Streaming" class="headerlink" title="HTTP Live Streaming:"></a>HTTP Live Streaming:</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#HLS协议规定："><span class="toc-nav-text"><a href="#HLS&#x534F;&#x8BAE;&#x89C4;&#x5B9A;&#xFF1A;" class="headerlink" title="HLS&#x534F;&#x8BAE;&#x89C4;&#x5B9A;&#xFF1A;"></a>HLS&#x534F;&#x8BAE;&#x89C4;&#x5B9A;&#xFF1A;</span></a></li></ol></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#工作原理："><span class="toc-nav-text"><a href="#&#x5DE5;&#x4F5C;&#x539F;&#x7406;&#xFF1A;" class="headerlink" title="&#x5DE5;&#x4F5C;&#x539F;&#x7406;&#xFF1A;"></a>&#x5DE5;&#x4F5C;&#x539F;&#x7406;&#xFF1A;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#优势："><span class="toc-nav-text"><a href="#&#x4F18;&#x52BF;&#xFF1A;" class="headerlink" title="&#x4F18;&#x52BF;&#xFF1A;"></a>&#x4F18;&#x52BF;&#xFF1A;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#1-码率自适应（Adaptive-Streaming）"><span class="toc-nav-text"><a href="#1-&#x7801;&#x7387;&#x81EA;&#x9002;&#x5E94;&#xFF08;Adaptive-Streaming&#xFF09;" class="headerlink" title="1.&#x7801;&#x7387;&#x81EA;&#x9002;&#x5E94;&#xFF08;Adaptive Streaming&#xFF09;"></a>1.&#x7801;&#x7387;&#x81EA;&#x9002;&#x5E94;&#xFF08;Adaptive Streaming&#xFF09;</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#2-基于HTTP-穿墙-性能高"><span class="toc-nav-text"><a href="#2-&#x57FA;&#x4E8E;HTTP-&#x7A7F;&#x5899;-&#x6027;&#x80FD;&#x9AD8;" class="headerlink" title="2.&#x57FA;&#x4E8E;HTTP(&#x7A7F;&#x5899;/&#x6027;&#x80FD;&#x9AD8;)"></a>2.&#x57FA;&#x4E8E;HTTP(&#x7A7F;&#x5899;/&#x6027;&#x80FD;&#x9AD8;)</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#3-跨平台性："><span class="toc-nav-text"><a href="#3-&#x8DE8;&#x5E73;&#x53F0;&#x6027;&#xFF1A;" class="headerlink" title="3.&#x8DE8;&#x5E73;&#x53F0;&#x6027;&#xFF1A;"></a>3.&#x8DE8;&#x5E73;&#x53F0;&#x6027;&#xFF1A;</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#4-充分利用CDN（负载均衡）："><span class="toc-nav-text"><a href="#4-&#x5145;&#x5206;&#x5229;&#x7528;CDN&#xFF08;&#x8D1F;&#x8F7D;&#x5747;&#x8861;&#xFF09;&#xFF1A;" class="headerlink" title="4.&#x5145;&#x5206;&#x5229;&#x7528;CDN&#xFF08;&#x8D1F;&#x8F7D;&#x5747;&#x8861;&#xFF09;&#xFF1A;"></a>4.&#x5145;&#x5206;&#x5229;&#x7528;CDN&#xFF08;&#x8D1F;&#x8F7D;&#x5747;&#x8861;&#xFF09;&#xFF1A;</span></a></li></ol></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#劣势："><span class="toc-nav-text"><a href="#&#x52A3;&#x52BF;&#xFF1A;" class="headerlink" title="&#x52A3;&#x52BF;&#xFF1A;"></a>&#x52A3;&#x52BF;&#xFF1A;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#1-实时性差："><span class="toc-nav-text"><a href="#1-&#x5B9E;&#x65F6;&#x6027;&#x5DEE;&#xFF1A;" class="headerlink" title="1.&#x5B9E;&#x65F6;&#x6027;&#x5DEE;&#xFF1A;"></a>1.&#x5B9E;&#x65F6;&#x6027;&#x5DEE;&#xFF1A;</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#2-文件碎片："><span class="toc-nav-text"><a href="#2-&#x6587;&#x4EF6;&#x788E;&#x7247;&#xFF1A;" class="headerlink" title="2.&#x6587;&#x4EF6;&#x788E;&#x7247;&#xFF1A;"></a>2.&#x6587;&#x4EF6;&#x788E;&#x7247;&#xFF1A;</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#HLS延时分析"><span class="toc-nav-text"><a href="#HLS&#x5EF6;&#x65F6;&#x5206;&#x6790;" class="headerlink" title="HLS&#x5EF6;&#x65F6;&#x5206;&#x6790;"></a>HLS&#x5EF6;&#x65F6;&#x5206;&#x6790;</span></a></li></ol></li></ol>
     
   </div>
 </aside>
