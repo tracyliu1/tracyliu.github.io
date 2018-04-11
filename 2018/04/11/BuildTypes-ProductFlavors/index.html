@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="it is a personal blogs">
+  <meta name="keyword" content="hexo-theme, vuejs">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      动态配置LauncherActivity/根据不同资源文件生成apk | tracyliu
+    
+  </title>
+  <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdn.bootcss.com/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/css/plugins/gitment.css">
+  <script src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdn.bootcss.com/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.js"></script>
+  <script src="/js/qrious.js"></script>
+<script src="/js/gitment.js"></script>
+</head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>tracyliu</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">Tags</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/project/" class="item-link">Projects</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">About</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">Tags</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">Archives</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/project/" class="menu-link">Projects</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">About</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>动态配置LauncherActivity/根据不同资源文件生成apk</h2>
+  <p class="post-date">2018-04-11</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><h5 id="需求"><a href="#需求" class="headerlink" title="需求"></a>需求</h5><p>1.同一份代码，采用三份不同的资源文件，生成三个不同的apk；</p>
+<p>2.同一份代码，采用相同代码和资源文件，仅有LauncherActivity不同，生成两个apk；</p>
+<p>经过一番查询，以上需求可以通过Gradle中配置ProductFlavors完美解决。</p>
+<h2 id="BuildVariants基本知识"><a href="#BuildVariants基本知识" class="headerlink" title="BuildVariants基本知识"></a>BuildVariants基本知识</h2><h5 id="使用manifestPlaceholders改变-meta-data"><a href="#使用manifestPlaceholders改变-meta-data" class="headerlink" title="使用manifestPlaceholders改变 meta-data"></a>使用manifestPlaceholders改变 meta-data</h5><p>标签meta-data是提供组件额外的数据用的，它本身就是一个键值对，可以自定义名称和值。它可以包含在以下组件当中：activity\application\service\receiver。</p>
+<p>manifestPlaceholders的作用 ：在build.gradle文件中定义字符串并将值映射到 AndroidManifest清单文件的指定位置.</p>
+<p>1.AndroidMenifest.xml中添加meta-data</p>
+<pre><code>&lt;meta-data
+    android:name=&quot;APP_CHANNEL&quot;
+    android:value=&quot;${APP_CHANNEL_VALUE}&quot;/&gt;
+</code></pre><p>2.build.gradle(Moudle)中添加（以下两种写法相同）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">productFlavors&#123;</span><br><span class="line">    eyewatch &#123;</span><br><span class="line">	    manifestPlaceholders = [APP_CHANNEL: &quot;eyewatch&quot;] &#125;</span><br><span class="line">    ipremium &#123;</span><br><span class="line">        manifestPlaceholders = [APP_CHANNEL: &quot;ipremium&quot;] &#125;</span><br><span class="line">    echo &#123;</span><br><span class="line">        manifestPlaceholders = [APP_CHANNEL: &quot;echo&quot;] &#125;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">productFlavors &#123;</span><br><span class="line">	eyewatch &#123;&#125;</span><br><span class="line">	ipremium &#123;&#125;</span><br><span class="line">	echo &#123;&#125;</span><br><span class="line">		productFlavors.all &#123; flavor -&gt;</span><br><span class="line">			flavor.manifestPlaceholders = [APP_CHANNEL: name]</span><br><span class="line">							&#125;</span><br><span class="line">				&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="构建变体BuildType"><a href="#构建变体BuildType" class="headerlink" title="构建变体BuildType"></a>构建变体BuildType</h5><p>当创建工程时，Android Studio会自动生成debug/release两种buildtype，我们可以根据自己定义生成更多的buildtype</p>
+<p>productFlavors支持与 <code>defaultConfig</code> 相同的属性（<code>defaultConfig</code> 实际上属于 <a href="http://google.github.io/android-gradle-dsl/current/com.android.build.gradle.internal.dsl.ProductFlavor.html" target="_blank" rel="noopener"><code>ProductFlavor</code></a> 类）。这意味着，您可以在 <code>defaultConfig {}</code> 代码块中提供所有风味的基本配置，每种风味均可更改任何这些默认值。</p>
+<p><strong><em>buildType x productFlavor x flavorDimensions = 生成的APK数量</em></strong></p>
+<p><img src="/Users/tracyliu/hexo/source/_posts/BuildTypes-ProductFlavors/relative_buildtype_productflavor.png" alt="buildtype和productFlaovr的关系"></p>
+<h5 id="assemble命令简介"><a href="#assemble命令简介" class="headerlink" title="assemble命令简介"></a>assemble命令简介</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">./gradlew assembleDebug </span><br><span class="line">编译并生成Debug包,包含productFlavors下所有定义的产品或渠道包</span><br><span class="line">./gradlew assembleRelease </span><br><span class="line">编译并生成Release包,包含productFlavors下所有定义的产品或渠道包</span><br><span class="line">./gradlew assembleProductARelease </span><br><span class="line">编译并生成Release包,包含pProductA下所有定义的产品或渠道包</span><br><span class="line">./gradlew assembleProductADebug</span><br><span class="line"> 编译并生成Debug包,包含pProductA下所有定义的产品或渠道包</span><br></pre></td></tr></table></figure>
+<h5 id="flavor跟main的文件合并规则"><a href="#flavor跟main的文件合并规则" class="headerlink" title="flavor跟main的文件合并规则"></a>flavor跟main的文件合并规则</h5><p>①java中代码合并，如果有相同的文件是会报错重复错误的，所以main文件夹中，应该存放共有的代码，而flavor文件夹中存放自己所需要的独立的代码。<br>②res中资源的合并，优先级是flavor高于main，即flavor中资源会加入或覆盖main中资源。如果falvor渠道要求指定的icon和appName，则在special中res中替换到默认的icon，在string.xml中改正相应的appName即可。</p>
+<h3 id="需求1-同一份代码，不同资源文件"><a href="#需求1-同一份代码，不同资源文件" class="headerlink" title="需求1.同一份代码，不同资源文件"></a>需求1.同一份代码，不同资源文件</h3><p>在/src中，main同级目录新建对应falvor名称的文件夹。各个falvor文件内目录应与main目录结构完全一致，需要替换的资源文件名字也要相同。如/eyewatch/drawable/bg.png 与 /main/drawable/bg.png。</p>
+<p><img src="/Users/tracyliu/hexo/source/_posts/BuildTypes-ProductFlavors/setting_folder.png" width="300px"></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">defaultConfig &#123;</span><br><span class="line">        applicationId &quot;com.echo.settings&quot;</span><br><span class="line">        minSdkVersion 19</span><br><span class="line">        targetSdkVersion 22</span><br><span class="line">        versionCode 1</span><br><span class="line">        versionName &quot;1.2&quot;</span><br><span class="line">        flavorDimensions &quot;versionCode&quot;</span><br><span class="line">        //执行lint检查，有任何的错误或者警告提示，都会终止构建，我们可以将其关掉。</span><br><span class="line">        lintOptions &#123;</span><br><span class="line">            abortOnError false</span><br><span class="line">            checkReleaseBuilds false</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        buildTypes &#123;</span><br><span class="line">            debug &#123;</span><br><span class="line">                // 显示Log</span><br><span class="line">                buildConfigField &quot;boolean&quot;, &quot;LOG_DEBUG&quot;, &quot;true&quot;</span><br><span class="line"></span><br><span class="line">                versionNameSuffix &quot;-debug&quot;</span><br><span class="line">                minifyEnabled false</span><br><span class="line">                zipAlignEnabled false</span><br><span class="line">                shrinkResources false</span><br><span class="line"></span><br><span class="line">                android.applicationVariants.all &#123; variant -&gt;</span><br><span class="line">                    variant.outputs.all &#123;</span><br><span class="line">                        outputFileName = &quot;Settings_v$&#123;defaultConfig.versionName&#125;_$&#123;releaseTime()&#125;_$&#123;variant.productFlavors[0].name&#125;.apk&quot;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">// 多渠道打包</span><br><span class="line">productFlavors &#123;</span><br><span class="line">    echo &#123;&#125;</span><br><span class="line">    eyewatch &#123;&#125;</span><br><span class="line">    ipremium &#123;&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">productFlavors.all &#123; flavor -&gt;</span><br><span class="line">    flavor.manifestPlaceholders = [APP_CHANNEL_VALUE: name]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="需求2-同一份代码，不同LauncherActivity"><a href="#需求2-同一份代码，不同LauncherActivity" class="headerlink" title="需求2.同一份代码，不同LauncherActivity"></a>需求2.同一份代码，不同LauncherActivity</h3><p><img src="/Users/tracyliu/hexo/source/_posts/BuildTypes-ProductFlavors/nova_folder.png" width="300px"></p>
+<p>在/src中main同级目录中创建对应flavor文件夹，复制一份manifest.xml文件。</p>
+<p>将原LauncherActivity下 添加 tools:node=”merge”，Intent-filter中添加 tools:node=”remove”</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">&lt;activity</span><br><span class="line">    android:name=&quot;.app.launcher.Launcher&quot;</span><br><span class="line">    android:launchMode=&quot;singleTask&quot;</span><br><span class="line">    android:exported=&quot;true&quot;</span><br><span class="line">    android:screenOrientation=&quot;landscape&quot;</span><br><span class="line">    tools:node=&quot;merge&quot;</span><br><span class="line">    &gt;</span><br><span class="line">    &lt;intent-filter tools:node=&quot;remove&quot;&gt;</span><br><span class="line">        &lt;action android:name=&quot;android.intent.action.MAIN&quot;/&gt;</span><br><span class="line">        &lt;category android:name=&quot;android.intent.category.LAUNCHER&quot;/&gt;</span><br><span class="line">        &lt;category android:name=&quot;android.intent.category.LEANBACK_LAUNCHER&quot;/&gt;</span><br><span class="line">    &lt;/intent-filter&gt;</span><br><span class="line">&lt;/activity&gt;</span><br></pre></td></tr></table></figure>
+<p>在对应想要启动的Activity下设置<intent-filter>即可。</intent-filter></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&lt;activity</span><br><span class="line">    android:name=&quot;.app.launcher.SimpleLaunch&quot;</span><br><span class="line">    android:exported=&quot;true&quot;</span><br><span class="line">    android:launchMode=&quot;singleTask&quot;</span><br><span class="line">    android:screenOrientation=&quot;landscape&quot;&gt;</span><br><span class="line">     &lt;intent-filter&gt;</span><br><span class="line">         &lt;action android:name=&quot;android.intent.action.MAIN&quot;/&gt;</span><br><span class="line">         &lt;category android:name=&quot;android.intent.category.LAUNCHER&quot;/&gt;</span><br><span class="line">         &lt;category android:name=&quot;android.intent.category.LEANBACK_LAUNCHER&quot;/&gt;</span><br><span class="line">     &lt;/intent-filter&gt;</span><br><span class="line">&lt;/activity&gt;</span><br></pre></td></tr></table></figure>
+<p><img src="/Users/tracyliu/hexo/source/_posts/BuildTypes-ProductFlavors/node_merge.png" alt="node=merge"></p>
+<p><img src="/Users/tracyliu/hexo/source/_posts/BuildTypes-ProductFlavors/node_remove.png" alt="node=remove"></p>
+<p><a href="https://developer.android.com/guide/topics/manifest/meta-data-element.html" target="_blank" rel="noopener">meta-data</a></p>
+<p><a href="http://google.github.io/android-gradle-dsl/current/com.android.build.gradle.internal.dsl.ProductFlavor.html" target="_blank" rel="noopener">ProductFlavor</a></p>
+<p><a href="http://google.github.io/android-gradle-dsl/current/com.android.build.gradle.api.AndroidSourceSet.html" target="_blank" rel="noopener">AndroidSourceSet</a></p>
+<p><a href="https://developer.android.google.cn/studio/build/manifest-merge.html" target="_blank" rel="noopener">合并多个清单文件</a></p>
+<p><a href="https://zhuanlan.zhihu.com/p/33722674" target="_blank" rel="noopener">使用gradle的productFlavors实现Android项目多渠道打包</a></p>
+<p><a href="https://segmentfault.com/a/1190000009176256" target="_blank" rel="noopener">Android Gradle manifestPlaceholders 占位符详解</a></p>
+</section>
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a href="/tags#buildType" >
+    <span class="tag-code">buildType</span>
+  </a>
+
+  <a href="/tags#ProductFlavors" >
+    <span class="tag-code">ProductFlavors</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+      <div class="qrcode">
+        <canvas id="share-qrcode"></canvas>
+        <p class="notice">扫描二维码，分享此文章</p>
+      </div>
+    
+    <!-- 二维码 END -->
+    
+      <!-- Gitment START -->
+      <div id="comments"></div>
+      <!-- Gitment END -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#需求"><span class="toc-nav-text"><a href="#&#x9700;&#x6C42;" class="headerlink" title="&#x9700;&#x6C42;"></a>&#x9700;&#x6C42;</span></a></li></ol></li></ol></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#BuildVariants基本知识"><span class="toc-nav-text"><a href="#BuildVariants&#x57FA;&#x672C;&#x77E5;&#x8BC6;" class="headerlink" title="BuildVariants&#x57FA;&#x672C;&#x77E5;&#x8BC6;"></a>BuildVariants&#x57FA;&#x672C;&#x77E5;&#x8BC6;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#使用manifestPlaceholders改变-meta-data"><span class="toc-nav-text"><a href="#&#x4F7F;&#x7528;manifestPlaceholders&#x6539;&#x53D8;-meta-data" class="headerlink" title="&#x4F7F;&#x7528;manifestPlaceholders&#x6539;&#x53D8; meta-data"></a>&#x4F7F;&#x7528;manifestPlaceholders&#x6539;&#x53D8; meta-data</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#构建变体BuildType"><span class="toc-nav-text"><a href="#&#x6784;&#x5EFA;&#x53D8;&#x4F53;BuildType" class="headerlink" title="&#x6784;&#x5EFA;&#x53D8;&#x4F53;BuildType"></a>&#x6784;&#x5EFA;&#x53D8;&#x4F53;BuildType</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#assemble命令简介"><span class="toc-nav-text"><a href="#assemble&#x547D;&#x4EE4;&#x7B80;&#x4ECB;" class="headerlink" title="assemble&#x547D;&#x4EE4;&#x7B80;&#x4ECB;"></a>assemble&#x547D;&#x4EE4;&#x7B80;&#x4ECB;</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#flavor跟main的文件合并规则"><span class="toc-nav-text"><a href="#flavor&#x8DDF;main&#x7684;&#x6587;&#x4EF6;&#x5408;&#x5E76;&#x89C4;&#x5219;" class="headerlink" title="flavor&#x8DDF;main&#x7684;&#x6587;&#x4EF6;&#x5408;&#x5E76;&#x89C4;&#x5219;"></a>flavor&#x8DDF;main&#x7684;&#x6587;&#x4EF6;&#x5408;&#x5E76;&#x89C4;&#x5219;</span></a></li></ol></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#需求1-同一份代码，不同资源文件"><span class="toc-nav-text"><a href="#&#x9700;&#x6C42;1-&#x540C;&#x4E00;&#x4EFD;&#x4EE3;&#x7801;&#xFF0C;&#x4E0D;&#x540C;&#x8D44;&#x6E90;&#x6587;&#x4EF6;" class="headerlink" title="&#x9700;&#x6C42;1.&#x540C;&#x4E00;&#x4EFD;&#x4EE3;&#x7801;&#xFF0C;&#x4E0D;&#x540C;&#x8D44;&#x6E90;&#x6587;&#x4EF6;"></a>&#x9700;&#x6C42;1.&#x540C;&#x4E00;&#x4EFD;&#x4EE3;&#x7801;&#xFF0C;&#x4E0D;&#x540C;&#x8D44;&#x6E90;&#x6587;&#x4EF6;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#需求2-同一份代码，不同LauncherActivity"><span class="toc-nav-text"><a href="#&#x9700;&#x6C42;2-&#x540C;&#x4E00;&#x4EFD;&#x4EE3;&#x7801;&#xFF0C;&#x4E0D;&#x540C;LauncherActivity" class="headerlink" title="&#x9700;&#x6C42;2.&#x540C;&#x4E00;&#x4EFD;&#x4EE3;&#x7801;&#xFF0C;&#x4E0D;&#x540C;LauncherActivity"></a>&#x9700;&#x6C42;2.&#x540C;&#x4E00;&#x4EFD;&#x4EE3;&#x7801;&#xFF0C;&#x4E0D;&#x540C;LauncherActivity</span></a>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'http://yoursite.com/2018/04/11/BuildTypes-ProductFlavors/';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+     // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+        
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+
+    // qrcode
+    var qr = new QRious({
+      element: document.getElementById('share-qrcode'),
+      value: document.location.href
+    });
+
+    // gitment
+    var gitmentConfig = "tracyliu";
+    if (gitmentConfig !== 'undefined') {
+      var gitment = new Gitment({
+        id: "动态配置LauncherActivity/根据不同资源文件生成apk",
+        owner: "tracyliu",
+        repo: "git@github.com:tracyliu1/tracyliu1.github.io.git",
+        oauth: {
+          client_id: "0f87e490e00ee3fd87ef",
+          client_secret: "4a9d2b148e7971c2201ad12131ce8bf8159ccd2e"
+        },
+        theme: {
+          render(state, instance) {
+            const container = document.createElement('div')
+            container.lang = "en-US"
+            container.className = 'gitment-container gitment-root-container'
+            container.appendChild(instance.renderHeader(state, instance))
+            container.appendChild(instance.renderEditor(state, instance))
+            container.appendChild(instance.renderComments(state, instance))
+            container.appendChild(instance.renderFooter(state, instance))
+            return container;
+          }
+        }
+      })
+      gitment.render(document.getElementById('comments'))
+    }
+  })();
+</script>
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2018 | Proudly powered by <a href="https://hexo.io" target="_blank">Hexo</a>
+    <br>
+    Theme by <a href="https://github.com/yanm1ng">yanm1ng</a>
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+<script src="/js/script.js"></script>
+  </body>
+</html>
