@@ -1,352 +1,1838 @@
 <!DOCTYPE html>
-<html>
-  <head>
-  <meta http-equiv="content-type" content="text/html; charset=utf-8">
-  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
-  <meta name="description" content="it is a personal blogs">
-  <meta name="keyword" content="hexo-theme, vuejs">
+
+
+
   
-    <link rel="shortcut icon" href="/css/images/logo.png">
+
+
+<html class="theme-next muse use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   
-  <title>
-    
-      tracyliu
-    
-  </title>
-  <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-  <link href="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
-  <link href="//cdn.bootcss.com/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="/css/style.css">
-<link rel="stylesheet" href="/css/plugins/gitment.css">
-  <script src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
-  <script src="//cdn.bootcss.com/geopattern/1.2.3/js/geopattern.min.js"></script>
-  <script src="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.js"></script>
-  <script src="/js/qrious.js"></script>
-<script src="/js/gitment.js"></script>
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="it is a personal blogs">
+<meta property="og:type" content="website">
+<meta property="og:title" content="tracyliu">
+<meta property="og:url" content="http://yoursite.com/index.html">
+<meta property="og:site_name" content="tracyliu">
+<meta property="og:description" content="it is a personal blogs">
+<meta property="og:locale" content="zh-CN">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="tracyliu">
+<meta name="twitter:description" content="it is a personal blogs">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/"/>
+
+
+
+
+
+  <title>tracyliu</title>
+  
+
+
+
+
+
+
+
+
 </head>
-<div class="wechat-share">
-  <img src="/css/images/logo.png" />
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left 
+  page-home">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">tracyliu</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">this is subtitle for tracyliu</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
 </div>
 
-  <body>
-    <header class="header fixed-header">
-  <div class="header-container">
-    <a class="home-link" href="/">
-      <div class="logo"></div>
-      <span>tracyliu</span>
-    </a>
-    <ul class="right-list">
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
       
-        <li class="list-item">
-          
-            <a href="/" class="item-link active">Home</a>
-          
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Startseite
+          </a>
         </li>
       
-        <li class="list-item">
-          
-            <a href="/tags/" class="item-link">Tags</a>
-          
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archiv
+          </a>
         </li>
       
-        <li class="list-item">
-          
-            <a href="/archives/" class="item-link">Archives</a>
-          
-        </li>
-      
-        <li class="list-item">
-          
-            <a href="/project/" class="item-link">Projects</a>
-          
-        </li>
-      
-        <li class="list-item">
-          
-            <a href="/about/" class="item-link">About</a>
-          
-        </li>
+
       
     </ul>
-    <div class="menu">
-      <span class="icon-bar"></span>
-      <span class="icon-bar"></span>
-      <span class="icon-bar"></span>
-    </div>
-    <div class="menu-mask">
-      <ul class="menu-list">
-        
-          <li class="menu-item">
-            
-              <a href="/" class="menu-link mobile-active">Home</a>
-            
-          </li>
-        
-          <li class="menu-item">
-            
-              <a href="/tags/" class="menu-link">Tags</a>
-            
-          </li>
-        
-          <li class="menu-item">
-            
-              <a href="/archives/" class="menu-link">Archives</a>
-            
-          </li>
-        
-          <li class="menu-item">
-            
-              <a href="/project/" class="menu-link">Projects</a>
-            
-          </li>
-        
-          <li class="menu-item">
-            
-              <a href="/about/" class="menu-link">About</a>
-            
-          </li>
-        
-      </ul>
-    </div>
-  </div>
-</header>
-
-    <main class="app-body">
   
-    <article class="article-card">
-      <h2 class="article-head">
-        <a href="/2018/04/11/BuildTypes-ProductFlavors/">动态配置LauncherActivity/根据不同资源文件生成apk</a>
-      </h2>
-      <p class="article-date">2018年4月11日</p>
-      
-        
-  <a href="/tags#buildType" >
-    <span class="tag-code">buildType</span>
-  </a>
 
-  <a href="/tags#ProductFlavors" >
-    <span class="tag-code">ProductFlavors</span>
-  </a>
-
-      
-      <div class="article-summary">
-        
-          需求1.同一份代码，采用三份不同的资源文件，生成三个不同的apk；
-2.同一份代码，采用相同代码和资源文件，仅有LauncherActivity不同，生成两个apk；
-经过一番查询，以上需求可以通过Gradle中配置ProductFlavors完美解决。
-BuildVariants基本知识使 ...
-        
-      </div>
-      <a class="more" href="/2018/04/11/BuildTypes-ProductFlavors/">Read more</a>
-    </article>
   
-    <article class="article-card">
-      <h2 class="article-head">
-        <a href="/2018/03/27/LoopLayout-CustomView/">LoopLayout_CustomView</a>
-      </h2>
-      <p class="article-date">2018年3月27日</p>
-      
-        
-  <a href="/tags#CustomView" >
-    <span class="tag-code">CustomView</span>
-  </a>
+</nav>
 
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+  <section id="posts" class="posts-expand">
+    
       
-      <div class="article-summary">
-        
-          自定义View LoopLayout 继承 LinearLayout
-######需求：
-选中的Item要有动画效果；Launcher主页上的Item支持循环。点击非选中item后，item来到中间选中位置。
-自定义控件一般可以分为两种：继承控件、复合控件。前者是通过继承View或其子类，重 ...
-        
-      </div>
-      <a class="more" href="/2018/03/27/LoopLayout-CustomView/">Read more</a>
-    </article>
+
   
-    <article class="article-card">
-      <h2 class="article-head">
-        <a href="/2018/02/07/basic-concept-of-audio-and-video/">视音频技术基础概念</a>
-      </h2>
-      <p class="article-date">2018年2月7日</p>
-      
-        
-  <a href="/tags#音视频" >
-    <span class="tag-code">音视频</span>
-  </a>
 
-      
-      <div class="article-summary">
-        
-          视音频技术主要包含：封装技术，视频压缩编码技术，音频压缩编码技术，如果考虑到网络传输还包括流媒体协议技术。
-视频播放器原理
-以播放网络视频为例，需要经过解协议 —解封装—解码视音频—视音频同步（如果播放本地文件则不需要解协议）
-
-
-
-视频编码视频压缩编码标准：
-
-视频编码的主要作用是将视频像 ...
-        
-      </div>
-      <a class="more" href="/2018/02/07/basic-concept-of-audio-and-video/">Read more</a>
-    </article>
   
-    <article class="article-card">
-      <h2 class="article-head">
-        <a href="/2018/01/30/Instrumentation-click-drag-keycode-foucs-loss/">Android Instrumentation 模拟点击、拖拽、发送keycode、焦点异常丢失。</a>
-      </h2>
-      <p class="article-date">2018年1月30日</p>
-      
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/04/11/BuildTypes-ProductFlavors/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="tracyliu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="tracyliu">
+    </span>
+
+    
+      <header class="post-header">
+
         
-  <a href="/tags#Instrumentation" >
-    <span class="tag-code">Instrumentation</span>
-  </a>
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/04/11/BuildTypes-ProductFlavors/" itemprop="url">动态配置LauncherActivity/根据不同资源文件生成apk</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Veröffentlicht am</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-04-11T15:43:22+08:00">
+                2018-04-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
       
-      <div class="article-summary">
+      
+
+      
         
           
-Instrumentation模拟点击，拖拽，向系统发送keycode。
+            <h5 id="需求"><a href="#需求" class="headerlink" title="需求"></a>需求</h5><p>1.同一份代码，采用三份不同的资源文件，生成三个不同的apk；</p>
+<p>2.同一份代码，采用相同代码和资源文件，仅有LauncherActivity不同，生成两个apk；</p>
+<p>经过一番查询，以上需求可以通过Gradle中配置ProductFlavors完美解决。</p>
+<h2 id="BuildVariants基本知识"><a href="#BuildVariants基本知识" class="headerlink" title="BuildVariants基本知识"></a>BuildVariants基本知识</h2><h5 id="使用manifestPlaceholders改变-meta-data"><a href="#使用manifestPlaceholders改变-meta-data" class="headerlink" title="使用manifestPlaceholders改变 meta-data"></a>使用manifestPlaceholders改变 meta-data</h5><p>标签meta-data是提供组件额外的数据用的，它本身就是一个键值对，可以自定义名称和值。它可以包含在以下组件当中：activity\application\service\receiver。</p>
+<p>manifestPlaceholders的作用 ：在build.gradle文件中定义字符串并将值映射到 AndroidManifest清单文件的指定位置.</p>
+<p>1.AndroidMenifest.xml中添加meta-data</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;meta-data</span><br><span class="line"> 	android:name=&quot;APP_CHANNEL&quot;</span><br><span class="line"> 	android:value=&quot;$&#123;APP_CHANNEL_VALUE&#125;&quot;/&gt;</span><br></pre></td></tr></table></figure>
+<p>2.build.gradle(Moudle)中添加（以下两种写法相同）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">productFlavors&#123;</span><br><span class="line">    eyewatch &#123;</span><br><span class="line">	    manifestPlaceholders = [APP_CHANNEL: &quot;eyewatch&quot;] &#125;</span><br><span class="line">    ipremium &#123;</span><br><span class="line">        manifestPlaceholders = [APP_CHANNEL: &quot;ipremium&quot;] &#125;</span><br><span class="line">    echo &#123;</span><br><span class="line">        manifestPlaceholders = [APP_CHANNEL: &quot;echo&quot;] &#125;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">productFlavors &#123;</span><br><span class="line">	eyewatch &#123;&#125;</span><br><span class="line">	ipremium &#123;&#125;</span><br><span class="line">	echo &#123;&#125;</span><br><span class="line">		productFlavors.all &#123; flavor -&gt;</span><br><span class="line">			flavor.manifestPlaceholders = [APP_CHANNEL: name]</span><br><span class="line">					&#125;</span><br><span class="line">		&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="构建变体BuildType"><a href="#构建变体BuildType" class="headerlink" title="构建变体BuildType"></a>构建变体BuildType</h5><p>当创建工程时，Android Studio会自动生成debug/release两种buildtype，我们可以根据自己定义生成更多的buildtype</p>
+<p>productFlavors支持与 <code>defaultConfig</code> 相同的属性（<code>defaultConfig</code> 实际上属于 <a href="http://google.github.io/android-gradle-dsl/current/com.android.build.gradle.internal.dsl.ProductFlavor.html" target="_blank" rel="noopener"><code>ProductFlavor</code></a> 类）。这意味着，您可以在 <code>defaultConfig {}</code> 代码块中提供所有风味的基本配置，每种风味均可更改任何这些默认值。</p>
+<p><strong><em>buildType x productFlavor x flavorDimensions = 生成的APK数量</em></strong></p>
+<p><img src="https://upload-images.jianshu.io/upload_images/1984280-54359b9195f638f7.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/700" alt="buildtype和productFlaovr的关系"></p>
+<h5 id="assemble命令简介"><a href="#assemble命令简介" class="headerlink" title="assemble命令简介"></a>assemble命令简介</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">./gradlew assembleDebug </span><br><span class="line">编译并生成Debug包,包含productFlavors下所有定义的产品或渠道包</span><br><span class="line">./gradlew assembleRelease </span><br><span class="line">编译并生成Release包,包含productFlavors下所有定义的产品或渠道包</span><br><span class="line">./gradlew assembleProductARelease </span><br><span class="line">编译并生成Release包,包含pProductA下所有定义的产品或渠道包</span><br><span class="line">./gradlew assembleProductADebug</span><br><span class="line"> 编译并生成Debug包,包含pProductA下所有定义的产品或渠道包</span><br></pre></td></tr></table></figure>
+<h5 id="flavor跟main的文件合并规则"><a href="#flavor跟main的文件合并规则" class="headerlink" title="flavor跟main的文件合并规则"></a>flavor跟main的文件合并规则</h5><p>①java中代码合并，如果有相同的文件是会报错重复错误的，所以main文件夹中，应该存放共有的代码，而flavor文件夹中存放自己所需要的独立的代码。<br>②res中资源的合并，优先级是flavor高于main，即flavor中资源会加入或覆盖main中资源。如果falvor渠道要求指定的icon和appName，则在special中res中替换到默认的icon，在string.xml中改正相应的appName即可。</p>
+<h3 id="需求1-同一份代码，不同资源文件"><a href="#需求1-同一份代码，不同资源文件" class="headerlink" title="需求1.同一份代码，不同资源文件"></a>需求1.同一份代码，不同资源文件</h3><p>在/src中，main同级目录新建对应falvor名称的文件夹。各个falvor文件内目录应与main目录结构完全一致，需要替换的资源文件名字也要相同。如/eyewatch/drawable/bg.png 与 /main/drawable/bg.png。</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/1984280-ad9bae269221a76f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/700" width="300px"></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">defaultConfig &#123;</span><br><span class="line">        applicationId &quot;com.echo.settings&quot;</span><br><span class="line">        minSdkVersion 19</span><br><span class="line">        targetSdkVersion 22</span><br><span class="line">        versionCode 1</span><br><span class="line">        versionName &quot;1.2&quot;</span><br><span class="line">        flavorDimensions &quot;versionCode&quot;</span><br><span class="line">        //执行lint检查，有任何的错误或者警告提示，都会终止构建，我们可以将其关掉。</span><br><span class="line">        lintOptions &#123;</span><br><span class="line">            abortOnError false</span><br><span class="line">            checkReleaseBuilds false</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        buildTypes &#123;</span><br><span class="line">            debug &#123;</span><br><span class="line">                // 显示Log</span><br><span class="line">                buildConfigField &quot;boolean&quot;, &quot;LOG_DEBUG&quot;, &quot;true&quot;</span><br><span class="line"></span><br><span class="line">                versionNameSuffix &quot;-debug&quot;</span><br><span class="line">                minifyEnabled false</span><br><span class="line">                zipAlignEnabled false</span><br><span class="line">                shrinkResources false</span><br><span class="line"></span><br><span class="line">                android.applicationVariants.all &#123; variant -&gt;</span><br><span class="line">                    variant.outputs.all &#123;</span><br><span class="line">                        outputFileName = &quot;Settings_v$&#123;defaultConfig.versionName&#125;_$&#123;releaseTime()&#125;_$&#123;variant.productFlavors[0].name&#125;.apk&quot;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">// 多渠道打包</span><br><span class="line">productFlavors &#123;</span><br><span class="line">    echo &#123;&#125;</span><br><span class="line">    eyewatch &#123;&#125;</span><br><span class="line">    ipremium &#123;&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">productFlavors.all &#123; flavor -&gt;</span><br><span class="line">    flavor.manifestPlaceholders = [APP_CHANNEL_VALUE: name]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="需求2-同一份代码，不同LauncherActivity"><a href="#需求2-同一份代码，不同LauncherActivity" class="headerlink" title="需求2.同一份代码，不同LauncherActivity"></a>需求2.同一份代码，不同LauncherActivity</h3><p><img src="https://upload-images.jianshu.io/upload_images/1984280-5839ca016c135465.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/594" width="300px"></p>
+<p>在/src中main同级目录中创建对应flavor文件夹，复制一份manifest.xml文件。</p>
+<p>将原LauncherActivity下 添加 tools:node=”merge”，Intent-filter中添加 tools:node=”remove”</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">&lt;activity</span><br><span class="line">    android:name=&quot;.app.launcher.Launcher&quot;</span><br><span class="line">    android:launchMode=&quot;singleTask&quot;</span><br><span class="line">    android:exported=&quot;true&quot;</span><br><span class="line">    android:screenOrientation=&quot;landscape&quot;</span><br><span class="line">    tools:node=&quot;merge&quot;</span><br><span class="line">    &gt;</span><br><span class="line">    &lt;intent-filter tools:node=&quot;remove&quot;&gt;</span><br><span class="line">        &lt;action android:name=&quot;android.intent.action.MAIN&quot;/&gt;</span><br><span class="line">        &lt;category android:name=&quot;android.intent.category.LAUNCHER&quot;/&gt;</span><br><span class="line">        &lt;category android:name=&quot;android.intent.category.LEANBACK_LAUNCHER&quot;/&gt;</span><br><span class="line">    &lt;/intent-filter&gt;</span><br><span class="line">&lt;/activity&gt;</span><br></pre></td></tr></table></figure>
+<p>在对应想要启动的Activity下设置<intent-filter>即可。</intent-filter></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&lt;activity</span><br><span class="line">    android:name=&quot;.app.launcher.SimpleLaunch&quot;</span><br><span class="line">    android:exported=&quot;true&quot;</span><br><span class="line">    android:launchMode=&quot;singleTask&quot;</span><br><span class="line">    android:screenOrientation=&quot;landscape&quot;&gt;</span><br><span class="line">     &lt;intent-filter&gt;</span><br><span class="line">         &lt;action android:name=&quot;android.intent.action.MAIN&quot;/&gt;</span><br><span class="line">         &lt;category android:name=&quot;android.intent.category.LAUNCHER&quot;/&gt;</span><br><span class="line">         &lt;category android:name=&quot;android.intent.category.LEANBACK_LAUNCHER&quot;/&gt;</span><br><span class="line">     &lt;/intent-filter&gt;</span><br><span class="line">&lt;/activity&gt;</span><br></pre></td></tr></table></figure>
+<p><img src="https://upload-images.jianshu.io/upload_images/1984280-ac703a7946da5c68.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/700" width="800px"></p>
+<p><img src="https://upload-images.jianshu.io/upload_images/1984280-a7a2ee25305cbfaf.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/700" width="800px"></p>
+<p><a href="https://developer.android.com/guide/topics/manifest/meta-data-element.html" target="_blank" rel="noopener">meta-data</a></p>
+<p><a href="http://google.github.io/android-gradle-dsl/current/com.android.build.gradle.internal.dsl.ProductFlavor.html" target="_blank" rel="noopener">ProductFlavor</a></p>
+<p><a href="http://google.github.io/android-gradle-dsl/current/com.android.build.gradle.api.AndroidSourceSet.html" target="_blank" rel="noopener">AndroidSourceSet</a></p>
+<p><a href="https://developer.android.google.cn/studio/build/manifest-merge.html" target="_blank" rel="noopener">合并多个清单文件</a></p>
+<p><a href="https://zhuanlan.zhihu.com/p/33722674" target="_blank" rel="noopener">使用gradle的productFlavors实现Android项目多渠道打包</a></p>
+<p><a href="https://segmentfault.com/a/1190000009176256" target="_blank" rel="noopener">Android Gradle manifestPlaceholders 占位符详解</a></p>
 
-需要注意的几点： 
+          
+        
+      
+    </div>
+    
+    
+    
 
-Android系统坐标系，X轴正方向为右，Y轴正方向为下（与数学坐标系相反)
+    
 
-所有事件在发送时均需要在Thread中执行，否则会报异常。
+    
 
-模拟输入法种特殊符号时，需要带上shift，同正常 ...
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/03/27/LoopLayout-CustomView/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="tracyliu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="tracyliu">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/03/27/LoopLayout-CustomView/" itemprop="url">LoopLayout_CustomView</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Veröffentlicht am</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-03-27T17:04:30+08:00">
+                2018-03-27
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="自定义View-LoopLayout-继承-LinearLayout"><a href="#自定义View-LoopLayout-继承-LinearLayout" class="headerlink" title="自定义View LoopLayout 继承 LinearLayout"></a>自定义View LoopLayout 继承 LinearLayout</h3><p><img src="/2018/03/27/LoopLayout-CustomView/LoopLayout.gif" alt="LoopLayout"></p>
+<p>######需求：</p>
+<pre><code>选中的Item要有动画效果；Launcher主页上的Item支持循环。点击非选中item后，item来到中间选中位置。
+</code></pre><p>自定义控件一般可以分为两种：继承控件、复合控件。前者是通过继承View或其子类，重写onDraw()方法来绘制View的显示内容。后者通常继承ViewGroup及其子类（LinearLayout、RelativeLayout、FrameLayout等），内部添加其他控件，从而组合成新的复合控件。本次即为复合控件。</p>
+<p>通常来说，我们会定义好一个layout.xml文件，然后在构造器中通过调用inflate(R.layout.my_layout,this,true)加载该xml文件。可以在构造器或onFinishInflate()方法来获取（建议第二种，保证控件已经完全加载好）子控件对象，然后设置属性。</p>
+<p><strong>值得注意的两点：</strong></p>
+<p>1.在构造器中通过调用inflate(R.layout.my_layout,this,true)加载该xml文件。可以在构造器或onFinishInflate()方法来获取（建议第二种，保证控件已经完全加载好）子控件对象；</p>
+<p>2.如果需要从资源文件中加载该自定义控件，则必须重写Constructor(Context context, AttributeSet attrs)此构造方法；</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">public LoopLayout(Context context, AttributeSet attrs) &#123;</span><br><span class="line">super(context, attrs);</span><br><span class="line">mContext = context;</span><br><span class="line">mSelectNames = getResources().getStringArray(R.array.dtv_select);</span><br><span class="line">initViews();</span><br><span class="line">&#125;</span><br><span class="line">//从xml Inflate view</span><br><span class="line">public LoopLayout(Context context) &#123;</span><br><span class="line">super(context);</span><br><span class="line">mContext = context;</span><br><span class="line">mSelectNames = getResources().getStringArray(R.array.dtv_select);</span><br><span class="line">initViews();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>两个构造方法，区别为在代码中创建View的时候用View(Context)，从xml Inflate view的时候重写View(Context,Attributeset)。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">private void initViews() &#123;</span><br><span class="line"></span><br><span class="line">mLooplist = new ArrayList&lt;&gt;();</span><br><span class="line">for (int i = 0; i &lt; mDTVAnim.length; i++) &#123;</span><br><span class="line">LauncherBean bean = new LauncherBean(mDTVAnim[i], mDTVFronts[i], mDTVImages[i], mSelectNames[i]);</span><br><span class="line">mLooplist.add(bean);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">LOOP_NUM = mLooplist.size();</span><br><span class="line"></span><br><span class="line">//attachToRoot必须为true 否则不能添加到root布局</span><br><span class="line">View view = LayoutInflater.from(mContext).inflate(R.layout.loop, this, true);</span><br><span class="line">mTextView01 = (TextView) view.findViewById(R.id.tv_01);</span><br><span class="line">mTextView02 = (TextView) view.findViewById(R.id.tv_02);</span><br><span class="line">mTextView03 = (TextView) view.findViewById(R.id.tv_03);</span><br><span class="line">mTextView04 = (TextView) view.findViewById(R.id.tv_04);</span><br><span class="line">mTextView05 = (TextView) view.findViewById(R.id.tv_05);</span><br><span class="line"></span><br><span class="line">mImageView01 = (ImageView) view.findViewById(R.id.iv_01);</span><br><span class="line">mImageView02 = (ImageView) view.findViewById(R.id.iv_02);</span><br><span class="line">mImageView03 = (ImageView) view.findViewById(R.id.iv_03);</span><br><span class="line">mImageView04 = (ImageView) view.findViewById(R.id.iv_04);</span><br><span class="line">mImageView05 = (ImageView) view.findViewById(R.id.iv_05);</span><br><span class="line"></span><br><span class="line">iv_left_arrow = view.findViewById(R.id.iv_left_arrow);</span><br><span class="line">iv_right_arrow = view.findViewById(R.id.iv_right_arrow);</span><br><span class="line"></span><br><span class="line">mImageView01.setOnClickListener(this);</span><br><span class="line">mImageView02.setOnClickListener(this);</span><br><span class="line">mImageView04.setOnClickListener(this);</span><br><span class="line">mImageView05.setOnClickListener(this);</span><br><span class="line"></span><br><span class="line">iv_left_arrow.setOnClickListener(this);</span><br><span class="line">iv_right_arrow.setOnClickListener(this);</span><br><span class="line"></span><br><span class="line">setViews(0, true);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>有焦点的时候播放动画</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">@Override</span><br><span class="line">protected void onFocusChanged(boolean gainFocus, int direction, Rect previouslyFocusedRect) &#123;</span><br><span class="line">super.onFocusChanged(gainFocus, direction, previouslyFocusedRect);</span><br><span class="line"></span><br><span class="line">if (gainFocus) &#123;</span><br><span class="line">setViews(mPosition, true);</span><br><span class="line">AnimationDrawable animationDrawable = (AnimationDrawable) mImageView03.getBackground();</span><br><span class="line">animationDrawable.run();</span><br><span class="line">&#125; else &#123;</span><br><span class="line">setViews(mPosition, false);</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>支持遥控器操作</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">@Override</span><br><span class="line">public boolean onKeyDown(int keyCode, KeyEvent event) &#123;</span><br><span class="line"></span><br><span class="line">if (event.getAction() == KeyEvent.ACTION_DOWN &amp;&amp; keyCode == KeyEvent.KEYCODE_DPAD_RIGHT) &#123;</span><br><span class="line">mPosition++;</span><br><span class="line">&#125; else if (event.getAction() == KeyEvent.ACTION_DOWN &amp;&amp; keyCode == KeyEvent.KEYCODE_DPAD_LEFT)&#123;</span><br><span class="line">mPosition--;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">int positon = syncPosition(mPosition);</span><br><span class="line">setViews(positon, true);</span><br><span class="line"></span><br><span class="line">if (mSelectListener != null) &#123;</span><br><span class="line">int index = syncPosition(mPosition + 2);</span><br><span class="line">mSelectListener.onItemselect(index);</span><br><span class="line">&#125;</span><br><span class="line">return super.onKeyDown(keyCode, event);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>同步index位置</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">private int syncPosition(int index) &#123;</span><br><span class="line"></span><br><span class="line">if (index &lt; 0) &#123;</span><br><span class="line">index = LOOP_NUM - 1;</span><br><span class="line">&#125; else if (index &gt; LOOP_NUM - 1) &#123;</span><br><span class="line">index = index % LOOP_NUM;</span><br><span class="line">&#125;</span><br><span class="line">return index;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>支持点击</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">@Override</span><br><span class="line">public void onClick(View v) &#123;</span><br><span class="line"></span><br><span class="line">switch (v.getId()) &#123;</span><br><span class="line">case R.id.iv_01:</span><br><span class="line">mPosition = mPosition - 2;</span><br><span class="line">break;</span><br><span class="line">case R.id.iv_02:</span><br><span class="line">mPosition = mPosition - 1;</span><br><span class="line">break;</span><br><span class="line">case R.id.iv_04:</span><br><span class="line">mPosition = mPosition + 1;</span><br><span class="line">break;</span><br><span class="line">case R.id.iv_05:</span><br><span class="line">mPosition = mPosition + 2;</span><br><span class="line">break;</span><br><span class="line">case R.id.iv_left_arrow:</span><br><span class="line">mPosition--;</span><br><span class="line">break;</span><br><span class="line">case R.id.iv_right_arrow:</span><br><span class="line">mPosition++;</span><br><span class="line">break;</span><br><span class="line">default:</span><br><span class="line">break;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">int position = syncPosition(mPosition);</span><br><span class="line">setViews(position, true);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/02/07/basic-concept-of-audio-and-video/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="tracyliu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="tracyliu">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/02/07/basic-concept-of-audio-and-video/" itemprop="url">视音频技术基础概念</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Veröffentlicht am</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-02-07T18:36:12+08:00">
+                2018-02-07
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>视音频技术主要包含：封装技术，视频压缩编码技术，音频压缩编码技术，如果考虑到网络传输还包括流媒体协议技术。</p>
+<h3 id="视频播放器原理"><a href="#视频播放器原理" class="headerlink" title="视频播放器原理"></a>视频播放器原理</h3><blockquote>
+<p>以播放网络视频为例，需要经过解协议 —解封装—解码视音频—视音频同步（如果播放本地文件则不需要解协议）</p>
+</blockquote>
+<p><img src="http://upload-images.jianshu.io/upload_images/1984280-da9c8325475f62b2?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="视频播放流程"></p>
+<hr>
+<h3 id="视频编码"><a href="#视频编码" class="headerlink" title="视频编码"></a>视频编码</h3><p>视频压缩编码标准：</p>
+<blockquote>
+<p>视频编码的主要作用是将视频像素数据（RGB，YUV等）压缩成为视频码流，从而降低视频的数据量。比如MPEG，H.264。</p>
+</blockquote>
+<p>主要视频编码一览（图片有些过时）</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/1984280-f44b24ccdb538a26?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="主要视频编码一览"></p>
+<p>MPEG：</p>
+<blockquote>
+<p>采用帧间压缩，仅存储连续帧之间有差别的地方。从而从而达到较大压缩比。</p>
+</blockquote>
+<p>H.264/AVC:</p>
+<blockquote>
+<p>采用事先预测和与MPEG中的P-B帧一样的帧预测方法压缩。它可以根据需要产生适合网络情况传输的视频流，还有更高的压缩比，有更好的图像质量；</p>
+</blockquote>
+<p>两者区别：</p>
+<blockquote>
+<p>1.如果从单个画面清晰度比较，MPEG4有优势；从动作连贯性上的清晰度，H.264有优势。<br>2.H264算法更加复杂，运行它需要更多的处理器和内存资源，因此对系统要求较高。<br>3.H264更加灵活，它把一些实现留给了厂商自己去实现。但不同产品之间沟通便成了很大问题（例如通过A公司的编码器，也必须通过A公司的解码器解码）。</p>
+</blockquote>
+<p>H265/HEVC：</p>
+<blockquote>
+<p>基于H.264基础上，对相关技术加以改进，以改善码流、编码质量、延时和算法复杂度之间的关系，达到最优化设置。H.265是一种更为高效的编码标准，能够在同等画质效果下将内容的体积压缩得更小，传输时更快更省带宽。</p>
+</blockquote>
+<p>I帧：</p>
+<blockquote>
+<p>关键帧 保留一副完整的画面，解码时只需要本帧数据就可以完成（因为包含完整画面）</p>
+</blockquote>
+<p>P帧：</p>
+<blockquote>
+<p>差别帧 保留这一帧跟之前帧的差别，解码时需要用之前缓存的画面叠加本帧定义的差别，生成最终画面。（P帧没有完整画面数据，只有与前一帧的画面差别的数据）</p>
+</blockquote>
+<p>B帧：</p>
+<blockquote>
+<p>双向差别帧 保留的是本帧与前后帧的差别，解码B帧，不仅要取得之前的缓存画面，还要解码之后的画面，通过前后画面与本帧数据的叠加取得最终的画面。B帧压缩率高，但解码时CPU会比较累。</p>
+</blockquote>
+<p>帧内压缩：</p>
+<blockquote>
+<p>intraframe,当压缩一帧图像时，仅考虑本帧的数据而不考虑相邻帧之间的冗余信息，帧内一般采用有损压缩算法。</p>
+</blockquote>
+<p>帧间压缩：</p>
+<blockquote>
+<p>interframe，时间压缩（Temporal compression）,它通过比较时间轴上不同帧之间的数据进行压缩。帧间压缩一般是无损的。</p>
+</blockquote>
+<p>muxing（合成）：</p>
+<blockquote>
+<p>将视频流、音频流甚至是字幕流封装到一个文件中（容器格式（FLV，TS））。作为一个信号传输。</p>
+</blockquote>
+<p>码率控制：</p>
+<blockquote>
+<p>多码率：根据当前网络环境自定义码率：</p>
+</blockquote>
+<hr>
+<h3 id="音频编码技术"><a href="#音频编码技术" class="headerlink" title="音频编码技术"></a>音频编码技术</h3><blockquote>
+<p>音频编码的主要作用是将音频采样数据（PCM等）压缩成为音频码流，从而降低音频的数据量。</p>
+</blockquote>
+<p><img src="http://upload-images.jianshu.io/upload_images/1984280-423857a77b67353b?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="主要音频编码技术"></p>
+<hr>
+<h3 id="视频封装格式"><a href="#视频封装格式" class="headerlink" title="视频封装格式"></a>视频封装格式</h3><blockquote>
+<p>TS:一种流媒体封装格式，流媒体封装的好处是不需要加载索引再播放，大大减少了首次载入的延迟，如果片子较长，MP4文件的索引相当大，影响用户体验。</p>
+</blockquote>
+<p>主要封装格式一览<br><img src="http://upload-images.jianshu.io/upload_images/1984280-71289461af7ce8c1?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="主要封装格式一览"></p>
+<p>为什么要用TS：</p>
+<blockquote>
+<p>这是因为两个TS片段可以无缝拼接，播放器能够连续播放。</p>
+<p>FLV:一种流媒体封装格式，由于它形成的文件极小、加载速度极快，使得网络观看视频文件成为可能，因此FLV成为了当今主流视频格式。</p>
+</blockquote>
+<h3 id="流媒体协议"><a href="#流媒体协议" class="headerlink" title="流媒体协议"></a>流媒体协议</h3><p>RTMP：</p>
+<blockquote>
+<p>实时消息传输协议，RTMP协议用于对象、视频、音频的传输，这个协议建立在TCP协议或者轮询HTTP协议之上。<br>RTMP协议就像一个用来装数据包的容器，这些数据可以是FLV中的视音频数据。一个单个的链接可以通过不同的通道传输多路网络流，这些通道中的包都是按照固定大小传输的。</p>
+</blockquote>
+<p>HLS：<br><a href="https://tracyliu1.github.io/2018/01/30/HLS-protocol-basic-knowledge/" target="_blank" rel="noopener">HTTP Live Streaming (HLS) 协议科普扫盲</a></p>
+<p>主要流媒体协议一览</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/1984280-2b5a0ab59f2d2e6c?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="这里写图片描述"></p>
+<hr>
+<h3 id="流媒体服务器"><a href="#流媒体服务器" class="headerlink" title="流媒体服务器"></a>流媒体服务器</h3><p>常用服务器：</p>
+<blockquote>
+<p>SRS:国人开发的优秀开源流媒体服务器系统<br>BMS:SRS的的商业版<br>Nginx:免费开源web服务器，常用来配置流媒体服务器。</p>
+</blockquote>
+<p>数据分发：</p>
+<blockquote>
+<p>CDN:内容分发网络，将网站的内容发布到最接近用户的网络“边缘”，使用户可以就近取得所需的内容，解决internet网络拥挤的状况，提高用户访问网站的响应速度。作用相当于中介。</p>
+</blockquote>
+<p>CDN工作原理：</p>
+<blockquote>
+<p>以请求流媒体数据为例</p>
+<ol>
+<li>上传流媒体到源服务器</li>
+<li>源服务器储存流媒体数据</li>
+<li>客户端播放流媒体，向CDN请求编码后的流媒体数据</li>
+<li>CDN响应请求，若节点上没有该流媒体数据存在，则向源服务器继续请求流媒体数据；若节点上已经缓存了该视频文件，则跳到第6步。</li>
+<li>源服务器响应CDN的请求，将流媒体分发到相应的CDN节点上。</li>
+<li>CDN将流媒体发送到客户端。</li>
+</ol>
+</blockquote>
+<p>带宽：</p>
+<blockquote>
+<p>在固定的时间可传输的数据总量，比如64位、800MHz的前端总线，它的数据传输率就等64bit×800MHz÷8(Byte)=6.4GB/s</p>
+</blockquote>
+<p>回源：</p>
+<blockquote>
+<p>当有用户访问某一个URL的时候，如果被解析到的那个CDN节点没有缓存相应的内容，或者是缓存已经到期，就会到源服务器获取搜索，如果没有人访问，那么CDN节点不会主动去源站拿。</p>
+</blockquote>
+<p>负载均衡：</p>
+<blockquote>
+<p>由多台服务器以对称的方式组成一个服务器集合，每台服务器都具有等价的地位，都可以单独对外提供服务而无需其他服务器的辅助，通过某种负载分担技术，将外部发送来的请求均匀分配到对称结构中的某一台服务器上，而接收到请求的服务器独立的地回应客户的请求。<br>均衡负载能够平均分配客户请求到服务器列阵，籍此提供快速获取重要数据，解决大量并发访问服务问题。<br>这种集群技术可以用最少的投资获得接近于大型主机的性能。</p>
+</blockquote>
+<p>Qos（带宽管理）：</p>
+<blockquote>
+<p>限制每一个组群的带宽，让有限的带宽发挥最大的效用。</p>
+</blockquote>
+<hr>
+<p><a href="http://blog.csdn.net/leixiaohua1020/article/details/18893769" target="_blank" rel="noopener">[总结]视音频编解码技术零基础学习方法</a><br><a href="https://mp.weixin.qq.com/s?__biz=MzI2OTQxMTM4OQ==&amp;mid=2247484573&amp;idx=1&amp;sn=ae7dbf3d349664f0914a6b1ca7478e15&amp;chksm=eae1f1cfdd9678d9f13dd3220676131a09748cea9ea7fbf7c83c14cc4add0de60edc91a38fa2#rd" target="_blank" rel="noopener">开发直播app中要了解的原理</a></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/01/30/Instrumentation-click-drag-keycode-foucs-loss/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="tracyliu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="tracyliu">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/01/30/Instrumentation-click-drag-keycode-foucs-loss/" itemprop="url">Android Instrumentation 模拟点击、拖拽、发送keycode、焦点异常丢失。</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Veröffentlicht am</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-01-30T18:56:45+08:00">
+                2018-01-30
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <blockquote>
+<p>Instrumentation模拟点击，拖拽，向系统发送keycode。</p>
+</blockquote>
+<p>需要注意的几点： </p>
+<ol>
+<li><p>Android系统坐标系，X轴正方向为右，Y轴正方向为下（与数学坐标系相反)</p>
+</li>
+<li><p>所有事件在发送时均需要在Thread中执行，否则会报异常。</p>
+</li>
+<li><p>模拟输入法种特殊符号时，需要带上shift，同正常键盘操作。</p>
+</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">public void simulateClick() &#123;</span><br><span class="line"></span><br><span class="line">        final float clickX = mPositionX + mHalfScreenWidth;</span><br><span class="line">        final float clickY = mPositionY + mHalfScreenHeight;</span><br><span class="line"></span><br><span class="line">        long downTime = SystemClock.uptimeMillis();</span><br><span class="line">        inst.sendPointerSync(MotionEvent.obtain(downTime, downTime + 100, MotionEvent.ACTION_DOWN, clickX, clickY, 0));</span><br><span class="line">        inst.sendPointerSync(MotionEvent.obtain(downTime, downTime + 100, MotionEvent.ACTION_UP, clickX, clickY, 0));</span><br><span class="line"></span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">public void simulateTouch(int event, float x, float y) &#123;</span><br><span class="line"></span><br><span class="line">       mPositionX += x;</span><br><span class="line">       mPositionY += y;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">       if (mPositionX &gt; mHalfScreenWidth) &#123;</span><br><span class="line">           mPositionX = mHalfScreenWidth;</span><br><span class="line">       &#125; else if (mPositionX &lt; (-mHalfScreenWidth)) &#123;</span><br><span class="line">           mPositionX = -mHalfScreenWidth;</span><br><span class="line">       &#125;</span><br><span class="line"></span><br><span class="line">       if (mPositionY &gt; mHalfScreenHeight) &#123;</span><br><span class="line">           mPositionY = mHalfScreenHeight;</span><br><span class="line">       &#125; else if (mPositionY &lt; (-mHalfScreenHeight)) &#123;</span><br><span class="line">           mPositionY = -mHalfScreenHeight;</span><br><span class="line">       &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">       float moveX = mPositionX + mHalfScreenWidth;</span><br><span class="line">       float moveY = mPositionY + mHalfScreenHeight;</span><br><span class="line"></span><br><span class="line">       long downTime = SystemClock.uptimeMillis();</span><br><span class="line">       MotionEvent motionEvent = MotionEvent.obtain(downTime, downTime + 100, event, moveX, moveY, 0);</span><br><span class="line"></span><br><span class="line">       try &#123;</span><br><span class="line">           inst.sendPointerSync(motionEvent);</span><br><span class="line">       &#125; catch (Exception e) &#123;</span><br><span class="line">           e.printStackTrace();</span><br><span class="line">           Log.e(TAG, &quot;Exception = &quot; + e);</span><br><span class="line">       &#125;</span><br><span class="line"></span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">private static boolean simulateKeystroke(int KeyCode) &#123;</span><br><span class="line"></span><br><span class="line">        try &#123;</span><br><span class="line">            Instrumentation inst = new Instrumentation();</span><br><span class="line"></span><br><span class="line">            if (shift) &#123;</span><br><span class="line">                inst.sendKeySync(new KeyEvent(0, 0, KeyEvent.ACTION_DOWN, KeyCode, 0, KeyEvent.META_SHIFT_ON));</span><br><span class="line">                inst.sendKeySync(new KeyEvent(0, 0, KeyEvent.ACTION_UP, KeyCode, 0, KeyEvent.META_SHIFT_ON));</span><br><span class="line">                //  shift = false;</span><br><span class="line">            &#125; else &#123;</span><br><span class="line">                inst.sendKeyDownUpSync(KeyCode);</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            return true;</span><br><span class="line">        &#125; catch (Exception e) &#123;</span><br><span class="line">            // TODO: handle exception</span><br><span class="line">            return false;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>Android 设备启动后，会默认为Touch模式。如果你做过Android TV开发，发现开机后launcher的焦点丢失，或者有异常情况。请参考如下代码。</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Instrumentation instrumentation = new Instrumentation();</span><br><span class="line">     instrumentation.setInTouchMode(false);</span><br></pre></td></tr></table></figure>
+<p><a href="http://aspook.com/2017/02/10/Android-Instrumentation%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90%EF%BC%88%E9%99%84Activity%E5%90%AF%E5%8A%A8%E6%B5%81%E7%A8%8B%EF%BC%89/" target="_blank" rel="noopener">Android Instrumentation源码分析（附Activity启动流程）</a></p>
+<p><a href="https://testerhome.com/topics/6592%20%E7%A7%BB%E5%8A%A8%E6%B5%8B%E8%AF%95%E5%9F%BA%E7%A1%80%20Android%20Instrumentation%20%E6%A1%86%E6%9E%B6%E7%AE%80%E5%8D%95%E8%AF%B4%E6%98%8E" target="_blank" rel="noopener">移动测试基础 Android Instrumentation 框架简单说明</a> </p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/01/30/HLS-protocol-basic-knowledge/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="tracyliu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="tracyliu">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/01/30/HLS-protocol-basic-knowledge/" itemprop="url">HTTP Live Streaming (HLS) 协议科普扫盲</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Veröffentlicht am</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-01-30T18:43:06+08:00">
+                2018-01-30
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="HTTP-Live-Streaming"><a href="#HTTP-Live-Streaming" class="headerlink" title="HTTP Live Streaming:"></a>HTTP Live Streaming:</h3><p> HLS是一个由苹果公司提出的基于HTTP的<a href="https://zh.wikipedia.org/wiki/%E6%B5%81%E5%AA%92%E4%BD%93" target="_blank" rel="noopener">流媒体</a><a href="https://zh.wikipedia.org/wiki/%E7%BD%91%E7%BB%9C%E4%BC%A0%E8%BE%93%E5%8D%8F%E8%AE%AE" target="_blank" rel="noopener">网络传输协议</a>，可以实现流媒体的直播（live）和点播(vod)。</p>
+<h5 id="HLS协议规定："><a href="#HLS协议规定：" class="headerlink" title="HLS协议规定："></a>HLS协议规定：</h5><blockquote>
+<p>HLS协议由HTTP+M3U8+TS三部分组成，其中，HTTP是传输协议，M3U8是索引文件，TS是视音频的媒体信息。<br>视频的编码格式为H264,音频编码格式为MP3、AAC或者AC-3。</p>
+</blockquote>
+<h3 id="工作原理："><a href="#工作原理：" class="headerlink" title="工作原理："></a>工作原理：</h3><blockquote>
+<p>把整个ts流分成一个个ts小文件供播放器按顺序下载播放。<br>在开始一个流媒体会话时，客户端会下载一个包含元数据的<a href="https://zh.wikipedia.org/w/index.php?title=Extended_M3U&amp;action=edit&amp;redlink=1" target="_blank" rel="noopener">extended M3U (m3u8)</a> <a href="https://zh.wikipedia.org/w/index.php?title=Playlist&amp;action=edit&amp;redlink=1" target="_blank" rel="noopener">playlist</a>文件，用于寻找可用的媒体流。<br><img src="http://upload-images.jianshu.io/upload_images/1984280-88f6ae5b4c00ae61?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="HLS 的请求流程"></p>
+</blockquote>
+<pre><code>1 http 请求 m3u8 的 url。
+2 服务端返回一个 m3u8 的播放列表，这个播放列表是实时更新的，一般一次给出5段数据的 url。
+3 客户端解析 m3u8 的播放列表，再按序请求每一段的 url，获取 ts 数据流。
+</code></pre><p><img src="http://upload-images.jianshu.io/upload_images/1984280-393db5a721a3fc7c.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png"></p>
+<p><img src="http://upload-images.jianshu.io/upload_images/1984280-ccb165b40606d30b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png"></p>
+<p>Media encoder将视频源中的视频数据转码到目标编码格式（H264）的视频数据，之后，在stream segmenter模块将视频切片。切片的结果就是index file（m3u8）和ts文件。</p>
+<p>####HLS的index文件（m3u8文件）<br><img src="http://upload-images.jianshu.io/upload_images/1984280-1a9607caa7d72134.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png"></p>
+<p><img src="http://upload-images.jianshu.io/upload_images/1984280-13edbf6aa98dd7a1.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="湖北卫视样例"></p>
+<p>播放模式</p>
+<blockquote>
+<p>点播VOD的特点就是当前时间点可以获取到所有index文件和ts文件，二级index文件中记录了所有ts文件的地址。这种模式允许客户端访问全部内容。<br>Live 模式就是实时生成M3u8和ts文件。它的索引文件一直处于动态变化的，播放的时候需要不断下载二级index文件，以获得最新生成的ts文件播放视频。如果一个二级index文件的末尾没有#EXT-X-ENDLIST标志，说明它是一个Live视频流。<br>m3u8的Tag，太多了，这里就不一一说明。<br>播放器拿到该m3u8列表之后，会请求一片ts后，间隔一段时间请求下一片ts。 这个间隔的时间的长短，一般是根据m3u8中的 #EXT-X-TARGETDURATION</p>
+</blockquote>
+<h3 id="优势："><a href="#优势：" class="headerlink" title="优势："></a>优势：</h3><h5 id="1-码率自适应（Adaptive-Streaming）"><a href="#1-码率自适应（Adaptive-Streaming）" class="headerlink" title="1.码率自适应（Adaptive Streaming）"></a>1.码率自适应（Adaptive Streaming）</h5><blockquote>
+<p>当媒体流正在播放时，客户端可以选择从许多不同的备用源中以不同的速率下载同样的资源，允许流媒体会话适应不同的数据速率。客户端可以很快的选择和切换码率，以适应不同带宽条件下的播放。</p>
+</blockquote>
+<h5 id="2-基于HTTP-穿墙-性能高"><a href="#2-基于HTTP-穿墙-性能高" class="headerlink" title="2.基于HTTP(穿墙/性能高)"></a>2.基于HTTP(穿墙/性能高)</h5><blockquote>
+<p>HLS采取HTTP协议传输文件，所以可以穿过任何允许HTTP数据通过的防火墙或者代理服务器。相比之下，因为RTMP协议不使用标准的HTTP接口传输数据，所以在一些特殊的网络环境下可能被防火墙屏蔽掉。</p>
+</blockquote>
+<h5 id="3-跨平台性："><a href="#3-跨平台性：" class="headerlink" title="3.跨平台性："></a>3.跨平台性：</h5><blockquote>
+<p>支持PC/Android/IOS平台，并在移动端趋势明显。（PC主要的直播方案是RTMP）</p>
+</blockquote>
+<h5 id="4-充分利用CDN（负载均衡）："><a href="#4-充分利用CDN（负载均衡）：" class="headerlink" title="4.充分利用CDN（负载均衡）："></a>4.充分利用CDN（负载均衡）：</h5><blockquote>
+<p>CDN即Content Delivery Network （内容分发网络）。CDN包含两大核心技术：负载均衡和分发网络<br>于负载，RTMP是一种有状态协议，很难对视频服务器进行平滑扩展，因为需要为每一个播放视频流的客户端维护状态。而HLS基于无状态协议（HTTP），客户端只是按照顺序使用下载存储在服务器的普通TS文件，做负责均衡如同普通的HTTP文件服务器的负载均衡一样简单。</p>
+</blockquote>
+<h3 id="劣势："><a href="#劣势：" class="headerlink" title="劣势："></a>劣势：</h3><h5 id="1-实时性差："><a href="#1-实时性差：" class="headerlink" title="1.实时性差："></a>1.实时性差：</h5><blockquote>
+<p>基本上HLS的延迟在10秒以上,而RTMP协议的延迟最低可以到3、4秒左右。</p>
+<h5 id="2-文件碎片："><a href="#2-文件碎片：" class="headerlink" title="2.文件碎片："></a>2.文件碎片：</h5><p>若分发HLS，码流低，切片较小时，小文件分发不是很友好。特别是一些对存储比较敏感的情况，譬如源站的存储，嵌入式的SD卡。</p>
+</blockquote>
+<h4 id="HLS延时分析"><a href="#HLS延时分析" class="headerlink" title="HLS延时分析"></a>HLS延时分析</h4><blockquote>
+<p>HLS理论上延时=1个切片的时长+ 0-1个td + 0-n个启动切片 +网络连接耗时。</p>
+</blockquote>
+<p>td是EXT-X-TARGETDURATION，可简单理解为播放器取片的间隔时间<br>n:苹果官方建议是请求到3个片之后才开始播放</p>
+<p>假设列表里面的包含5个 ts 文件，每个 TS 文件包含5秒的视频内容，那么整体的延迟就是25秒。苹果官方推荐的ts时长时10s，所以这样就会大改有30s（n x 10）的延迟。</p>
+<p>为了追求低延时效果，我们可以将切片切的更小，取片间隔做的更小，播放器未取到3个片就启动播放。极致来说可以缩减列表长度为1，并且 ts 的时长为1s，但是这样会造成请求次数增加，增大服务器压力，当网速慢时回造成更多的缓冲，增加HLS不稳定和出现错误的风险。</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/1984280-809ff2b6e0af4615.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="HLS 和 DASH 的区别"></p>
+<p><img src="http://upload-images.jianshu.io/upload_images/1984280-7c790054216c2f35.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="hls 和 rtmp 对比"></p>
+<p>参考：<br><a href="http://www.jianshu.com/p/426425cad08a" target="_blank" rel="noopener">HLS协议介绍</a><br><a href="http://www.jianshu.com/p/2ce402a485ca" target="_blank" rel="noopener">HTTP Live Streaming (HLS) - 概念</a><br><a href="http://befo.io/4447.html#respond" target="_blank" rel="noopener">0</a><a href="http://befo.io/4447.html" target="_blank" rel="noopener">流媒体｜从入门到出家：流媒体协议—HLS</a><br><a href="http://mp.weixin.qq.com/s?__biz=MzA3NTYzODYzMg==&amp;mid=2653577297&amp;idx=1&amp;sn=a292ff3b499168f4eb589e40b7aa6d13&amp;mpshare=1&amp;scene=1&amp;srcid=0707bH9Td4NNpLVkkZlcTfHC#rd" target="_blank" rel="noopener">HTML 5 视频直播一站式扫盲</a></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/01/29/Activity-LifeCycle-and-Launch-Mode/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="tracyliu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="tracyliu">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/01/29/Activity-LifeCycle-and-Launch-Mode/" itemprop="url">艺术探索—一、Activity的生命周期全面分析</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Veröffentlicht am</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-01-29T16:04:26+08:00">
+                2018-01-29
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="1-1-1典型情况下生命周期"><a href="#1-1-1典型情况下生命周期" class="headerlink" title="1.1.1典型情况下生命周期"></a>1.1.1典型情况下生命周期</h3><p>典型情况下生命周期是指有用户参与的情况下，Activity所经过的生命周期的改变。</p>
+<h5 id="onCreate"><a href="#onCreate" class="headerlink" title="onCreate()"></a>onCreate()</h5><blockquote>
+<p>表示Activity正在创建，生命周期的第一个方法。</p>
+</blockquote>
+<h5 id="onRestart"><a href="#onRestart" class="headerlink" title="onRestart()"></a>onRestart()</h5><blockquote>
+<p>表示Activity正在重新启动。一般情况下，当当前Activity，从不可见重新变为可见状态时，<br>该方法就会被调用。一般是用户行为所导致，比如用户按Home键切换到桌面或用户打开一个新的<br>Activity，紧接着又回到这个Activity。 onPause() —onStop()—onRestart()</p>
+</blockquote>
+<h5 id="onStart"><a href="#onStart" class="headerlink" title="onStart()"></a>onStart()</h5><blockquote>
+<p>表示Activity正在被启动，即将开始。这是Activity已经可见，但还没有出现在前台，还无法与用户交互。（已经显示但开不到）</p>
+</blockquote>
+<h5 id="onResume"><a href="#onResume" class="headerlink" title="onResume()"></a>onResume()</h5><blockquote>
+<p>表示Activity已经可见了，并出现在前台并开始活动。注意！onResume和onStart都表示Activity已经可见。不同之处，onStart时Activity还在后台，而在onResume时Activity才显示到前台。</p>
+</blockquote>
+<h5 id="onPause"><a href="#onPause" class="headerlink" title="onPause()"></a>onPause()</h5><blockquote>
+<p>表示Activity正在停止，正常情况下onStop()紧接着就会被调用。在极端情况下，如果快速回到当前Activity，那么onResume()会被调用。onPause()必须执行完，新Activity的onResume()才会执行。不能进行耗时操作。</p>
+</blockquote>
+<h5 id="onStop"><a href="#onStop" class="headerlink" title="onStop()"></a>onStop()</h5><blockquote>
+<p>表示即将停止，不能进行耗时操作。</p>
+</blockquote>
+<h5 id="onDestory"><a href="#onDestory" class="headerlink" title="onDestory()"></a>onDestory()</h5><blockquote>
+<p>表示Activity即将销毁，生命周期最后一个回调。可以进行资源回收和释放。</p>
+</blockquote>
+<ol>
+<li>针对一个特定的Activity，第一次启动，回调如下：onCreate - onStart - onResume。</li>
+<li>当用户打开新的Activity或者切换到桌面的时候，回调如下：onPause - onStop。特殊情况，当新的Activity采用透明主题，那么当前Activity则不会回调onStop。</li>
+<li>当用户再次回到原Activity时，回调如下：onRestart - onStart - onResume。</li>
+<li>当用户按back键回退时，回调如下：onPause - onStop - onDestroy。</li>
+<li>当Activity被系统回收，再次打开时，生命周期的回调和1相同。</li>
+<li>从生命周期来说，onCreate和onDestroy是配对的，分别标识Activity的重建和销毁。并且只有一次调用。从Activity是否可见来说，onStart和onStop是配对的，可能被调用多次；从Activity是否在前台来说，onResume和onPause是配对的，可能被调用多次。</li>
+</ol>
+<h5 id="Activity启动流程"><a href="#Activity启动流程" class="headerlink" title="Activity启动流程"></a>Activity启动流程</h5><blockquote>
+<p>启动Activity的请求会由Instrumentation来处理，然后它通过Binder向AMS发请求，AMS内部维护着一个ActivityStack并负责栈内的Activity的状态同步，AMS通过ActivityThread去同步Activity的状态，从而完成生命周期方法的调用。</p>
+</blockquote>
+<p>在ActivityStack中的resumeTopActivityInnerLocked方法中有如下代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">//we need to start pausing the current activity so the top one can be resumed</span><br><span class="line">    boolean dontWaitForPause = (next.info.flags&amp; ActivityInfo.FLAG_RESUME_WHILE_PAUSING)!=0;</span><br><span class="line">    boolean pausing = mStackSupervisor.pauseBackStacks(userLeaving, KeyStore.TrustedCertificateEntry,dontWaitForPause);</span><br><span class="line">    if(mResumedActivity != null)&#123;</span><br><span class="line">        pausing != startPaUSINGlOCAKED(userLeaving,false,true,dontWaitForPause);</span><br><span class="line">        if(DEBUG_STATES)&#123;</span><br><span class="line">            Slog.d(TAG,&quot;resumeTopActivityLocked:pausing&quot; + mResumedActivity);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<h3 id="1-1-2-异常情况下的生命周期"><a href="#1-1-2-异常情况下的生命周期" class="headerlink" title="1.1.2 异常情况下的生命周期"></a>1.1.2 异常情况下的生命周期</h3><p>异常情况下生命周期是指Activity被系统回收或由于当前设备的configuration发生改变从而导致Activity被销毁重建。</p>
+<h5 id="情况一：资源相关的系统配置发生改变导致Activity被杀死并重新创建"><a href="#情况一：资源相关的系统配置发生改变导致Activity被杀死并重新创建" class="headerlink" title="情况一：资源相关的系统配置发生改变导致Activity被杀死并重新创建"></a>情况一：资源相关的系统配置发生改变导致Activity被杀死并重新创建</h5><blockquote>
+<p>默认情况下，当系统配置发生改变后，Acitivity就会被销毁并重新创建。</p>
+</blockquote>
+<p><img src="http://upload-images.jianshu.io/upload_images/1984280-c8363e785f5f5ac8.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="异常情况下Activity的重建过程.png"></p>
+<p>当Activity在异常情况下终止时，系统会调用<strong>onSaveInstanceState</strong>来保存当前Activity的状态。这个方法的调用时机是在onStop()之前，而与onPause()则没有既定的时序关系，可能是在onPause之前调用，也可能是在 onPause之后调用。需要强调一点，这个方法只会出现在Acitivity被异常终止的情况下，正常情况下系统不会回调这个方法。当Activity被重新创建后，系统会调用<strong>onRestoreInstanceState</strong>，并且把Activity销毁时onSaveInstanceState方法所保存的Bundle对象作为参数同时传递给onRestoreInstanceState和onCreate方法。因此，我们可以通过onRestoreInstanceState和onCreate方法来判断Activity是否被重建，从时序上来说，<strong>onRestoreInstanceState的调用时机在onStart之后</strong>。</p>
+<p>同时，我们要知道，在onSaveInstanceState和onRestoreInstanceState方法中，系统自动为我们做了一定的恢复工作。当Activity在异常情况下需要重新创建时，系统会默认为我们保存当前Activity的视图结构，并且在Activity重启后为我们恢复这些数据，比如文本框中用户输入的数据，ListView滚动的位置等，这些View相关的状态系统都能够默认为我们恢复。具体针对某一个特定的View系统能够为我们恢复哪些数据，我们可以查看View的源码，和Acitivity一样，每个View都有onSaveInstanceState和onRestoreInstanceState这两个方法，看一下它们的具体实现，就能知道系统能够自动为每个View恢复哪些数据。关于保存和恢复View层次结构，系统的工作流程是这样的：首先Acitivtiy被意外终止时，Activity会调用onSaveInstanceState去保存数据，然后Activity会委托Window去保存数据，接着Window在委托它上面的顶级容器去保存数据。顶层数据是一个ViewGroup，一般来说它很可能是DecorView。最后顶层容器再去一一通知它的子元素来保存数据。这样整个数据保存过程就完成了。可以发现，这是一种很典型的委托思想，上层委托下层，父容器委托子元素去处理一件事情，这种思想在Android中有很多应用，比如View的绘制过程，事件分发都是采用类似的思想。数据恢复过程也是一样。</p>
+<h5 id="举例TextView的恢复过程"><a href="#举例TextView的恢复过程" class="headerlink" title="举例TextView的恢复过程"></a>举例TextView的恢复过程</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line">@Override</span><br><span class="line">public Parcelable onSaveInstanceState() &#123;</span><br><span class="line">    Parcelable superState = super.onSaveInstanceState();</span><br><span class="line"></span><br><span class="line">    // Save state if we are forced to</span><br><span class="line">    final boolean freezesText = getFreezesText();</span><br><span class="line">    boolean hasSelection = false;</span><br><span class="line">    int start = -1;</span><br><span class="line">    int end = -1;</span><br><span class="line"></span><br><span class="line">    if (mText != null) &#123;</span><br><span class="line">        start = getSelectionStart();</span><br><span class="line">        end = getSelectionEnd();</span><br><span class="line">        if (start &gt;= 0 || end &gt;= 0) &#123;</span><br><span class="line">            // Or save state if there is a selection</span><br><span class="line">            hasSelection = true;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    if (freezesText || hasSelection) &#123;</span><br><span class="line">        SavedState ss = new SavedState(superState);</span><br><span class="line"></span><br><span class="line">        if (freezesText) &#123;</span><br><span class="line">            if (mText instanceof Spanned) &#123;</span><br><span class="line">                final Spannable sp = new SpannableStringBuilder(mText);</span><br><span class="line"></span><br><span class="line">                if (mEditor != null) &#123;</span><br><span class="line">                    removeMisspelledSpans(sp);</span><br><span class="line">                    sp.removeSpan(mEditor.mSuggestionRangeSpan);</span><br><span class="line">                &#125;</span><br><span class="line"></span><br><span class="line">                ss.text = sp;</span><br><span class="line">            &#125; else &#123;</span><br><span class="line">                ss.text = mText.toString();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        if (hasSelection) &#123;</span><br><span class="line">            // XXX Should also save the current scroll position!</span><br><span class="line">            ss.selStart = start;</span><br><span class="line">            ss.selEnd = end;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        if (isFocused() &amp;&amp; start &gt;= 0 &amp;&amp; end &gt;= 0) &#123;</span><br><span class="line">            ss.frozenWithFocus = true;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        ss.error = getError();</span><br><span class="line"></span><br><span class="line">        if (mEditor != null) &#123;</span><br><span class="line">            ss.editorState = mEditor.saveInstanceState();</span><br><span class="line">        &#125;</span><br><span class="line">        return ss;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    return superState;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Activity被销毁了以后调用onSaveInstanceState来保存数据，重新创建以后在onCreate和onRestoreInstanceState中都能够正确的回复我们之前存储的字符串。</p>
+<p> 针对onSaveInstanceState方法还有一点需要说明，那就是系统只会在Activity即将被销毁并且有机会重新显示的情况下才会去调用它。当Activity正常被销毁的时候，系统不会调用onSaveInstanceState，因为被销毁的Activity不可能再次被显示。</p>
+<p>系统只在Activity异常终止的时候才会调用onSaveInstanceState 和 onRestoreInstanceState来存储和恢复数据，其他情况不会触发这个过程。</p>
+<h5 id="情况二：资源内存不足导致低优先级的Activity被杀死"><a href="#情况二：资源内存不足导致低优先级的Activity被杀死" class="headerlink" title="情况二：资源内存不足导致低优先级的Activity被杀死"></a>情况二：资源内存不足导致低优先级的Activity被杀死</h5><blockquote>
+<p>Acitivity按照优先级从高到低可以分为如下三种：</p>
+<ol>
+<li>前台Activity—正在和用户交互的Activity，优先级最高。</li>
+<li>可见但非前台Activity—比如从Activity中弹出了一个对话框，导致Activity可见，但位于后台无法和用户直接交互。</li>
+<li>后台Activity—已经被暂停的Activity，比如执行了onStop，优先级最低。</li>
+</ol>
+</blockquote>
+<p>当系统内存不足时，系统就会按照上述优先级去杀死目标Acitivity所在的进程，并在后续通过onSaveInstanceState和onRestoreInstanceState来存储和恢复数据。如果一个进程中没有四大组件在执行，那么这个进程将很快被系统杀死。因此，一些后台工作不适合脱离四大组件而肚子运行在后台中，这样进程很容易被杀死。比较好的方法是将后台工作放在Service中从而保证进程有一定的优先级，这样就不会轻易地被系统杀死。</p>
+<p>上面分析了系统的数据存储和恢复机制，我们知道，当系统配置发生改变后，Activity会被重新创建，那么有没有办法不重新创建呢。答案是有的。</p>
+<p>系统配置中有很多内容，如果当某项内容发生改变后，我们不想系统重新创建Actiivty，可以给Activity指定configChanges属性。</p>
+<h5 id="Activity的configChanges属性"><a href="#Activity的configChanges属性" class="headerlink" title="Activity的configChanges属性"></a>Activity的configChanges属性</h5><table>
+<thead>
+<tr>
+<th>configChanges</th>
+<th>功能</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>mmc：</td>
+<td>SIM卡唯一标识IMSI（国际移动用户识别码）中的国家代码，由三位数字组成，中国为460。此项标识mcc 代码改变</td>
+</tr>
+<tr>
+<td>mnc：</td>
+<td>SIM卡唯一标识IMSI（国际移动用户识别码）中的运营商代码，由两位数字组成，中国移动TD系统为00，中国联通为01，中国电信为03.此项标识mnc发生改变。</td>
+</tr>
+<tr>
+<td>locale：</td>
+<td>设备本地位置发生改变，一般指切换系统语言。</td>
+</tr>
+<tr>
+<td>touchscreen：</td>
+<td>触摸屏发生了改变，正常情况下无法发生，可忽略。</td>
+</tr>
+<tr>
+<td>keyboard：</td>
+<td>键盘类型发生改变，比如用户外接键盘。</td>
+</tr>
+<tr>
+<td>keyboardHidden：</td>
+<td>键盘的可访问性发生了改变，比如用户调出了键盘。</td>
+</tr>
+<tr>
+<td>navigation：</td>
+<td>系统导航方式发生了改变，比如采用了轨迹球导航，很难发生，可忽略。</td>
+</tr>
+<tr>
+<td>screenLayout：</td>
+<td>屏幕布局发生了改变，很可能是用户激活了另外一个显示设备。</td>
+</tr>
+<tr>
+<td>fontScale：</td>
+<td>系统字体缩放比例发生了改变，比如用户选择了一个新的字号。</td>
+</tr>
+<tr>
+<td>uiMode：</td>
+<td>用户界面模式发生了改变，如开启夜间模式。</td>
+</tr>
+<tr>
+<td>orientation：</td>
+<td>屏幕方向发生改变，如旋转屏幕。</td>
+</tr>
+<tr>
+<td>screenSize：</td>
+<td>当屏幕尺寸信息发生了改变，旋转设备屏幕时，屏幕尺寸发生改变。当minSDK &gt; 13时，会导致Activity重启。</td>
+</tr>
+<tr>
+<td>smalllestScreenSize：</td>
+<td>在实际的物理尺寸发生变化时，如用户切换到了外部的显示设备，当minSDK &gt; 13时，会导致Activity重启。</td>
+</tr>
+<tr>
+<td>layoutDirection：</td>
+<td>当布局方向发生变化时，如切换阿拉伯语，默认方向为rtl。</td>
+</tr>
+</tbody>
+</table>
+<p>如果我们没有在Activity的configChanges属性中指定该选项的话，当配置发生改变后就会导致Acitivity重新创建。<br> 我们通常使用只有locale，orientation和keyboardHidden三个选项。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">android:configChanges = &quot;locale|orientation|keyboardHidden&quot;</span><br></pre></td></tr></table></figure>
+<h3 id="1-2-Activity的启动模式"><a href="#1-2-Activity的启动模式" class="headerlink" title="1.2 Activity的启动模式"></a>1.2 Activity的启动模式</h3><h3 id="1-2-1-Activity的LaunchMode"><a href="#1-2-1-Activity的LaunchMode" class="headerlink" title="1.2.1 Activity的LaunchMode"></a>1.2.1 Activity的LaunchMode</h3><p>为什么Activtiy需要启动模式？</p>
+<blockquote>
+<p>在默认情况下，当我们多次启动同一个Activity的时候，系统会创建多个实例并把他们一一放入任务栈中。当我们单击back键，会发现这些Activity会一一回退。任务栈是一种“后进先出”的栈结构。每按一下back键就会有一个Activity出栈，直到栈空为止。当栈中无任何Acitivity的时候，系统就会回收后这个任务栈。为了避免多次启动同一个Activity，系统创建多次同一实例的问题。Android系统在设计中提供了standard、singleTop、singleTask、singleInstance四种启动模式。</p>
+</blockquote>
+<h5 id="standard"><a href="#standard" class="headerlink" title="standard"></a>standard</h5><blockquote>
+<p>系统默认模式，每次启动一个Activity都会重新创建一个新的实例，不管这个实例是否已经存在。被创建的实例的生命周期符合典型情况下Activity的生命周期。这是一种典型的多实例的实现，一个任务栈中可以有多个实例，每个实例也可以属于不同的任务栈。在这种模式下，谁启动了这个Activity，那么这个Activity就运行在启动它的那个Activity所在的栈中。比如Acitivity A 启动了Activtity B（Standard），那么B就会进入到A所在的栈中。</p>
+</blockquote>
+<p>值得注意的是，当我们用ApplicationContext 去启动standard模式的Acitivity时会报错，错误如下：</p>
+<p>这是因为standard模式的Activity默认会进入启动它的Activity所属的任务栈中。但是由于非Activity类型的Context（如ApplicationContext）并没有所谓的任务栈，所以就会出现异常。<br>解决方法是为待启动Activity指定FLAG_ACTIVTIY_NEW_TASK标记位，这样启动的时候就会为被启动的Activity创建一个新的任务栈。这个时候待启动的Activity实际是以singleTask模式启动的。</p>
+<h5 id="singleTop"><a href="#singleTop" class="headerlink" title="singleTop"></a>singleTop</h5><blockquote>
+<p>栈顶复用模式，如果新的Activity已经位于任务栈的栈顶，那么此Activity不会被重新创建。同时它的onNewIntent方法会被回调，通过此方法的参数我们可以取出当前请求的信息。需要注意的是，这个Activity的onCreate、onStart不会被系统调用，因为它并没有发生改变。如果新的Activity的实例已存在但不是位于栈顶，那么新的Activity仍然会重新创建。举个例子，假设目前栈内的情况为ABCD，其中ABCD为四个Activity，A位于栈底，D位于栈顶，这个时候假设要再次启动D，如果D的启动模式为singleTop，那么栈内情况仍为ABCD。如果D的启动模式为standard，那么栈内情况为ABCDD。</p>
+</blockquote>
+<h5 id="singleTask"><a href="#singleTask" class="headerlink" title="singleTask"></a>singleTask</h5><blockquote>
+<p>栈内复用模式，这是一种单实例模式，在这种模式下，只要Activity在一个栈中存在，那么多次启动此Activity都不会重新创建实例。和singleTop一样，系统也会回调其onNewIntent。具体一点，当一个具有singleTask模式的Activity A 请求启动后。系统首先会寻找是否存在A 想要的任务栈，如果不存在，就会重新创建一个任务栈。然后创建A的实例，把A放入栈中。如果存在A所需的任务栈，这时就要看A是否在栈中有实例存在，如果有实例存在，那么系统就会把A调到栈顶并调用它的onNewIntent()方法。如果实例不存在，就创建A的实例并把A压入栈中。</p>
+</blockquote>
+<p>举例说明：<br>​    </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">1.当前任务栈S1中的情况为ABC，这个时候Activity D以singleTask模式请求启动，其所需要的任务栈为S2，由于S2和D实例均不存在，所以系统会先创建任务栈S2，然后再创建D的实例并将其入栈到S2。</span><br><span class="line">2.假设D所需的任务栈为S1，其他情况与例一相同，那么由于S1已经存在，所以系统会直接创建D的实例并将其入栈到S1。</span><br><span class="line">3.如果D所需的任务栈为S1，并且当前任务栈S1的情况为ADBC，根据栈内复用原则，此时D不会重新创建，系统会把D切换到栈顶并调用其onNewIntent方法，同时由于singleTask默认具有clearTop效果，会导致栈内所有在D上面的Activity全部出栈。最终S1中的情况为AD。</span><br></pre></td></tr></table></figure>
+<h5 id="singleInstance"><a href="#singleInstance" class="headerlink" title="singleInstance"></a>singleInstance</h5><blockquote>
+<p>单实例模式。这是一种加强的singleTask模式，它除了具有除了singleTask模式的所有特性之外，还加强一点，那就是具有此种模式的Activity只能单独地位于一个任务栈中。比如Activity A 是singleInstance模式，当A启动后，系统会为它创建一个新的任务栈，然后A独自在这个新的任务栈中，由于栈内复用的特性，后续的请求均不会创建新的Activity，除非这个独特的任务栈被系统销毁了。</p>
+</blockquote>
+<p>上面介绍了几种启动模式，这里需要指出一种情况，我们假设目前有2个任务栈，前台任务栈的情况为AB，后台任务栈为CD。这里假设CD的启动模式均为singleTask。现在请求D，则整个后台任务栈都会被切换到前台，这个时候整个后退列表变成了ABCD，当用户按back键的时候，列表中的Activity会一一出栈。</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/1984280-c09117accaa6e586.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<p>如果不是请求启动D，而是启动C，那么情况就不一样了。</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/1984280-3675efd4e87ed3a6.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<p>另一个问题是，在singleTask启动模式中，多次提到某个Activity所需的任务栈。什么是Activtiy所需的任务栈呢？这要从一个参数说起：TaskAffinity，可以翻译为任务相关性。这个参数标识了一个Activity所需要的任务栈的名字，默认情况下，所有Activity所需的任务栈的名字为应用的包名。当然，我们可以为每个Activity都单独指定TaskAffnity属性，这个属性必须不能和包名相同，否则就相当于没有指定。TaskAffinity属性主要和singleTask启动模式或者allowTaskReparenting属性配对使用，在其他情况下没有意义。另外，任务栈可分为前台任务栈和后台任务栈，后台任务栈中的Activtiy位于暂停状态，用户可以通过切换将后台任务栈再次调到前台。</p>
+<p>当TaskAffinity和allowTaskReparenting结合的时候，这种情况比较复杂，会产生特殊的效果。当一个应用A启动了应用B的某个Activtiy后，如果这个Activity的allowTaskReparenting属性为true的话，那么当应用B被启动后，此Activity会直接从应用A的任务栈移到应用B的任务栈中，这还是很抽象。再具体点，比如现在有2个应用A和B，A启动了B的一个Activity C，然后按Home键回到桌面，然后再单击B的桌面图标。这个时候并不是启动了B的主Activity，而是重新显示了已经被应用A启动的Activity C，或者说C从A的任务栈转移到了B的任务栈中。可以这么理解，由于A启动了C，这个时候C只能运行在A的任务栈中，但C属于B应用，正常情况下，它的TaskAffinity值肯定不可能和A任务栈相同（因为包名不同）。所以，当B被启动后，B会创建自己的任务栈，这个时候系统发现C原本所想要的任务栈已经被创建了，所以就把C从A的任务栈中转移过来了。</p>
+<h5 id="如何指定Activity启动模式？"><a href="#如何指定Activity启动模式？" class="headerlink" title="如何指定Activity启动模式？"></a>如何指定Activity启动模式？</h5><ul>
+<li>第一种是通过AndroidMenifest为Activity指定启动模式。</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;activity</span><br><span class="line">      android:name=&quot;.app.launcher.Launcher&quot;</span><br><span class="line">      android:launchMode=&quot;singleTask&quot;</span><br><span class="line">      android:screenOrientation=&quot;landscape&quot;&gt;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>另外一种是通过在Intent中设置标志位来位Activity指定启动模式。</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Intent intent = new Intent(getActivity().getBaseContext(), livePlayerActivity.class);</span><br><span class="line">       intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);      </span><br><span class="line">       startActivity(intent);</span><br></pre></td></tr></table></figure>
+<p>这两种方式都可以为Activity指定启动模式，但是两者还是有区别的。第二种的优先级要高于第一种，两者同时存在时，以第二种方式为准。其次上述方式在限定范围上有所不同，比如，第一种方式无法直接为Activity设定FLAG_ACTIVITY_CLEAR_TOP标识，而第二种方式无法为Activity指定singleIntance模式。</p>
+<h5 id="1-2-2-Activity的Flags"><a href="#1-2-2-Activity的Flags" class="headerlink" title="1.2.2 Activity的Flags"></a>1.2.2 Activity的Flags</h5><h5 id="FLAG-ACTIVITY-NEW-TASK"><a href="#FLAG-ACTIVITY-NEW-TASK" class="headerlink" title="FLAG_ACTIVITY_NEW_TASK"></a>FLAG_ACTIVITY_NEW_TASK</h5><blockquote>
+<p>这个标记位作用是为Activity指定“singleTask”启动模式，其效果和XML中指定该启动模式相同。</p>
+</blockquote>
+<h5 id="FLAG-ACTIVITY-SINGLE-TOP"><a href="#FLAG-ACTIVITY-SINGLE-TOP" class="headerlink" title="FLAG_ACTIVITY_SINGLE_TOP"></a>FLAG_ACTIVITY_SINGLE_TOP</h5><blockquote>
+<p>这个标记位作用是为Activity指定“singleTop”启动模式，其效果和XML中指定该启动模式相同。</p>
+</blockquote>
+<h5 id="FLAG-ACTIVITY-CLEAR-TOP"><a href="#FLAG-ACTIVITY-CLEAR-TOP" class="headerlink" title="FLAG_ACTIVITY_CLEAR_TOP"></a>FLAG_ACTIVITY_CLEAR_TOP</h5><blockquote>
+<p>具有此标记位的Activity，当它启动时，在同一个任务栈中所有位于它上面的Activity都要出栈，这个模式一般需要和FLAG_ACTIVITY_NEW_TASK配合使用，在这种情况下，被启动的Activity的实例如果已经存在，那么系统就会调用它的onNewIntent。如果被启动的Activity实例已经存在，那么系统就会调用它的onNewIntent。如果被启动的Activity采用standard模式启动，那么它连同它之上的Activity都要出栈，系统会创建新的Activity实例并放入栈顶。</p>
+</blockquote>
+<h5 id="FLAG-ACTIVITY-EXCLUDE-FROM-RECENTS"><a href="#FLAG-ACTIVITY-EXCLUDE-FROM-RECENTS" class="headerlink" title="FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS"></a>FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS</h5><blockquote>
+<p>具有此标记的Activity不会出现在历史Activity的列表中，当某些情况下，当我们不希望用户通过历史列表回到我们的Activity的时候可以使用这个标记位。它等同于在xml中指定Activity的属性android:excludeFromRecents = “true”。</p>
+</blockquote>
+<h3 id="1-3-IntentFilter的匹配规则"><a href="#1-3-IntentFilter的匹配规则" class="headerlink" title="1.3 IntentFilter的匹配规则"></a>1.3 IntentFilter的匹配规则</h3><p>Activity的启动方式分为两种，<strong>显式调用和隐式调用</strong>。显式调用需要明确地指定被启动对象的组件信息，包括包名和类名，而隐式调用则不需要明确指定组件信息。原则上一个intent不应该即是显式调用又是隐式调用，如果二者共存的话以显式调用为主。显式调用很简单，这里主要介绍一下隐式调用。隐式调用需要Intent能够匹配目标组件的IntentFilter中所设置的过滤信息，如果不匹配则无法启动目标Activity。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;activity</span><br><span class="line">          </span><br><span class="line">           &lt;/intent-filter&gt;</span><br><span class="line">       &lt;/activity&gt;</span><br></pre></td></tr></table></figure>
+<p>为了匹配过滤列表，需要同时匹配过滤列表中的action，category，data信息，否则匹配失败。一个过滤列表中的action，category和data可以有多个，所有的action，category，data分别构成不同类别，同一类别的信息共同约束当前类别的匹配过程。只有一个Intent同时匹配action类别，category类别，data类别才算完全匹配，只有完全匹配才能启动目标Activity。</p>
+<h5 id="action的匹配规则"><a href="#action的匹配规则" class="headerlink" title="action的匹配规则"></a>action的匹配规则</h5><blockquote>
+<p>action是一个字符串，系统预定义了一些action，同时我们也可以在应用中定义自己的action。action的匹配规则是Intent中的action必须能够和过滤规则中的aciton匹配（即action的字符串值完全一样）。一个过滤规则中可以有多个aciton，那么只要Intent中的action能够和过滤规则中的任何一个action相同即可匹配成功。Intent中如果没有指定action，那么匹配失败。总结一下，action的匹配要求Intent中的action存在且必须和过滤规则中的其中一个action相同，另外action区分大小写。</p>
+</blockquote>
+<h5 id="category的匹配规则"><a href="#category的匹配规则" class="headerlink" title="category的匹配规则"></a>category的匹配规则</h5><blockquote>
+<p>与action相同，category也是一段字符串，系统预定义了一些category，我们也可以在应用中定义自己的category。category的匹配规则与action不同，Intent中可以不指定category,（系统在调用startActivity或者startActivityForResult的时候会默认为Intent加上“android.intent.category.DEFAULT”。因此 如果我们想要让activity能够接收隐式调用，就必须在intent-filter中指定“android.intent.category.DEFAULT”这个category）</p>
+</blockquote>
+<p>如果在Intent中指定了category，则要求每一个category都要与过滤规则中的任何一个category相同。</p>
+<h5 id="data匹配规则"><a href="#data匹配规则" class="headerlink" title="data匹配规则"></a>data匹配规则</h5><blockquote>
+<p>data匹配规则与action类似，如果过滤规则中定义了data，那么Intent中必须也要能够定义可匹配的data。</p>
+</blockquote>
+<h5 id="data的结构"><a href="#data的结构" class="headerlink" title="data的结构"></a>data的结构</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&lt;data</span><br><span class="line">   android:host=&quot;string&quot;</span><br><span class="line">   android:mimeType=&quot;string&quot;</span><br><span class="line">   android:path=&quot;string&quot;</span><br><span class="line">   android:pathPattern=&quot;string&quot;</span><br><span class="line">   android:pathPrefix=&quot;string&quot;</span><br><span class="line">   android:port=&quot;string&quot;</span><br><span class="line">   android:scheme=&quot;sstring&quot; /&gt;</span><br></pre></td></tr></table></figure>
+<p>data由两部分组成，mimeType 和 URI。<br>mimeType指媒体类型。比如image/jpeg/audio/mpeg4-generic/video等，可以表示图片、视频、文本等不同的媒体格式。</p>
+<h5 id="URI的结构"><a href="#URI的结构" class="headerlink" title="URI的结构"></a>URI的结构</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;scheme&gt;://&lt;host&gt;&quot;&lt;port&gt;/[&lt;path&gt;|&lt;pathPrefix&gt;|&lt;pathPattern&gt;]</span><br></pre></td></tr></table></figure>
+<p>这里再给几个实际的例子就好理解了</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">content://com.tracyliu.project:200/folder/subfolder/etc</span><br><span class="line">http://www.baidu.com:80/search/in</span><br></pre></td></tr></table></figure>
+<h5 id="Scheme"><a href="#Scheme" class="headerlink" title="Scheme:"></a>Scheme:</h5><blockquote>
+<p>URI的模式，比如http、file、content等，如果URI中没有指定scheme，那么整个URI的其他参数无效，这也意味着URI是无效的。</p>
+</blockquote>
+<h5 id="Host："><a href="#Host：" class="headerlink" title="Host："></a>Host：</h5><blockquote>
+<p>URI的主机名，比如www.baidu.com，如果host未指定，那么整个URI中的其他参数无效。这也意味着URI是无效的。</p>
+</blockquote>
+<h5 id="Port："><a href="#Port：" class="headerlink" title="Port："></a>Port：</h5><blockquote>
+<p>URI中的端口号，比如80，仅当URI中指定了scheme和host参数的时候port参数才是有意义的。</p>
+</blockquote>
+<p>Path，pathPattern和pathPrefix：这三个参数表示路径信息。</p>
+<h5 id="path"><a href="#path" class="headerlink" title="path:"></a>path:</h5><blockquote>
+<p>其中path表示完整的路径信息</p>
+</blockquote>
+<h5 id="pathPattern"><a href="#pathPattern" class="headerlink" title="pathPattern:"></a>pathPattern:</h5><blockquote>
+<p>pathPattern也表示完整的路径信息，但是它里面可以包含通配符“<em>”，“</em>”表示0或多个任意字符，需要注意的是，由于正则表达式的规范，如果想表示真实的字符串，那么“<em>”要写成“\</em>”，“\”要写成“\\”；</p>
+</blockquote>
+<h5 id="pathPrefix"><a href="#pathPrefix" class="headerlink" title="pathPrefix:"></a>pathPrefix:</h5><p>pathPrefix表示路径的前缀信息。</p>
+<p>data的匹配规则，它要求Intent中必须含有data数据，并且data数据能够完全匹配过滤规则中的某一个data，这里的完全匹配指过滤规则中出现的data部分，也出现在Intent中的data中。</p>
+<p>下面分情况说明</p>
+<p>(1) 如下过来规则</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;intent-filter&gt;</span><br><span class="line">      &lt;data android:mimeType=&quot;image/*&quot;/&gt;</span><br><span class="line">  &lt;/intent-filter&gt;</span><br></pre></td></tr></table></figure>
+<p>​这种规则指定了媒体类型为所有类型的图片，那么Intent中的mimeType属性必须为“image/*”才能匹配，这种情况下虽然过滤规则没有指定URI，但是Intent中的URI部分的schema必须为content或者file才能匹配，这点是需要尤其注意的。   </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">intent.setDataAndType(Uri.parse(&quot;file://abc&quot;),&quot;image/png&quot;);</span><br></pre></td></tr></table></figure>
+<p> 另外，如果要为Intent指定完整的data，必须调用setDataAndType方法，不能先调用setData再调用setType，因为这两个方法会清除彼此的值。由下面setData源码可知</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">public Intent setData(Uri data) &#123;</span><br><span class="line">    mData = data;</span><br><span class="line">    mType = null;</span><br><span class="line">    return this;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<p>(2) 如下规律规则</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;intent-filter&gt;</span><br><span class="line">           &lt;data android:mimeType=&quot;video/mpeg&quot; android:scheme=&quot;http&quot; .../&gt;</span><br><span class="line">           &lt;data android:mimeType=&quot;audio/mpeg&quot; android:scheme=&quot;http&quot; .../&gt;</span><br><span class="line"> &lt;/intent-filter&gt;</span><br></pre></td></tr></table></figure>
+<p>这种规则指定了两组data规则，且每个打他，都指定了完整的属性值，既有URI又有mimeType，为了匹配（2），我们写出如下示例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">intent.setDataAndType(Uri.parse(&quot;http://abc&quot;),&quot;video/png&quot;);</span><br></pre></td></tr></table></figure>
+<p>或者</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">intent.setDataAndType(Uri.parse(&quot;http://abc&quot;),&quot;audio/png&quot;);</span><br></pre></td></tr></table></figure>
+<p>关于data还有一个特殊情况需要说明下，这也是它和action不同的地方，如下两种特殊写法，他们的作用是一样的。</p>
+<figure class="highlight plain"><figcaption><span>&gt;</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&lt;intent-filter &gt;</span><br><span class="line">     &lt;data android:scheme=&quot;file&quot; android:host=&quot;www.baidu.com&quot;/&gt;</span><br><span class="line">         ...</span><br><span class="line"> &lt;/intent-filter&gt;</span><br><span class="line"></span><br><span class="line"> &lt;intent-filter &gt;</span><br><span class="line">       &lt;data android:scheme=&quot;file&quot; /&gt;</span><br><span class="line">       &lt;data android:host=&quot;www.baidu.com&quot;/&gt;</span><br><span class="line">         ...</span><br><span class="line">  &lt;/intent-filter&gt;</span><br></pre></td></tr></table></figure>
+<p>​     </p>
+<p>最后，当我们通过隐式方式启动一个Activity的时候，可以做下如下判断，看是否Activity能够匹配我们的隐式Intent。判断方法有两种采用 PackageManger的resolveActivity方法或Intent的resolveActivity方法，如果它们找不到匹配的Activity就会返回null，我们通过判断</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/12/25/Ubantu_bugs/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="tracyliu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="tracyliu">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/12/25/Ubantu_bugs/" itemprop="url">Ubantu16.04踩坑小记（没有wifi，无法apt update）</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Veröffentlicht am</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-12-25T13:42:31+08:00">
+                2017-12-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="1-装机后，无法连接wifi"><a href="#1-装机后，无法连接wifi" class="headerlink" title="1.装机后，无法连接wifi."></a>1.装机后，无法连接wifi.</h3><p>因为ubantu系统没有识别到无线网卡，需要在“设置”——“附加驱动”中 勾选Broadcom。</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/1984280-c4b305cbcc3799c1.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="微信图片_20170927110623.jpg"></p>
+<p>无法连接wifi.因为ubantu系统没有识别到无线网卡，需要在“设置”——“附加驱动”中 勾选Broadcom。</p>
+<p>#如果还不行，尝试禁用secure boot<br><a href="http://forum.ubuntu.org.cn/viewtopic.php?f=48&amp;t=477854" target="_blank" rel="noopener">Ubuntu 16.04 禁用 Secure boot 问题</a></p>
+<p>我的密码是装系统的时候设置的，该密码并不是每次开机的要输入的密码。</p>
+<h3 id="2-apt-get-update-无法执行"><a href="#2-apt-get-update-无法执行" class="headerlink" title="2.apt-get update 无法执行"></a>2.apt-get update 无法执行</h3><pre><code>E: Problem executing scripts APT::Update::Post-Invoke-Success
+&apos;if /usr/bin/test -w /var/cache/app-info -a -e /usr/bin/appstreamcli;
+ then appstreamcli refresh &gt; /dev/null;
+ fi&apos;
+E: Sub-process returned an error code
+</code></pre><p>在运行sudo apt-get update时出现如上信息，解决方法如下：</p>
+<pre><code>sudo pkill -KILL appstreamcli
+
+wget -P /tmp https://launchpad.net/ubuntu/+archive/primary/+files/appstream_0.9.4-1ubuntu1_amd64.deb https://launchpad.net/ubuntu/+archive/primary/+files/libappstream3_0.9.4-1ubuntu1_amd64.deb
+
+sudo dpkg -i /tmp/appstream_0.9.4-1ubuntu1_amd64.deb /tmp/libappstream3_0.9.4-1ubuntu1_amd64.deb
+</code></pre><p>执行完上述命令之后再次运行sudo apt-get update就不会再出现上面的错误。</p>
+<p>#####特别注意这一步需要翻墙<br><a href="http://www.cnblogs.com/EasonJim/p/7343892.html" target="_blank" rel="noopener"><a href="http://www.cnblogs.com/EasonJim/p/7343892.html" target="_blank" rel="noopener">Ubuntu 16.04出现：Problem executing scripts APT::Update::Post-Invoke-Success ‘if /usr/bin/test -w /var/cache/app-info -a -e /usr/bin/appstreamcli; then appstreamcli refresh &gt; /dev/null; fi’</a></a></p>
+<h3 id="3-安装ssh"><a href="#3-安装ssh" class="headerlink" title="3.安装ssh"></a>3.安装ssh</h3><p>判断是否安装ssh服务，可以通过如下命令进行：</p>
+<pre><code>ps -e|grep ssh
+</code></pre><p>ssh-agent表示ssh-client启动，sshd表示ssh-server启动了。</p>
+<pre><code> 输出如下：
+root@tracyliu:~$ ps -e|grep ssh
+ 2151 ?        00:00:00 ssh-agent
+ 5313 ?        00:00:00 sshd
+</code></pre><p>如果缺少sshd，说明ssh服务没有启动或者没有安装。</p>
+<p>安装ssh-client命令：</p>
+<pre><code>sudo apt-get install openssh-client
+</code></pre><p>安装ssh-server命令：</p>
+<pre><code>sudo apt-get install openssh-server
+</code></pre><p>安装完成以后，先启动服务：</p>
+<pre><code>sudo /etc/init.d/ssh start
+</code></pre><p>启动后，可以通过“ps -e|grep ssh”查看是否正确启动。</p>
+<p>ssh服务默认的端口是22，可以更改端口，使用如下命令打开ssh配置文件：</p>
+<pre><code>sudo gedit /etc/ssh/sshd_config
+</code></pre><p>配置文件内容如下：</p>
+<pre><code># Package generated configuration file   
+# See the sshd(8) manpage for details   
+# What ports, IPs and protocols we listen for  
+Port 22
+# Package generated configuration file
+# See the sshd(8) manpage for details
+# What ports, IPs and protocols we listen for
+</code></pre><p>修改端口号（Port）后，重启ssh服务即可生效，命令如下：</p>
+<pre><code>sudo /etc/init.d/ssh restart
+</code></pre><p>ssh服务启动后，即可登陆，登陆命令格式为：ssh 帐号@IP地址<br>例如：ssh test@192.168.135.249<br>根据提示输入test的密码，即可远程登陆。</p>
+<h3 id="4-安装samba"><a href="#4-安装samba" class="headerlink" title="4.安装samba"></a>4.安装samba</h3><p> <a href="http://www.jianshu.com/p/c4579605a737" target="_blank" rel="noopener">Ubuntu下配置Samba服务器</a><br><a href="http://blog.csdn.net/u011091632/article/details/21887385" target="_blank" rel="noopener"> <a href="http://blog.csdn.net/u011091632/article/details/21887385" target="_blank" rel="noopener">ubuntu下samba服务器配置</a></a></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+  </section>
+
+  
+
+
+          </div>
+          
+
+
+          
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">tracyliu</p>
+              <p class="site-description motion-element" itemprop="description">it is a personal blogs</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-name">Artikel</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-name">Tags</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
         
       </div>
-      <a class="more" href="/2018/01/30/Instrumentation-click-drag-keycode-foucs-loss/">Read more</a>
-    </article>
-  
-    <article class="article-card">
-      <h2 class="article-head">
-        <a href="/2018/01/30/HLS-protocol-basic-knowledge/">HTTP Live Streaming (HLS) 协议科普扫盲</a>
-      </h2>
-      <p class="article-date">2018年1月30日</p>
-      
-        
-  <a href="/tags#hls" >
-    <span class="tag-code">hls</span>
-  </a>
+    </main>
 
-      
-      <div class="article-summary">
-        
-          HTTP Live Streaming: HLS是一个由苹果公司提出的基于HTTP的流媒体网络传输协议，可以实现流媒体的直播（live）和点播(vod)。
-HLS协议规定：
-HLS协议由HTTP+M3U8+TS三部分组成，其中，HTTP是传输协议，M3U8是索引文件，TS是视音频的媒体信息。 ...
-        
-      </div>
-      <a class="more" href="/2018/01/30/HLS-protocol-basic-knowledge/">Read more</a>
-    </article>
-  
-    <article class="article-card">
-      <h2 class="article-head">
-        <a href="/2018/01/29/Activity-LifeCycle-and-Launch-Mode/">艺术探索—一、Activity的生命周期全面分析</a>
-      </h2>
-      <p class="article-date">2018年1月29日</p>
-      
-        
-  <a href="/tags#Activity" >
-    <span class="tag-code">Activity</span>
-  </a>
-
-  <a href="/tags#Android开发艺术探索" >
-    <span class="tag-code">Android开发艺术探索</span>
-  </a>
-
-      
-      <div class="article-summary">
-        
-          1.1.1典型情况下生命周期典型情况下生命周期是指有用户参与的情况下，Activity所经过的生命周期的改变。
-onCreate()
-表示Activity正在创建，生命周期的第一个方法。
-
-onRestart()
-表示Activity正在重新启动。一般情况下，当当前Activity，从不可见 ...
-        
-      </div>
-      <a class="more" href="/2018/01/29/Activity-LifeCycle-and-Launch-Mode/">Read more</a>
-    </article>
-  
-    <article class="article-card">
-      <h2 class="article-head">
-        <a href="/2017/12/25/Ubantu_bugs/">Ubantu16.04踩坑小记（没有wifi，无法apt update）</a>
-      </h2>
-      <p class="article-date">2017年12月25日</p>
-      
-        
-  <a href="/tags#ubuntu" >
-    <span class="tag-code">ubuntu</span>
-  </a>
-
-      
-      <div class="article-summary">
-        
-          1.装机后，无法连接wifi.因为ubantu系统没有识别到无线网卡，需要在“设置”——“附加驱动”中 勾选Broadcom。
-
-无法连接wifi.因为ubantu系统没有识别到无线网卡，需要在“设置”——“附加驱动”中 勾选Broadcom。
-#如果还不行，尝试禁用secure bootU ...
-        
-      </div>
-      <a class="more" href="/2017/12/25/Ubantu_bugs/">Read more</a>
-    </article>
-  
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">tracyliu</span>
 
   
-</main>
-
-
-    <div class="scroll-top">
-  <span class="arrow-icon"></span>
 </div>
-    <footer class="app-footer">
-  <p class="copyright">
-    &copy; 2018 | Proudly powered by <a href="https://hexo.io" target="_blank">Hexo</a>
-    <br>
-    Theme by <a href="https://github.com/yanm1ng">yanm1ng</a>
-  </p>
-</footer>
 
-<script>
-  function async(u, c) {
-    var d = document, t = 'script',
-      o = d.createElement(t),
-      s = d.getElementsByTagName(t)[0];
-    o.src = u;
-    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
-    s.parentNode.insertBefore(o, s);
+
+  <div class="powered-by">Erstellt mit  <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
   }
 </script>
-<script>
-  async("//cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
-    FastClick.attach(document.body);
-  })
-</script>
 
-<script>
-  var hasLine = 'true';
-  async("//cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js", function(){
-    $('figure pre').each(function(i, block) {
-      var figure = $(this).parents('figure');
-      if (hasLine === 'false') {
-        figure.find('.gutter').hide();
-      }
-      var lang = figure.attr('class').split(' ')[1] || 'code';
-      var codeHtml = $(this).html();
-      var codeTag = document.createElement('code');
-      codeTag.className = lang;
-      codeTag.innerHTML = codeHtml;
-      $(this).attr('class', '').empty().html(codeTag);
-      figure.attr('data-lang', lang.toUpperCase());
-      hljs.highlightBlock(block);
-    });
-  })
-</script>
-<!-- Baidu Tongji -->
 
-<script src="/js/script.js"></script>
-  </body>
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
 </html>
