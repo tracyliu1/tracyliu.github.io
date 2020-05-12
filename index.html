@@ -1,381 +1,380 @@
-
 <!DOCTYPE html>
-<html lang="zh-Hans">
-
-
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no">
-  <meta name="theme-color" content="#202020"/>
-  <meta http-equiv="x-ua-compatible" content="ie=edge">
-  <script src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="it is a personal blogs">
+  <meta name="keyword" content="hexo-theme, vuejs">
   
+    <link rel="shortcut icon" href="/css/images/logo.png">
   
-    <meta name="keywords" content="" />
-  
-
-  
-    <meta name="description" content="it is a personal blogs" />
-  
-  
-  <link rel="icon" type="image/x-icon" href="/logo.png">
-  <title> [ tracyliu ]不退</title>
-  
-    <!-- stylesheets list from config.yml -->
+  <title>
     
-      <link rel="stylesheet" href="//cdn.bootcss.com/pure/1.0.0/pure-min.css">
+      tracyliu
     
-      <link rel="stylesheet" href="/css/xoxo.css">
-    
-  
+  </title>
+  <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdn.bootcss.com/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/css/plugins/gitment.css">
+  <script src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdn.bootcss.com/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.js"></script>
+  <script src="/js/qrious.js"></script>
+<script src="/js/gitment.js"></script>
 </head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
 
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>tracyliu</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link active">Home</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">Tags</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/project/" class="item-link">Projects</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">About</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link mobile-active">Home</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">Tags</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">Archives</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/project/" class="menu-link">Projects</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">About</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
 
-<body>
-  <div class="nav-container">
-    <nav class="home-menu pure-menu pure-menu-horizontal">
-  <a class="pure-menu-heading" href="/">
-    <img class="avatar" src="http://yoursite.com/images/logo.png">
-    <span class="title">tracyliu</span>
+    <main class="app-body">
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a href="/2020/05/12/Android-Debug-Tools/">Android Debug Tools</a>
+      </h2>
+      <p class="article-date">May 12, 2020</p>
+      
+        
+  <a href="/tags#Android调试" >
+    <span class="tag-code">Android调试</span>
   </a>
 
-  <ul class="pure-menu-list clearfix">
       
-          
-            <li class="pure-menu-item actived"><a href="/" class="pure-menu-link">首页</a></li>
-          
-      
-          
-            <li class="pure-menu-item"><a href="/archives" class="pure-menu-link">归档</a></li>
-          
-      
-          
-            <li class="pure-menu-item"><a href="/tags" class="pure-menu-link">标签</a></li>
-          
-      
-          
-            <li class="pure-menu-item"><a href="https://0xff000000.com" class="pure-menu-link">关于</a></li>
-          
-      
-  </ul>
-   
-</nav>
-  </div>
-
-  <div class="container" id="content-outer">
-    <div class="inner" id="content-inner">
-      
-
-  <div class="recent-posts">
-    
-
-      <article class="recent-post-item">
-        <a class="title" href="/2020/05/12/Android-Debug-Tools/"><h2>Android Debug Tools</h2></a>
-        <div class="post-meta">
-          
-          <time class="time" datetime="2020-05-12T06:01:47.000Z">
-            2020-05-12
-          </time>
-          
-          <span class="slash">/</span>
-          
-          <ul class="index-tag-list"><li class="index-tag-list-item"><a class="index-tag-list-link" href="/tags/Android调试/">Android调试</a></li></ul>
-          
-
-        </div>
-
+      <div class="article-summary">
         
-        <a class="more" href="/2020/05/12/Android-Debug-Tools/"> 阅读全文〉</a>
-      </article>
-    
+          1.bugreport
+java –jar chkbugreport.jar bugreport.txt
 
-      <article class="recent-post-item">
-        <a class="title" href="/2018/04/11/BuildTypes-ProductFlavors/"><h2>动态配置LauncherActivity/根据不同资源文件生成apk</h2></a>
-        <div class="post-meta">
-          
-          <time class="time" datetime="2018-04-11T07:43:22.000Z">
-            2018-04-11
-          </time>
-          
-          <span class="slash">/</span>
-          
-          <ul class="index-tag-list"><li class="index-tag-list-item"><a class="index-tag-list-link" href="/tags/ProductFlavors/">ProductFlavors</a></li><li class="index-tag-list-item"><a class="index-tag-list-link" href="/tags/buildType/">buildType</a></li></ul>
-          
+ChkBugReport
+bugreport实战篇
 
-        </div>
+2.simpleperfsimpleperf3. MAT命令行提取hprof文件
 
+adb shell am dumpheap   ...
         
-        <a class="more" href="/2018/04/11/BuildTypes-ProductFlavors/"> 阅读全文〉</a>
-      </article>
-    
-
-      <article class="recent-post-item">
-        <a class="title" href="/2018/03/27/LoopLayout-CustomView/"><h2>LoopLayout_CustomView</h2></a>
-        <div class="post-meta">
-          
-          <time class="time" datetime="2018-03-27T09:04:30.000Z">
-            2018-03-27
-          </time>
-          
-          <span class="slash">/</span>
-          
-          <ul class="index-tag-list"><li class="index-tag-list-item"><a class="index-tag-list-link" href="/tags/CustomView/">CustomView</a></li></ul>
-          
-
-        </div>
-
-        
-        <a class="more" href="/2018/03/27/LoopLayout-CustomView/"> 阅读全文〉</a>
-      </article>
-    
-
-      <article class="recent-post-item">
-        <a class="title" href="/2018/02/07/basic-concept-of-audio-and-video/"><h2>视音频技术基础概念</h2></a>
-        <div class="post-meta">
-          
-          <time class="time" datetime="2018-02-07T10:36:12.000Z">
-            2018-02-07
-          </time>
-          
-          <span class="slash">/</span>
-          
-          <ul class="index-tag-list"><li class="index-tag-list-item"><a class="index-tag-list-link" href="/tags/音视频/">音视频</a></li></ul>
-          
-
-        </div>
-
-        
-        <a class="more" href="/2018/02/07/basic-concept-of-audio-and-video/"> 阅读全文〉</a>
-      </article>
-    
-
-      <article class="recent-post-item">
-        <a class="title" href="/2018/01/30/Instrumentation-click-drag-keycode-foucs-loss/"><h2>Android Instrumentation 模拟点击、拖拽、发送keycode、焦点异常丢失。</h2></a>
-        <div class="post-meta">
-          
-          <time class="time" datetime="2018-01-30T10:56:45.000Z">
-            2018-01-30
-          </time>
-          
-          <span class="slash">/</span>
-          
-          <ul class="index-tag-list"><li class="index-tag-list-item"><a class="index-tag-list-link" href="/tags/Instrumentation/">Instrumentation</a></li></ul>
-          
-
-        </div>
-
-        
-        <a class="more" href="/2018/01/30/Instrumentation-click-drag-keycode-foucs-loss/"> 阅读全文〉</a>
-      </article>
-    
-
-      <article class="recent-post-item">
-        <a class="title" href="/2018/01/30/HLS-protocol-basic-knowledge/"><h2>HTTP Live Streaming (HLS) 协议科普扫盲</h2></a>
-        <div class="post-meta">
-          
-          <time class="time" datetime="2018-01-30T10:43:06.000Z">
-            2018-01-30
-          </time>
-          
-          <span class="slash">/</span>
-          
-          <ul class="index-tag-list"><li class="index-tag-list-item"><a class="index-tag-list-link" href="/tags/hls/">hls</a></li></ul>
-          
-
-        </div>
-
-        
-        <a class="more" href="/2018/01/30/HLS-protocol-basic-knowledge/"> 阅读全文〉</a>
-      </article>
-    
-
-      <article class="recent-post-item">
-        <a class="title" href="/2018/01/29/Activity-LifeCycle-and-Launch-Mode/"><h2>艺术探索—一、Activity的生命周期全面分析</h2></a>
-        <div class="post-meta">
-          
-          <time class="time" datetime="2018-01-29T08:04:26.000Z">
-            2018-01-29
-          </time>
-          
-          <span class="slash">/</span>
-          
-          <ul class="index-tag-list"><li class="index-tag-list-item"><a class="index-tag-list-link" href="/tags/Activity/">Activity</a></li><li class="index-tag-list-item"><a class="index-tag-list-link" href="/tags/Android开发艺术探索/">Android开发艺术探索</a></li></ul>
-          
-
-        </div>
-
-        
-        <a class="more" href="/2018/01/29/Activity-LifeCycle-and-Launch-Mode/"> 阅读全文〉</a>
-      </article>
-    
-
-      <article class="recent-post-item">
-        <a class="title" href="/2017/12/25/Ubantu_bugs/"><h2>Ubantu16.04踩坑小记（没有wifi，无法apt update）</h2></a>
-        <div class="post-meta">
-          
-          <time class="time" datetime="2017-12-25T05:42:31.000Z">
-            2017-12-25
-          </time>
-          
-          <span class="slash">/</span>
-          
-          <ul class="index-tag-list"><li class="index-tag-list-item"><a class="index-tag-list-link" href="/tags/ubuntu/">ubuntu</a></li></ul>
-          
-
-        </div>
-
-        
-        <a class="more" href="/2017/12/25/Ubantu_bugs/"> 阅读全文〉</a>
-      </article>
-    
-  </div>
-
-
-
-    </div>
-
-    
-
-  </div>
-  <footer class="footer text-center">
-    <div id="bottom-inner">
-        <a class="bottom-item" href="https://blog.0xff000000.com">首页</a> |
-        <a class="bottom-item" href="" target="_blank">主站</a> |
-        <a class="bottom-item" href="https://github.com/tracyliu1" target="_blank">GitHub</a> |
-        <a class="bottom-item" href="https://hexo.io" target="_blank">Powered by hexo</a> |
-        <a class="bottom-item" href="https://github.com/KevinOfNeu/hexo-theme-xoxo" target="_blank">Theme xoxo</a>
-    </div>
-</footer>
+      </div>
+      <a class="more" href="/2020/05/12/Android-Debug-Tools/">Read more</a>
+    </article>
   
+    <article class="article-card">
+      <h2 class="article-head">
+        <a href="/2018/04/11/BuildTypes-ProductFlavors/">动态配置LauncherActivity/根据不同资源文件生成apk</a>
+      </h2>
+      <p class="article-date">April 11, 2018</p>
+      
+        
+  <a href="/tags#buildType" >
+    <span class="tag-code">buildType</span>
+  </a>
+
+  <a href="/tags#ProductFlavors" >
+    <span class="tag-code">ProductFlavors</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          需求1.同一份代码，采用三份不同的资源文件，生成三个不同的apk；
+2.同一份代码，采用相同代码和资源文件，仅有LauncherActivity不同，生成两个apk；
+经过一番查询，以上需求可以通过Gradle中配置ProductFlavors完美解决。
+BuildVariants基本知识使 ...
+        
+      </div>
+      <a class="more" href="/2018/04/11/BuildTypes-ProductFlavors/">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a href="/2018/03/27/LoopLayout-CustomView/">LoopLayout_CustomView</a>
+      </h2>
+      <p class="article-date">March 27, 2018</p>
+      
+        
+  <a href="/tags#CustomView" >
+    <span class="tag-code">CustomView</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          自定义View LoopLayout 继承 LinearLayout
+######需求：
+选中的Item要有动画效果；Launcher主页上的Item支持循环。点击非选中item后，item来到中间选中位置。
+自定义控件一般可以分为两种：继承控件、复合控件。前者是通过继承View或其子类，重 ...
+        
+      </div>
+      <a class="more" href="/2018/03/27/LoopLayout-CustomView/">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a href="/2018/02/07/basic-concept-of-audio-and-video/">视音频技术基础概念</a>
+      </h2>
+      <p class="article-date">February 7, 2018</p>
+      
+        
+  <a href="/tags#音视频" >
+    <span class="tag-code">音视频</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          视音频技术主要包含：封装技术，视频压缩编码技术，音频压缩编码技术，如果考虑到网络传输还包括流媒体协议技术。
+视频播放器原理
+以播放网络视频为例，需要经过解协议 —解封装—解码视音频—视音频同步（如果播放本地文件则不需要解协议）
+
+
+
+视频编码视频压缩编码标准：
+
+视频编码的主要作用是将视频像 ...
+        
+      </div>
+      <a class="more" href="/2018/02/07/basic-concept-of-audio-and-video/">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a href="/2018/01/30/Instrumentation-click-drag-keycode-foucs-loss/">Android Instrumentation 模拟点击、拖拽、发送keycode、焦点异常丢失。</a>
+      </h2>
+      <p class="article-date">January 30, 2018</p>
+      
+        
+  <a href="/tags#Instrumentation" >
+    <span class="tag-code">Instrumentation</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          
+Instrumentation模拟点击，拖拽，向系统发送keycode。
+
+需要注意的几点： 
+
+Android系统坐标系，X轴正方向为右，Y轴正方向为下（与数学坐标系相反)
+
+所有事件在发送时均需要在Thread中执行，否则会报异常。
+
+模拟输入法种特殊符号时，需要带上shift，同正常 ...
+        
+      </div>
+      <a class="more" href="/2018/01/30/Instrumentation-click-drag-keycode-foucs-loss/">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a href="/2018/01/30/HLS-protocol-basic-knowledge/">HTTP Live Streaming (HLS) 协议科普扫盲</a>
+      </h2>
+      <p class="article-date">January 30, 2018</p>
+      
+        
+  <a href="/tags#hls" >
+    <span class="tag-code">hls</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          HTTP Live Streaming: HLS是一个由苹果公司提出的基于HTTP的流媒体网络传输协议，可以实现流媒体的直播（live）和点播(vod)。
+HLS协议规定：
+HLS协议由HTTP+M3U8+TS三部分组成，其中，HTTP是传输协议，M3U8是索引文件，TS是视音频的媒体信息。 ...
+        
+      </div>
+      <a class="more" href="/2018/01/30/HLS-protocol-basic-knowledge/">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a href="/2018/01/29/Activity-LifeCycle-and-Launch-Mode/">艺术探索—一、Activity的生命周期全面分析</a>
+      </h2>
+      <p class="article-date">January 29, 2018</p>
+      
+        
+  <a href="/tags#Activity" >
+    <span class="tag-code">Activity</span>
+  </a>
+
+  <a href="/tags#Android开发艺术探索" >
+    <span class="tag-code">Android开发艺术探索</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          1.1.1典型情况下生命周期典型情况下生命周期是指有用户参与的情况下，Activity所经过的生命周期的改变。
+onCreate()
+表示Activity正在创建，生命周期的第一个方法。
+
+onRestart()
+表示Activity正在重新启动。一般情况下，当当前Activity，从不可见 ...
+        
+      </div>
+      <a class="more" href="/2018/01/29/Activity-LifeCycle-and-Launch-Mode/">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a href="/2017/12/25/Ubantu_bugs/">Ubantu16.04踩坑小记（没有wifi，无法apt update）</a>
+      </h2>
+      <p class="article-date">December 25, 2017</p>
+      
+        
+  <a href="/tags#ubuntu" >
+    <span class="tag-code">ubuntu</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          1.装机后，无法连接wifi.因为ubantu系统没有识别到无线网卡，需要在“设置”——“附加驱动”中 勾选Broadcom。
+
+无法连接wifi.因为ubantu系统没有识别到无线网卡，需要在“设置”——“附加驱动”中 勾选Broadcom。
+#如果还不行，尝试禁用secure bootU ...
+        
+      </div>
+      <a class="more" href="/2017/12/25/Ubantu_bugs/">Read more</a>
+    </article>
+  
+
+  
+</main>
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2020 | Proudly powered by <a href="https://hexo.io" target="_blank">Hexo</a>
+    <br>
+    Theme by <a href="https://github.com/yanm1ng">yanm1ng</a>
+  </p>
+</footer>
 
 <script>
-  (function(window, document, undefined) {
-
-    var timer = null;
-
-    function returnTop() {
-      cancelAnimationFrame(timer);
-      timer = requestAnimationFrame(function fn() {
-        var oTop = document.body.scrollTop || document.documentElement.scrollTop;
-        if (oTop > 0) {
-          document.body.scrollTop = document.documentElement.scrollTop = oTop - 50;
-          timer = requestAnimationFrame(fn);
-        } else {
-          cancelAnimationFrame(timer);
-        }
-      });
-    }
-
-    var hearts = [];
-    window.requestAnimationFrame = (function() {
-      return window.requestAnimationFrame ||
-        window.webkitRequestAnimationFrame ||
-        window.mozRequestAnimationFrame ||
-        window.oRequestAnimationFrame ||
-        window.msRequestAnimationFrame ||
-        function(callback) {
-          setTimeout(callback, 1000 / 60);
-        }
-    })();
-    init();
-
-    function init() {
-      css(".heart{z-index:9999;width: 10px;height: 10px;position: fixed;background: #f00;transform: rotate(45deg);-webkit-transform: rotate(45deg);-moz-transform: rotate(45deg);}.heart:after,.heart:before{content: '';width: inherit;height: inherit;background: inherit;border-radius: 50%;-webkit-border-radius: 50%;-moz-border-radius: 50%;position: absolute;}.heart:after{top: -5px;}.heart:before{left: -5px;}");
-      attachEvent();
-      gameloop();
-      addMenuEvent();
-    }
-
-    function gameloop() {
-      for (var i = 0; i < hearts.length; i++) {
-        if (hearts[i].alpha <= 0) {
-          document.body.removeChild(hearts[i].el);
-          hearts.splice(i, 1);
-          continue;
-        }
-        hearts[i].y--;
-        hearts[i].scale += 0.004;
-        hearts[i].alpha -= 0.013;
-        hearts[i].el.style.cssText = "left:" + hearts[i].x + "px;top:" + hearts[i].y + "px;opacity:" + hearts[i].alpha + ";transform:scale(" + hearts[i].scale + "," + hearts[i].scale + ") rotate(45deg);background:" + hearts[i].color;
-      }
-      requestAnimationFrame(gameloop);
-    }
-
-    /**
-     * 给logo设置点击事件
-     * 
-     * - 回到顶部
-     * - 出现爱心
-     */
-    function attachEvent() {
-      var old = typeof window.onclick === "function" && window.onclick;
-      var logo = document.getElementById("logo");
-      if (logo) {
-        logo.onclick = function(event) {
-          returnTop();
-          old && old();
-          createHeart(event);
-        }
-      }
-      
-    }
-
-    function createHeart(event) {
-      var d = document.createElement("div");
-      d.className = "heart";
-      hearts.push({
-        el: d,
-        x: event.clientX - 5,
-        y: event.clientY - 5,
-        scale: 1,
-        alpha: 1,
-        color: randomColor()
-      });
-      document.body.appendChild(d);
-    }
-
-    function css(css) {
-      var style = document.createElement("style");
-      style.type = "text/css";
-      try {
-        style.appendChild(document.createTextNode(css));
-      } catch (ex) {
-        style.styleSheet.cssText = css;
-      }
-      document.getElementsByTagName('head')[0].appendChild(style);
-    }
-
-    function randomColor() {
-      // return "rgb(" + (~~(Math.random() * 255)) + "," + (~~(Math.random() * 255)) + "," + (~~(Math.random() * 255)) + ")";
-      return "#F44336";
-    }
-
-    function addMenuEvent() {
-      var menu = document.getElementById('menu-main-post');
-      if (menu) {
-        var toc = document.getElementById('toc');
-        if (toc) {
-          menu.onclick = function() {
-            if (toc) {
-              if (toc.style.display == 'block') {
-                toc.style.display = 'none';
-              } else {
-                toc.style.display = 'block';
-              }
-            }
-          };
-        } else {
-          menu.style.display = 'none';
-        }
-      }
-    }
-
-  })(window, document);
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
 </script>
 
-  
+<script>
+  var hasLine = 'true';
+  async("//cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
 
-
-
-</body>
+<script src="/js/script.js"></script>
+  </body>
 </html>

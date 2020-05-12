@@ -1,98 +1,127 @@
-
 <!DOCTYPE html>
-<html lang="zh-Hans">
-
-
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no">
-  <meta name="theme-color" content="#202020"/>
-  <meta http-equiv="x-ua-compatible" content="ie=edge">
-  <script src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="it is a personal blogs">
+  <meta name="keyword" content="hexo-theme, vuejs">
   
+    <link rel="shortcut icon" href="/css/images/logo.png">
   
-    <meta name="keywords" content="buildType,ProductFlavors," />
-  
-
-  
-    <meta name="description" content="it is a personal blogs" />
-  
-  
-  <link rel="icon" type="image/x-icon" href="/logo.png">
-  <title>动态配置LauncherActivity/根据不同资源文件生成apk [ tracyliu ]</title>
-  
-    <!-- stylesheets list from config.yml -->
+  <title>
     
-      <link rel="stylesheet" href="//cdn.bootcss.com/pure/1.0.0/pure-min.css">
+      动态配置LauncherActivity/根据不同资源文件生成apk | tracyliu
     
-      <link rel="stylesheet" href="/css/xoxo.css">
-    
-  
+  </title>
+  <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdn.bootcss.com/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/css/plugins/gitment.css">
+  <script src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdn.bootcss.com/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.js"></script>
+  <script src="/js/qrious.js"></script>
+<script src="/js/gitment.js"></script>
 </head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
 
-
-<body>
-  <div class="nav-container">
-    <nav class="home-menu pure-menu pure-menu-horizontal">
-  <a class="pure-menu-heading" href="/">
-    <img class="avatar" src="http://yoursite.com/images/logo.png">
-    <span class="title">tracyliu</span>
-  </a>
-
-  <ul class="pure-menu-list clearfix">
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>tracyliu</span>
+    </a>
+    <ul class="right-list">
       
+        <li class="list-item">
           
-            <li class="pure-menu-item"><a href="/" class="pure-menu-link">首页</a></li>
+            <a href="/" class="item-link">Home</a>
           
+        </li>
       
+        <li class="list-item">
           
-            <li class="pure-menu-item"><a href="/archives" class="pure-menu-link">归档</a></li>
+            <a href="/tags/" class="item-link">Tags</a>
           
+        </li>
       
+        <li class="list-item">
           
-            <li class="pure-menu-item"><a href="/tags" class="pure-menu-link">标签</a></li>
+            <a href="/archives/" class="item-link">Archives</a>
           
+        </li>
       
+        <li class="list-item">
           
-            <li class="pure-menu-item"><a href="https://0xff000000.com" class="pure-menu-link">关于</a></li>
+            <a href="/project/" class="item-link">Projects</a>
           
+        </li>
       
-  </ul>
-   
-</nav>
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">About</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">Tags</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">Archives</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/project/" class="menu-link">Projects</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">About</a>
+            
+          </li>
+        
+      </ul>
+    </div>
   </div>
+</header>
 
-  <div class="container" id="content-outer">
-    <div class="inner" id="content-inner">
-      <div class="post-container">
-  <article class="post" id="post">
-    <header class="post-header text-center">
-      <h1 class="title">
-        动态配置LauncherActivity/根据不同资源文件生成apk
-      </h1>
-      <span>
-        
-        <time class="time" datetime="2018-04-11T07:43:22.000Z">
-        2018-04-11
-      </time>
-        
-      </span>
-      <span class="slash">/</span>
-      <span class="post-meta">
-      <span class="post-tags">
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ProductFlavors/">ProductFlavors</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/buildType/">buildType</a></li></ul>
-      </span>
-    </span>
-      <span class="slash">/</span>
-      <span class="read">
-      <span id="busuanzi_value_page_pv"></span> 点击
-    </span>
-      <span class="slash">/</span>
-      <span class="read">阅读耗时 8 分钟</span>
-    </header>
-
-    <div class="post-content">
-      <h5 id="需求"><a href="#需求" class="headerlink" title="需求"></a>需求</h5><p>1.同一份代码，采用三份不同的资源文件，生成三个不同的apk；</p>
+    <div id="article-banner">
+  <h2>动态配置LauncherActivity/根据不同资源文件生成apk</h2>
+  <p class="post-date">2018-04-11</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><h5 id="需求"><a href="#需求" class="headerlink" title="需求"></a>需求</h5><p>1.同一份代码，采用三份不同的资源文件，生成三个不同的apk；</p>
 <p>2.同一份代码，采用相同代码和资源文件，仅有LauncherActivity不同，生成两个apk；</p>
 <p>经过一番查询，以上需求可以通过Gradle中配置ProductFlavors完美解决。</p>
 <h2 id="BuildVariants基本知识"><a href="#BuildVariants基本知识" class="headerlink" title="BuildVariants基本知识"></a>BuildVariants基本知识</h2><h5 id="使用manifestPlaceholders改变-meta-data"><a href="#使用manifestPlaceholders改变-meta-data" class="headerlink" title="使用manifestPlaceholders改变 meta-data"></a>使用manifestPlaceholders改变 meta-data</h5><p>标签meta-data是提供组件额外的数据用的，它本身就是一个键值对，可以自定义名称和值。它可以包含在以下组件当中：activity\application\service\receiver。</p>
@@ -125,197 +154,203 @@
 <p><a href="https://developer.android.google.cn/studio/build/manifest-merge.html" target="_blank" rel="noopener">合并多个清单文件</a></p>
 <p><a href="https://zhuanlan.zhihu.com/p/33722674" target="_blank" rel="noopener">使用gradle的productFlavors实现Android项目多渠道打包</a></p>
 <p><a href="https://segmentfault.com/a/1190000009176256" target="_blank" rel="noopener">Android Gradle manifestPlaceholders 占位符详解</a></p>
+</section>
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a href="/tags#buildType" >
+    <span class="tag-code">buildType</span>
+  </a>
 
-    </div>
+  <a href="/tags#ProductFlavors" >
+    <span class="tag-code">ProductFlavors</span>
+  </a>
 
-    <div>全文完。</div>
+      </div>
+    
+    <!-- Tags END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+      <div class="qrcode">
+        <canvas id="share-qrcode"></canvas>
+        <p class="notice">扫描二维码，分享此文章</p>
+      </div>
+    
+    <!-- 二维码 END -->
+    
+      <!-- Gitment START -->
+      <div id="comments"></div>
+      <!-- Gitment END -->
+    
   </article>
-  <div class="toc-container">
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
     
-  <div id="toc" class="toc-article">
-    <strong class="toc-title">目录</strong>
-    <ol class="toc"><li class="toc-item toc-level-5"><a class="toc-link" href="#需求"><span class="toc-text"><a href="#&#x9700;&#x6C42;" class="headerlink" title="&#x9700;&#x6C42;"></a>&#x9700;&#x6C42;</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#BuildVariants基本知识"><span class="toc-text"><a href="#BuildVariants&#x57FA;&#x672C;&#x77E5;&#x8BC6;" class="headerlink" title="BuildVariants&#x57FA;&#x672C;&#x77E5;&#x8BC6;"></a>BuildVariants&#x57FA;&#x672C;&#x77E5;&#x8BC6;</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#使用manifestPlaceholders改变-meta-data"><span class="toc-text"><a href="#&#x4F7F;&#x7528;manifestPlaceholders&#x6539;&#x53D8;-meta-data" class="headerlink" title="&#x4F7F;&#x7528;manifestPlaceholders&#x6539;&#x53D8; meta-data"></a>&#x4F7F;&#x7528;manifestPlaceholders&#x6539;&#x53D8; meta-data</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#构建变体BuildType"><span class="toc-text"><a href="#&#x6784;&#x5EFA;&#x53D8;&#x4F53;BuildType" class="headerlink" title="&#x6784;&#x5EFA;&#x53D8;&#x4F53;BuildType"></a>&#x6784;&#x5EFA;&#x53D8;&#x4F53;BuildType</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#assemble命令简介"><span class="toc-text"><a href="#assemble&#x547D;&#x4EE4;&#x7B80;&#x4ECB;" class="headerlink" title="assemble&#x547D;&#x4EE4;&#x7B80;&#x4ECB;"></a>assemble&#x547D;&#x4EE4;&#x7B80;&#x4ECB;</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#flavor跟main的文件合并规则"><span class="toc-text"><a href="#flavor&#x8DDF;main&#x7684;&#x6587;&#x4EF6;&#x5408;&#x5E76;&#x89C4;&#x5219;" class="headerlink" title="flavor&#x8DDF;main&#x7684;&#x6587;&#x4EF6;&#x5408;&#x5E76;&#x89C4;&#x5219;"></a>flavor&#x8DDF;main&#x7684;&#x6587;&#x4EF6;&#x5408;&#x5E76;&#x89C4;&#x5219;</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#需求1-同一份代码，不同资源文件"><span class="toc-text"><a href="#&#x9700;&#x6C42;1-&#x540C;&#x4E00;&#x4EFD;&#x4EE3;&#x7801;&#xFF0C;&#x4E0D;&#x540C;&#x8D44;&#x6E90;&#x6587;&#x4EF6;" class="headerlink" title="&#x9700;&#x6C42;1.&#x540C;&#x4E00;&#x4EFD;&#x4EE3;&#x7801;&#xFF0C;&#x4E0D;&#x540C;&#x8D44;&#x6E90;&#x6587;&#x4EF6;"></a>&#x9700;&#x6C42;1.&#x540C;&#x4E00;&#x4EFD;&#x4EE3;&#x7801;&#xFF0C;&#x4E0D;&#x540C;&#x8D44;&#x6E90;&#x6587;&#x4EF6;</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#需求2-同一份代码，不同LauncherActivity"><span class="toc-text"><a href="#&#x9700;&#x6C42;2-&#x540C;&#x4E00;&#x4EFD;&#x4EE3;&#x7801;&#xFF0C;&#x4E0D;&#x540C;LauncherActivity" class="headerlink" title="&#x9700;&#x6C42;2.&#x540C;&#x4E00;&#x4EFD;&#x4EE3;&#x7801;&#xFF0C;&#x4E0D;&#x540C;LauncherActivity"></a>&#x9700;&#x6C42;2.&#x540C;&#x4E00;&#x4EFD;&#x4EE3;&#x7801;&#xFF0C;&#x4E0D;&#x540C;LauncherActivity</span></a>
-  </div>
-
-
-  </div>
-</div>
-<div class="copyright">
-    <span>本作品采用</span>
-    <a href="https://creativecommons.org/licenses/by/4.0/">知识共享署名 4.0 国际许可协议</a>
-    <span>进行许可。 转载时请注明原文链接。</span>
-</div>
-<div class="share" style="width: 100%;">
- 
-</div>
-
-  
-    <div class="post-nav">
-      <div class="post-nav-item post-nav-next">
-        
-          <span>〈 </span>
-          <a href="/2018/03/27/LoopLayout-CustomView/" rel="next" title="LoopLayout_CustomView">
-          LoopLayout_CustomView
-          </a>
-        
-      </div>
-  
-      <div class="post-nav-item post-nav-prev">
-          
-          <a href="/2020/05/12/Android-Debug-Tools/" rel="prev" title="Android Debug Tools">
-            Android Debug Tools
-          </a>
-          <span>〉</span>
-        
-      </div>
-    </div>
-  
-
-
-    </div>
-
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#需求"><span class="toc-nav-text"><a href="#&#x9700;&#x6C42;" class="headerlink" title="&#x9700;&#x6C42;"></a>&#x9700;&#x6C42;</span></a></li></ol></li></ol></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#BuildVariants基本知识"><span class="toc-nav-text"><a href="#BuildVariants&#x57FA;&#x672C;&#x77E5;&#x8BC6;" class="headerlink" title="BuildVariants&#x57FA;&#x672C;&#x77E5;&#x8BC6;"></a>BuildVariants&#x57FA;&#x672C;&#x77E5;&#x8BC6;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#使用manifestPlaceholders改变-meta-data"><span class="toc-nav-text"><a href="#&#x4F7F;&#x7528;manifestPlaceholders&#x6539;&#x53D8;-meta-data" class="headerlink" title="&#x4F7F;&#x7528;manifestPlaceholders&#x6539;&#x53D8; meta-data"></a>&#x4F7F;&#x7528;manifestPlaceholders&#x6539;&#x53D8; meta-data</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#构建变体BuildType"><span class="toc-nav-text"><a href="#&#x6784;&#x5EFA;&#x53D8;&#x4F53;BuildType" class="headerlink" title="&#x6784;&#x5EFA;&#x53D8;&#x4F53;BuildType"></a>&#x6784;&#x5EFA;&#x53D8;&#x4F53;BuildType</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#assemble命令简介"><span class="toc-nav-text"><a href="#assemble&#x547D;&#x4EE4;&#x7B80;&#x4ECB;" class="headerlink" title="assemble&#x547D;&#x4EE4;&#x7B80;&#x4ECB;"></a>assemble&#x547D;&#x4EE4;&#x7B80;&#x4ECB;</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#flavor跟main的文件合并规则"><span class="toc-nav-text"><a href="#flavor&#x8DDF;main&#x7684;&#x6587;&#x4EF6;&#x5408;&#x5E76;&#x89C4;&#x5219;" class="headerlink" title="flavor&#x8DDF;main&#x7684;&#x6587;&#x4EF6;&#x5408;&#x5E76;&#x89C4;&#x5219;"></a>flavor&#x8DDF;main&#x7684;&#x6587;&#x4EF6;&#x5408;&#x5E76;&#x89C4;&#x5219;</span></a></li></ol></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#需求1-同一份代码，不同资源文件"><span class="toc-nav-text"><a href="#&#x9700;&#x6C42;1-&#x540C;&#x4E00;&#x4EFD;&#x4EE3;&#x7801;&#xFF0C;&#x4E0D;&#x540C;&#x8D44;&#x6E90;&#x6587;&#x4EF6;" class="headerlink" title="&#x9700;&#x6C42;1.&#x540C;&#x4E00;&#x4EFD;&#x4EE3;&#x7801;&#xFF0C;&#x4E0D;&#x540C;&#x8D44;&#x6E90;&#x6587;&#x4EF6;"></a>&#x9700;&#x6C42;1.&#x540C;&#x4E00;&#x4EFD;&#x4EE3;&#x7801;&#xFF0C;&#x4E0D;&#x540C;&#x8D44;&#x6E90;&#x6587;&#x4EF6;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#需求2-同一份代码，不同LauncherActivity"><span class="toc-nav-text"><a href="#&#x9700;&#x6C42;2-&#x540C;&#x4E00;&#x4EFD;&#x4EE3;&#x7801;&#xFF0C;&#x4E0D;&#x540C;LauncherActivity" class="headerlink" title="&#x9700;&#x6C42;2.&#x540C;&#x4E00;&#x4EFD;&#x4EE3;&#x7801;&#xFF0C;&#x4E0D;&#x540C;LauncherActivity"></a>&#x9700;&#x6C42;2.&#x540C;&#x4E00;&#x4EFD;&#x4EE3;&#x7801;&#xFF0C;&#x4E0D;&#x540C;LauncherActivity</span></a>
     
-
   </div>
-  <footer class="footer text-center">
-    <div id="bottom-inner">
-        <a class="bottom-item" href="https://blog.0xff000000.com">首页</a> |
-        <a class="bottom-item" href="" target="_blank">主站</a> |
-        <a class="bottom-item" href="https://github.com/tracyliu1" target="_blank">GitHub</a> |
-        <a class="bottom-item" href="https://hexo.io" target="_blank">Powered by hexo</a> |
-        <a class="bottom-item" href="https://github.com/KevinOfNeu/hexo-theme-xoxo" target="_blank">Theme xoxo</a>
-    </div>
-</footer>
+</aside>
   
+  <!-- Catalog END -->
+</main>
 
 <script>
-  (function(window, document, undefined) {
-
-    var timer = null;
-
-    function returnTop() {
-      cancelAnimationFrame(timer);
-      timer = requestAnimationFrame(function fn() {
-        var oTop = document.body.scrollTop || document.documentElement.scrollTop;
-        if (oTop > 0) {
-          document.body.scrollTop = document.documentElement.scrollTop = oTop - 50;
-          timer = requestAnimationFrame(fn);
-        } else {
-          cancelAnimationFrame(timer);
-        }
-      });
+  (function () {
+    var url = 'http://yoursite.com/2018/04/11/BuildTypes-ProductFlavors/';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
     }
+    $('.header').removeClass('fixed-header')
 
-    var hearts = [];
-    window.requestAnimationFrame = (function() {
-      return window.requestAnimationFrame ||
-        window.webkitRequestAnimationFrame ||
-        window.mozRequestAnimationFrame ||
-        window.oRequestAnimationFrame ||
-        window.msRequestAnimationFrame ||
-        function(callback) {
-          setTimeout(callback, 1000 / 60);
-        }
-    })();
-    init();
+     // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
 
-    function init() {
-      css(".heart{z-index:9999;width: 10px;height: 10px;position: fixed;background: #f00;transform: rotate(45deg);-webkit-transform: rotate(45deg);-moz-transform: rotate(45deg);}.heart:after,.heart:before{content: '';width: inherit;height: inherit;background: inherit;border-radius: 50%;-webkit-border-radius: 50%;-moz-border-radius: 50%;position: absolute;}.heart:after{top: -5px;}.heart:before{left: -5px;}");
-      attachEvent();
-      gameloop();
-      addMenuEvent();
-    }
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+        
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
 
-    function gameloop() {
-      for (var i = 0; i < hearts.length; i++) {
-        if (hearts[i].alpha <= 0) {
-          document.body.removeChild(hearts[i].el);
-          hearts.splice(i, 1);
-          continue;
-        }
-        hearts[i].y--;
-        hearts[i].scale += 0.004;
-        hearts[i].alpha -= 0.013;
-        hearts[i].el.style.cssText = "left:" + hearts[i].x + "px;top:" + hearts[i].y + "px;opacity:" + hearts[i].alpha + ";transform:scale(" + hearts[i].scale + "," + hearts[i].scale + ") rotate(45deg);background:" + hearts[i].color;
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
       }
-      requestAnimationFrame(gameloop);
-    }
+    })
 
-    /**
-     * 给logo设置点击事件
-     * 
-     * - 回到顶部
-     * - 出现爱心
-     */
-    function attachEvent() {
-      var old = typeof window.onclick === "function" && window.onclick;
-      var logo = document.getElementById("logo");
-      if (logo) {
-        logo.onclick = function(event) {
-          returnTop();
-          old && old();
-          createHeart(event);
+    // qrcode
+    var qr = new QRious({
+      element: document.getElementById('share-qrcode'),
+      value: document.location.href
+    });
+
+    // gitment
+    var gitmentConfig = "tracyliu";
+    if (gitmentConfig !== 'undefined') {
+      var gitment = new Gitment({
+        id: "动态配置LauncherActivity/根据不同资源文件生成apk",
+        owner: "tracyliu",
+        repo: "git@github.com:tracyliu1/tracyliu1.github.io.git",
+        oauth: {
+          client_id: "0f87e490e00ee3fd87ef",
+          client_secret: "4a9d2b148e7971c2201ad12131ce8bf8159ccd2e"
+        },
+        theme: {
+          render(state, instance) {
+            const container = document.createElement('div')
+            container.lang = "en-US"
+            container.className = 'gitment-container gitment-root-container'
+            container.appendChild(instance.renderHeader(state, instance))
+            container.appendChild(instance.renderEditor(state, instance))
+            container.appendChild(instance.renderComments(state, instance))
+            container.appendChild(instance.renderFooter(state, instance))
+            return container;
+          }
         }
-      }
-      
+      })
+      gitment.render(document.getElementById('comments'))
     }
-
-    function createHeart(event) {
-      var d = document.createElement("div");
-      d.className = "heart";
-      hearts.push({
-        el: d,
-        x: event.clientX - 5,
-        y: event.clientY - 5,
-        scale: 1,
-        alpha: 1,
-        color: randomColor()
-      });
-      document.body.appendChild(d);
-    }
-
-    function css(css) {
-      var style = document.createElement("style");
-      style.type = "text/css";
-      try {
-        style.appendChild(document.createTextNode(css));
-      } catch (ex) {
-        style.styleSheet.cssText = css;
-      }
-      document.getElementsByTagName('head')[0].appendChild(style);
-    }
-
-    function randomColor() {
-      // return "rgb(" + (~~(Math.random() * 255)) + "," + (~~(Math.random() * 255)) + "," + (~~(Math.random() * 255)) + ")";
-      return "#F44336";
-    }
-
-    function addMenuEvent() {
-      var menu = document.getElementById('menu-main-post');
-      if (menu) {
-        var toc = document.getElementById('toc');
-        if (toc) {
-          menu.onclick = function() {
-            if (toc) {
-              if (toc.style.display == 'block') {
-                toc.style.display = 'none';
-              } else {
-                toc.style.display = 'block';
-              }
-            }
-          };
-        } else {
-          menu.style.display = 'none';
-        }
-      }
-    }
-
-  })(window, document);
+  })();
 </script>
 
-  
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2020 | Proudly powered by <a href="https://hexo.io" target="_blank">Hexo</a>
+    <br>
+    Theme by <a href="https://github.com/yanm1ng">yanm1ng</a>
+  </p>
+</footer>
 
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
 
+<script>
+  var hasLine = 'true';
+  async("//cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
 
-</body>
+<script src="/js/script.js"></script>
+  </body>
 </html>
