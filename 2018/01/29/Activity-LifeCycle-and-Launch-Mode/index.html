@@ -1,320 +1,98 @@
+
 <!DOCTYPE html>
+<html lang="zh-Hans">
 
 
-
-  
-
-
-<html class="theme-next gemini use-motion" lang="zh-Hans">
 <head>
-  <meta charset="UTF-8"/>
-<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
-<meta name="theme-color" content="#222">
-
-
-
-
-
-
-
-
-
-<meta http-equiv="Cache-Control" content="no-transform" />
-<meta http-equiv="Cache-Control" content="no-siteapp" />
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#202020"/>
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <script src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
   
   
-  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
-
-
-
-
-
-
-
-<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
-
-<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
-
-
-  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
-
-
-  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
-
-
-  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
-
-
-  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
-
-
-
-
-
-  <meta name="keywords" content="Activity,Android开发艺术探索," />
-
-
-
-
-
-
-
-
-
-
-<meta name="description" content="1.1.1典型情况下生命周期典型情况下生命周期是指有用户参与的情况下，Activity所经过的生命周期的改变。 onCreate() 表示Activity正在创建，生命周期的第一个方法。  onRestart() 表示Activity正在重新启动。一般情况下，当当前Activity，从不可见重新变为可见状态时，该方法就会被调用。一般是用户行为所导致，比如用户按Home键切换到桌面或用户打开一个新的">
-<meta name="keywords" content="Activity,Android开发艺术探索">
-<meta property="og:type" content="article">
-<meta property="og:title" content="艺术探索—一、Activity的生命周期全面分析">
-<meta property="og:url" content="http://yoursite.com/2018/01/29/Activity-LifeCycle-and-Launch-Mode/index.html">
-<meta property="og:site_name" content="tracyliu">
-<meta property="og:description" content="1.1.1典型情况下生命周期典型情况下生命周期是指有用户参与的情况下，Activity所经过的生命周期的改变。 onCreate() 表示Activity正在创建，生命周期的第一个方法。  onRestart() 表示Activity正在重新启动。一般情况下，当当前Activity，从不可见重新变为可见状态时，该方法就会被调用。一般是用户行为所导致，比如用户按Home键切换到桌面或用户打开一个新的">
-<meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/1984280-c8363e785f5f5ac8.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
-<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/1984280-c09117accaa6e586.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
-<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/1984280-3675efd4e87ed3a6.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
-<meta property="og:updated_time" content="2018-02-07T11:05:06.411Z">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="艺术探索—一、Activity的生命周期全面分析">
-<meta name="twitter:description" content="1.1.1典型情况下生命周期典型情况下生命周期是指有用户参与的情况下，Activity所经过的生命周期的改变。 onCreate() 表示Activity正在创建，生命周期的第一个方法。  onRestart() 表示Activity正在重新启动。一般情况下，当当前Activity，从不可见重新变为可见状态时，该方法就会被调用。一般是用户行为所导致，比如用户按Home键切换到桌面或用户打开一个新的">
-<meta name="twitter:image" content="http://upload-images.jianshu.io/upload_images/1984280-c8363e785f5f5ac8.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
-
-
-
-<script type="text/javascript" id="hexo.configurations">
-  var NexT = window.NexT || {};
-  var CONFIG = {
-    root: '/',
-    scheme: 'Gemini',
-    version: '5.1.4',
-    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
-    fancybox: true,
-    tabs: true,
-    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
-    duoshuo: {
-      userId: '0',
-      author: '博主'
-    },
-    algolia: {
-      applicationID: '',
-      apiKey: '',
-      indexName: '',
-      hits: {"per_page":10},
-      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
-    }
-  };
-</script>
-
-
-
-  <link rel="canonical" href="http://yoursite.com/2018/01/29/Activity-LifeCycle-and-Launch-Mode/"/>
-
-
-
-
-
-  <title>艺术探索—一、Activity的生命周期全面分析 | tracyliu</title>
+    <meta name="keywords" content="Activity,Android开发艺术探索," />
   
 
-
-
-
-
-
-
-
+  
+    <meta name="description" content="it is a personal blogs" />
+  
+  
+  <link rel="icon" type="image/x-icon" href="/logo.png">
+  <title>艺术探索—一、Activity的生命周期全面分析 [ tracyliu ]</title>
+  
+    <!-- stylesheets list from config.yml -->
+    
+      <link rel="stylesheet" href="//cdn.bootcss.com/pure/1.0.0/pure-min.css">
+    
+      <link rel="stylesheet" href="/css/xoxo.css">
+    
+  
 </head>
 
-<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
 
-  
-  
-    
-  
+<body>
+  <div class="nav-container">
+    <nav class="home-menu pure-menu pure-menu-horizontal">
+  <a class="pure-menu-heading" href="/">
+    <img class="avatar" src="http://yoursite.com/images/logo.png">
+    <span class="title">tracyliu</span>
+  </a>
 
-  <div class="container sidebar-position-left page-post-detail">
-    <div class="headband"></div>
-
-    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
-      <div class="header-inner"><div class="site-brand-wrapper">
-  <div class="site-meta ">
-    
-
-    <div class="custom-logo-site-title">
-      <a href="/"  class="brand" rel="start">
-        <span class="logo-line-before"><i></i></span>
-        <span class="site-title">tracyliu</span>
-        <span class="logo-line-after"><i></i></span>
-      </a>
-    </div>
+  <ul class="pure-menu-list clearfix">
       
-        <p class="site-subtitle">this is subtitle for tracyliu</p>
+          
+            <li class="pure-menu-item"><a href="/" class="pure-menu-link">首页</a></li>
+          
       
-  </div>
-
-  <div class="site-nav-toggle">
-    <button>
-      <span class="btn-bar"></span>
-      <span class="btn-bar"></span>
-      <span class="btn-bar"></span>
-    </button>
-  </div>
-</div>
-
-<nav class="site-nav">
-  
-
-  
-    <ul id="menu" class="menu">
+          
+            <li class="pure-menu-item"><a href="/archives" class="pure-menu-link">归档</a></li>
+          
       
-        
-        <li class="menu-item menu-item-home">
-          <a href="/" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
-            
-            首页
-          </a>
-        </li>
+          
+            <li class="pure-menu-item"><a href="/tags" class="pure-menu-link">标签</a></li>
+          
       
-        
-        <li class="menu-item menu-item-tags">
-          <a href="/tags/" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
-            
-            标签
-          </a>
-        </li>
+          
+            <li class="pure-menu-item"><a href="https://0xff000000.com" class="pure-menu-link">关于</a></li>
+          
       
-        
-        <li class="menu-item menu-item-archives">
-          <a href="/archives/" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
-            
-            归档
-          </a>
-        </li>
-      
-
-      
-    </ul>
-  
-
-  
+  </ul>
+   
 </nav>
+  </div>
 
-
-
- </div>
+  <div class="container" id="content-outer">
+    <div class="inner" id="content-inner">
+      <div class="post-container">
+  <article class="post" id="post">
+    <header class="post-header text-center">
+      <h1 class="title">
+        艺术探索—一、Activity的生命周期全面分析
+      </h1>
+      <span>
+        
+        <time class="time" datetime="2018-01-29T08:04:26.000Z">
+        2018-01-29
+      </time>
+        
+      </span>
+      <span class="slash">/</span>
+      <span class="post-meta">
+      <span class="post-tags">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Activity/">Activity</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android开发艺术探索/">Android开发艺术探索</a></li></ul>
+      </span>
+    </span>
+      <span class="slash">/</span>
+      <span class="read">
+      <span id="busuanzi_value_page_pv"></span> 点击
+    </span>
+      <span class="slash">/</span>
+      <span class="read">阅读耗时 44 分钟</span>
     </header>
 
-    <main id="main" class="main">
-      <div class="main-inner">
-        <div class="content-wrap">
-          <div id="content" class="content">
-            
-
-  <div id="posts" class="posts-expand">
-    
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/01/29/Activity-LifeCycle-and-Launch-Mode/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="tracyliu">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="tracyliu">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">艺术探索—一、Activity的生命周期全面分析</h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-29T16:04:26+08:00">
-                2018-01-29
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        <h3 id="1-1-1典型情况下生命周期"><a href="#1-1-1典型情况下生命周期" class="headerlink" title="1.1.1典型情况下生命周期"></a>1.1.1典型情况下生命周期</h3><p>典型情况下生命周期是指有用户参与的情况下，Activity所经过的生命周期的改变。</p>
+    <div class="post-content">
+      <h3 id="1-1-1典型情况下生命周期"><a href="#1-1-1典型情况下生命周期" class="headerlink" title="1.1.1典型情况下生命周期"></a>1.1.1典型情况下生命周期</h3><p>典型情况下生命周期是指有用户参与的情况下，Activity所经过的生命周期的改变。</p>
 <h5 id="onCreate"><a href="#onCreate" class="headerlink" title="onCreate()"></a>onCreate()</h5><blockquote>
 <p>表示Activity正在创建，生命周期的第一个方法。</p>
 </blockquote>
@@ -540,383 +318,196 @@
 <p>​     </p>
 <p>最后，当我们通过隐式方式启动一个Activity的时候，可以做下如下判断，看是否Activity能够匹配我们的隐式Intent。判断方法有两种采用 PackageManger的resolveActivity方法或Intent的resolveActivity方法，如果它们找不到匹配的Activity就会返回null，我们通过判断</p>
 
-      
     </div>
-    
-    
-    
 
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-        <div class="post-tags">
-          
-            <a href="/tags/Activity/" rel="tag"># Activity</a>
-          
-            <a href="/tags/Android开发艺术探索/" rel="tag"># Android开发艺术探索</a>
-          
-        </div>
-      
-
-      
-      
-      
-
-      
-        <div class="post-nav">
-          <div class="post-nav-next post-nav-item">
-            
-              <a href="/2017/12/25/Ubantu_bugs/" rel="next" title="Ubantu16.04踩坑小记（没有wifi，无法apt update）">
-                <i class="fa fa-chevron-left"></i> Ubantu16.04踩坑小记（没有wifi，无法apt update）
-              </a>
-            
-          </div>
-
-          <span class="post-nav-divider"></span>
-
-          <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/01/30/HLS-protocol-basic-knowledge/" rel="prev" title="HTTP Live Streaming (HLS) 协议科普扫盲">
-                HTTP Live Streaming (HLS) 协议科普扫盲 <i class="fa fa-chevron-right"></i>
-              </a>
-            
-          </div>
-        </div>
-      
-
-      
-      
-    </footer>
-  </div>
-  
-  
-  
+    <div>全文完。</div>
   </article>
-
-
-
-    <div class="post-spread">
-      
-    </div>
-  </div>
-
-
-          </div>
-          
-
-
-          
-
-  
-
-
-
-        </div>
-        
-          
-  
-  <div class="sidebar-toggle">
-    <div class="sidebar-toggle-line-wrap">
-      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
-    </div>
-  </div>
-
-  <aside id="sidebar" class="sidebar">
+  <div class="toc-container">
     
-    <div class="sidebar-inner">
-
-      
-
-      
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
-            文章目录
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
-            站点概览
-          </li>
-        </ul>
-      
-
-      <section class="site-overview-wrap sidebar-panel">
-        <div class="site-overview">
-          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-            
-              <p class="site-author-name" itemprop="name">tracyliu</p>
-              <p class="site-description motion-element" itemprop="description">it is a personal blogs</p>
-          </div>
-
-          <nav class="site-state motion-element">
-
-            
-              <div class="site-state-item site-state-posts">
-              
-                <a href="/archives/">
-              
-                  <span class="site-state-item-count">7</span>
-                  <span class="site-state-item-name">日志</span>
-                </a>
-              </div>
-            
-
-            
-
-            
-              
-              
-              <div class="site-state-item site-state-tags">
-                
-                  <span class="site-state-item-count">9</span>
-                  <span class="site-state-item-name">标签</span>
-                
-              </div>
-            
-
-          </nav>
-
-          
-
-          
-
-          
-          
-
-          
-          
-
-          
-
-        </div>
-      </section>
-
-      
-      <!--noindex-->
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-
-            
-              
-            
-
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-1典型情况下生命周期"><span class="nav-number">1.</span> <span class="nav-text"><a href="#1-1-1&#x5178;&#x578B;&#x60C5;&#x51B5;&#x4E0B;&#x751F;&#x547D;&#x5468;&#x671F;" class="headerlink" title="1.1.1&#x5178;&#x578B;&#x60C5;&#x51B5;&#x4E0B;&#x751F;&#x547D;&#x5468;&#x671F;"></a>1.1.1&#x5178;&#x578B;&#x60C5;&#x51B5;&#x4E0B;&#x751F;&#x547D;&#x5468;&#x671F;</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#onCreate"><span class="nav-number">1.0.1.</span> <span class="nav-text"><a href="#onCreate" class="headerlink" title="onCreate()"></a>onCreate()</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#onRestart"><span class="nav-number">1.0.2.</span> <span class="nav-text"><a href="#onRestart" class="headerlink" title="onRestart()"></a>onRestart()</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#onStart"><span class="nav-number">1.0.3.</span> <span class="nav-text"><a href="#onStart" class="headerlink" title="onStart()"></a>onStart()</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#onResume"><span class="nav-number">1.0.4.</span> <span class="nav-text"><a href="#onResume" class="headerlink" title="onResume()"></a>onResume()</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#onPause"><span class="nav-number">1.0.5.</span> <span class="nav-text"><a href="#onPause" class="headerlink" title="onPause()"></a>onPause()</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#onStop"><span class="nav-number">1.0.6.</span> <span class="nav-text"><a href="#onStop" class="headerlink" title="onStop()"></a>onStop()</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#onDestory"><span class="nav-number">1.0.7.</span> <span class="nav-text"><a href="#onDestory" class="headerlink" title="onDestory()"></a>onDestory()</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Activity启动流程"><span class="nav-number">1.0.8.</span> <span class="nav-text"><a href="#Activity&#x542F;&#x52A8;&#x6D41;&#x7A0B;" class="headerlink" title="Activity&#x542F;&#x52A8;&#x6D41;&#x7A0B;"></a>Activity&#x542F;&#x52A8;&#x6D41;&#x7A0B;</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-2-异常情况下的生命周期"><span class="nav-number">2.</span> <span class="nav-text"><a href="#1-1-2-&#x5F02;&#x5E38;&#x60C5;&#x51B5;&#x4E0B;&#x7684;&#x751F;&#x547D;&#x5468;&#x671F;" class="headerlink" title="1.1.2 &#x5F02;&#x5E38;&#x60C5;&#x51B5;&#x4E0B;&#x7684;&#x751F;&#x547D;&#x5468;&#x671F;"></a>1.1.2 &#x5F02;&#x5E38;&#x60C5;&#x51B5;&#x4E0B;&#x7684;&#x751F;&#x547D;&#x5468;&#x671F;</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#情况一：资源相关的系统配置发生改变导致Activity被杀死并重新创建"><span class="nav-number">2.0.1.</span> <span class="nav-text"><a href="#&#x60C5;&#x51B5;&#x4E00;&#xFF1A;&#x8D44;&#x6E90;&#x76F8;&#x5173;&#x7684;&#x7CFB;&#x7EDF;&#x914D;&#x7F6E;&#x53D1;&#x751F;&#x6539;&#x53D8;&#x5BFC;&#x81F4;Activity&#x88AB;&#x6740;&#x6B7B;&#x5E76;&#x91CD;&#x65B0;&#x521B;&#x5EFA;" class="headerlink" title="&#x60C5;&#x51B5;&#x4E00;&#xFF1A;&#x8D44;&#x6E90;&#x76F8;&#x5173;&#x7684;&#x7CFB;&#x7EDF;&#x914D;&#x7F6E;&#x53D1;&#x751F;&#x6539;&#x53D8;&#x5BFC;&#x81F4;Activity&#x88AB;&#x6740;&#x6B7B;&#x5E76;&#x91CD;&#x65B0;&#x521B;&#x5EFA;"></a>&#x60C5;&#x51B5;&#x4E00;&#xFF1A;&#x8D44;&#x6E90;&#x76F8;&#x5173;&#x7684;&#x7CFB;&#x7EDF;&#x914D;&#x7F6E;&#x53D1;&#x751F;&#x6539;&#x53D8;&#x5BFC;&#x81F4;Activity&#x88AB;&#x6740;&#x6B7B;&#x5E76;&#x91CD;&#x65B0;&#x521B;&#x5EFA;</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#举例TextView的恢复过程"><span class="nav-number">2.0.2.</span> <span class="nav-text"><a href="#&#x4E3E;&#x4F8B;TextView&#x7684;&#x6062;&#x590D;&#x8FC7;&#x7A0B;" class="headerlink" title="&#x4E3E;&#x4F8B;TextView&#x7684;&#x6062;&#x590D;&#x8FC7;&#x7A0B;"></a>&#x4E3E;&#x4F8B;TextView&#x7684;&#x6062;&#x590D;&#x8FC7;&#x7A0B;</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#情况二：资源内存不足导致低优先级的Activity被杀死"><span class="nav-number">2.0.3.</span> <span class="nav-text"><a href="#&#x60C5;&#x51B5;&#x4E8C;&#xFF1A;&#x8D44;&#x6E90;&#x5185;&#x5B58;&#x4E0D;&#x8DB3;&#x5BFC;&#x81F4;&#x4F4E;&#x4F18;&#x5148;&#x7EA7;&#x7684;Activity&#x88AB;&#x6740;&#x6B7B;" class="headerlink" title="&#x60C5;&#x51B5;&#x4E8C;&#xFF1A;&#x8D44;&#x6E90;&#x5185;&#x5B58;&#x4E0D;&#x8DB3;&#x5BFC;&#x81F4;&#x4F4E;&#x4F18;&#x5148;&#x7EA7;&#x7684;Activity&#x88AB;&#x6740;&#x6B7B;"></a>&#x60C5;&#x51B5;&#x4E8C;&#xFF1A;&#x8D44;&#x6E90;&#x5185;&#x5B58;&#x4E0D;&#x8DB3;&#x5BFC;&#x81F4;&#x4F4E;&#x4F18;&#x5148;&#x7EA7;&#x7684;Activity&#x88AB;&#x6740;&#x6B7B;</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Activity的configChanges属性"><span class="nav-number">2.0.4.</span> <span class="nav-text"><a href="#Activity&#x7684;configChanges&#x5C5E;&#x6027;" class="headerlink" title="Activity&#x7684;configChanges&#x5C5E;&#x6027;"></a>Activity&#x7684;configChanges&#x5C5E;&#x6027;</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-Activity的启动模式"><span class="nav-number">3.</span> <span class="nav-text"><a href="#1-2-Activity&#x7684;&#x542F;&#x52A8;&#x6A21;&#x5F0F;" class="headerlink" title="1.2 Activity&#x7684;&#x542F;&#x52A8;&#x6A21;&#x5F0F;"></a>1.2 Activity&#x7684;&#x542F;&#x52A8;&#x6A21;&#x5F0F;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-1-Activity的LaunchMode"><span class="nav-number">4.</span> <span class="nav-text"><a href="#1-2-1-Activity&#x7684;LaunchMode" class="headerlink" title="1.2.1 Activity&#x7684;LaunchMode"></a>1.2.1 Activity&#x7684;LaunchMode</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#standard"><span class="nav-number">4.0.1.</span> <span class="nav-text"><a href="#standard" class="headerlink" title="standard"></a>standard</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#singleTop"><span class="nav-number">4.0.2.</span> <span class="nav-text"><a href="#singleTop" class="headerlink" title="singleTop"></a>singleTop</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#singleTask"><span class="nav-number">4.0.3.</span> <span class="nav-text"><a href="#singleTask" class="headerlink" title="singleTask"></a>singleTask</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#singleInstance"><span class="nav-number">4.0.4.</span> <span class="nav-text"><a href="#singleInstance" class="headerlink" title="singleInstance"></a>singleInstance</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#如何指定Activity启动模式？"><span class="nav-number">4.0.5.</span> <span class="nav-text"><a href="#&#x5982;&#x4F55;&#x6307;&#x5B9A;Activity&#x542F;&#x52A8;&#x6A21;&#x5F0F;&#xFF1F;" class="headerlink" title="&#x5982;&#x4F55;&#x6307;&#x5B9A;Activity&#x542F;&#x52A8;&#x6A21;&#x5F0F;&#xFF1F;"></a>&#x5982;&#x4F55;&#x6307;&#x5B9A;Activity&#x542F;&#x52A8;&#x6A21;&#x5F0F;&#xFF1F;</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#1-2-2-Activity的Flags"><span class="nav-number">4.0.6.</span> <span class="nav-text"><a href="#1-2-2-Activity&#x7684;Flags" class="headerlink" title="1.2.2 Activity&#x7684;Flags"></a>1.2.2 Activity&#x7684;Flags</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#FLAG-ACTIVITY-NEW-TASK"><span class="nav-number">4.0.7.</span> <span class="nav-text"><a href="#FLAG-ACTIVITY-NEW-TASK" class="headerlink" title="FLAG_ACTIVITY_NEW_TASK"></a>FLAG_ACTIVITY_NEW_TASK</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#FLAG-ACTIVITY-SINGLE-TOP"><span class="nav-number">4.0.8.</span> <span class="nav-text"><a href="#FLAG-ACTIVITY-SINGLE-TOP" class="headerlink" title="FLAG_ACTIVITY_SINGLE_TOP"></a>FLAG_ACTIVITY_SINGLE_TOP</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#FLAG-ACTIVITY-CLEAR-TOP"><span class="nav-number">4.0.9.</span> <span class="nav-text"><a href="#FLAG-ACTIVITY-CLEAR-TOP" class="headerlink" title="FLAG_ACTIVITY_CLEAR_TOP"></a>FLAG_ACTIVITY_CLEAR_TOP</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#FLAG-ACTIVITY-EXCLUDE-FROM-RECENTS"><span class="nav-number">4.0.10.</span> <span class="nav-text"><a href="#FLAG-ACTIVITY-EXCLUDE-FROM-RECENTS" class="headerlink" title="FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS"></a>FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-IntentFilter的匹配规则"><span class="nav-number">5.</span> <span class="nav-text"><a href="#1-3-IntentFilter&#x7684;&#x5339;&#x914D;&#x89C4;&#x5219;" class="headerlink" title="1.3 IntentFilter&#x7684;&#x5339;&#x914D;&#x89C4;&#x5219;"></a>1.3 IntentFilter&#x7684;&#x5339;&#x914D;&#x89C4;&#x5219;</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#action的匹配规则"><span class="nav-number">5.0.1.</span> <span class="nav-text"><a href="#action&#x7684;&#x5339;&#x914D;&#x89C4;&#x5219;" class="headerlink" title="action&#x7684;&#x5339;&#x914D;&#x89C4;&#x5219;"></a>action&#x7684;&#x5339;&#x914D;&#x89C4;&#x5219;</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#category的匹配规则"><span class="nav-number">5.0.2.</span> <span class="nav-text"><a href="#category&#x7684;&#x5339;&#x914D;&#x89C4;&#x5219;" class="headerlink" title="category&#x7684;&#x5339;&#x914D;&#x89C4;&#x5219;"></a>category&#x7684;&#x5339;&#x914D;&#x89C4;&#x5219;</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#data匹配规则"><span class="nav-number">5.0.3.</span> <span class="nav-text"><a href="#data&#x5339;&#x914D;&#x89C4;&#x5219;" class="headerlink" title="data&#x5339;&#x914D;&#x89C4;&#x5219;"></a>data&#x5339;&#x914D;&#x89C4;&#x5219;</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#data的结构"><span class="nav-number">5.0.4.</span> <span class="nav-text"><a href="#data&#x7684;&#x7ED3;&#x6784;" class="headerlink" title="data&#x7684;&#x7ED3;&#x6784;"></a>data&#x7684;&#x7ED3;&#x6784;</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#URI的结构"><span class="nav-number">5.0.5.</span> <span class="nav-text"><a href="#URI&#x7684;&#x7ED3;&#x6784;" class="headerlink" title="URI&#x7684;&#x7ED3;&#x6784;"></a>URI&#x7684;&#x7ED3;&#x6784;</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Scheme"><span class="nav-number">5.0.6.</span> <span class="nav-text"><a href="#Scheme" class="headerlink" title="Scheme:"></a>Scheme:</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Host："><span class="nav-number">5.0.7.</span> <span class="nav-text"><a href="#Host&#xFF1A;" class="headerlink" title="Host&#xFF1A;"></a>Host&#xFF1A;</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Port："><span class="nav-number">5.0.8.</span> <span class="nav-text"><a href="#Port&#xFF1A;" class="headerlink" title="Port&#xFF1A;"></a>Port&#xFF1A;</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#path"><span class="nav-number">5.0.9.</span> <span class="nav-text"><a href="#path" class="headerlink" title="path:"></a>path:</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#pathPattern"><span class="nav-number">5.0.10.</span> <span class="nav-text"><a href="#pathPattern" class="headerlink" title="pathPattern:"></a>pathPattern:</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#pathPrefix"><span class="nav-number">5.0.11.</span> <span class="nav-text"><a href="#pathPrefix" class="headerlink" title="pathPrefix:"></a>pathPrefix:</span></a></li></ol></li></ol></li></ol></div>
-            
-
-          </div>
-        </section>
-      <!--/noindex-->
-      
-
-      
-
-    </div>
-  </aside>
+  <div id="toc" class="toc-article">
+    <strong class="toc-title">目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-1典型情况下生命周期"><span class="toc-text"><a href="#1-1-1&#x5178;&#x578B;&#x60C5;&#x51B5;&#x4E0B;&#x751F;&#x547D;&#x5468;&#x671F;" class="headerlink" title="1.1.1&#x5178;&#x578B;&#x60C5;&#x51B5;&#x4E0B;&#x751F;&#x547D;&#x5468;&#x671F;"></a>1.1.1&#x5178;&#x578B;&#x60C5;&#x51B5;&#x4E0B;&#x751F;&#x547D;&#x5468;&#x671F;</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#onCreate"><span class="toc-text"><a href="#onCreate" class="headerlink" title="onCreate()"></a>onCreate()</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#onRestart"><span class="toc-text"><a href="#onRestart" class="headerlink" title="onRestart()"></a>onRestart()</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#onStart"><span class="toc-text"><a href="#onStart" class="headerlink" title="onStart()"></a>onStart()</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#onResume"><span class="toc-text"><a href="#onResume" class="headerlink" title="onResume()"></a>onResume()</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#onPause"><span class="toc-text"><a href="#onPause" class="headerlink" title="onPause()"></a>onPause()</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#onStop"><span class="toc-text"><a href="#onStop" class="headerlink" title="onStop()"></a>onStop()</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#onDestory"><span class="toc-text"><a href="#onDestory" class="headerlink" title="onDestory()"></a>onDestory()</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Activity启动流程"><span class="toc-text"><a href="#Activity&#x542F;&#x52A8;&#x6D41;&#x7A0B;" class="headerlink" title="Activity&#x542F;&#x52A8;&#x6D41;&#x7A0B;"></a>Activity&#x542F;&#x52A8;&#x6D41;&#x7A0B;</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-2-异常情况下的生命周期"><span class="toc-text"><a href="#1-1-2-&#x5F02;&#x5E38;&#x60C5;&#x51B5;&#x4E0B;&#x7684;&#x751F;&#x547D;&#x5468;&#x671F;" class="headerlink" title="1.1.2 &#x5F02;&#x5E38;&#x60C5;&#x51B5;&#x4E0B;&#x7684;&#x751F;&#x547D;&#x5468;&#x671F;"></a>1.1.2 &#x5F02;&#x5E38;&#x60C5;&#x51B5;&#x4E0B;&#x7684;&#x751F;&#x547D;&#x5468;&#x671F;</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#情况一：资源相关的系统配置发生改变导致Activity被杀死并重新创建"><span class="toc-text"><a href="#&#x60C5;&#x51B5;&#x4E00;&#xFF1A;&#x8D44;&#x6E90;&#x76F8;&#x5173;&#x7684;&#x7CFB;&#x7EDF;&#x914D;&#x7F6E;&#x53D1;&#x751F;&#x6539;&#x53D8;&#x5BFC;&#x81F4;Activity&#x88AB;&#x6740;&#x6B7B;&#x5E76;&#x91CD;&#x65B0;&#x521B;&#x5EFA;" class="headerlink" title="&#x60C5;&#x51B5;&#x4E00;&#xFF1A;&#x8D44;&#x6E90;&#x76F8;&#x5173;&#x7684;&#x7CFB;&#x7EDF;&#x914D;&#x7F6E;&#x53D1;&#x751F;&#x6539;&#x53D8;&#x5BFC;&#x81F4;Activity&#x88AB;&#x6740;&#x6B7B;&#x5E76;&#x91CD;&#x65B0;&#x521B;&#x5EFA;"></a>&#x60C5;&#x51B5;&#x4E00;&#xFF1A;&#x8D44;&#x6E90;&#x76F8;&#x5173;&#x7684;&#x7CFB;&#x7EDF;&#x914D;&#x7F6E;&#x53D1;&#x751F;&#x6539;&#x53D8;&#x5BFC;&#x81F4;Activity&#x88AB;&#x6740;&#x6B7B;&#x5E76;&#x91CD;&#x65B0;&#x521B;&#x5EFA;</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#举例TextView的恢复过程"><span class="toc-text"><a href="#&#x4E3E;&#x4F8B;TextView&#x7684;&#x6062;&#x590D;&#x8FC7;&#x7A0B;" class="headerlink" title="&#x4E3E;&#x4F8B;TextView&#x7684;&#x6062;&#x590D;&#x8FC7;&#x7A0B;"></a>&#x4E3E;&#x4F8B;TextView&#x7684;&#x6062;&#x590D;&#x8FC7;&#x7A0B;</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#情况二：资源内存不足导致低优先级的Activity被杀死"><span class="toc-text"><a href="#&#x60C5;&#x51B5;&#x4E8C;&#xFF1A;&#x8D44;&#x6E90;&#x5185;&#x5B58;&#x4E0D;&#x8DB3;&#x5BFC;&#x81F4;&#x4F4E;&#x4F18;&#x5148;&#x7EA7;&#x7684;Activity&#x88AB;&#x6740;&#x6B7B;" class="headerlink" title="&#x60C5;&#x51B5;&#x4E8C;&#xFF1A;&#x8D44;&#x6E90;&#x5185;&#x5B58;&#x4E0D;&#x8DB3;&#x5BFC;&#x81F4;&#x4F4E;&#x4F18;&#x5148;&#x7EA7;&#x7684;Activity&#x88AB;&#x6740;&#x6B7B;"></a>&#x60C5;&#x51B5;&#x4E8C;&#xFF1A;&#x8D44;&#x6E90;&#x5185;&#x5B58;&#x4E0D;&#x8DB3;&#x5BFC;&#x81F4;&#x4F4E;&#x4F18;&#x5148;&#x7EA7;&#x7684;Activity&#x88AB;&#x6740;&#x6B7B;</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Activity的configChanges属性"><span class="toc-text"><a href="#Activity&#x7684;configChanges&#x5C5E;&#x6027;" class="headerlink" title="Activity&#x7684;configChanges&#x5C5E;&#x6027;"></a>Activity&#x7684;configChanges&#x5C5E;&#x6027;</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-Activity的启动模式"><span class="toc-text"><a href="#1-2-Activity&#x7684;&#x542F;&#x52A8;&#x6A21;&#x5F0F;" class="headerlink" title="1.2 Activity&#x7684;&#x542F;&#x52A8;&#x6A21;&#x5F0F;"></a>1.2 Activity&#x7684;&#x542F;&#x52A8;&#x6A21;&#x5F0F;</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-1-Activity的LaunchMode"><span class="toc-text"><a href="#1-2-1-Activity&#x7684;LaunchMode" class="headerlink" title="1.2.1 Activity&#x7684;LaunchMode"></a>1.2.1 Activity&#x7684;LaunchMode</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#standard"><span class="toc-text"><a href="#standard" class="headerlink" title="standard"></a>standard</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#singleTop"><span class="toc-text"><a href="#singleTop" class="headerlink" title="singleTop"></a>singleTop</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#singleTask"><span class="toc-text"><a href="#singleTask" class="headerlink" title="singleTask"></a>singleTask</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#singleInstance"><span class="toc-text"><a href="#singleInstance" class="headerlink" title="singleInstance"></a>singleInstance</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#如何指定Activity启动模式？"><span class="toc-text"><a href="#&#x5982;&#x4F55;&#x6307;&#x5B9A;Activity&#x542F;&#x52A8;&#x6A21;&#x5F0F;&#xFF1F;" class="headerlink" title="&#x5982;&#x4F55;&#x6307;&#x5B9A;Activity&#x542F;&#x52A8;&#x6A21;&#x5F0F;&#xFF1F;"></a>&#x5982;&#x4F55;&#x6307;&#x5B9A;Activity&#x542F;&#x52A8;&#x6A21;&#x5F0F;&#xFF1F;</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#1-2-2-Activity的Flags"><span class="toc-text"><a href="#1-2-2-Activity&#x7684;Flags" class="headerlink" title="1.2.2 Activity&#x7684;Flags"></a>1.2.2 Activity&#x7684;Flags</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#FLAG-ACTIVITY-NEW-TASK"><span class="toc-text"><a href="#FLAG-ACTIVITY-NEW-TASK" class="headerlink" title="FLAG_ACTIVITY_NEW_TASK"></a>FLAG_ACTIVITY_NEW_TASK</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#FLAG-ACTIVITY-SINGLE-TOP"><span class="toc-text"><a href="#FLAG-ACTIVITY-SINGLE-TOP" class="headerlink" title="FLAG_ACTIVITY_SINGLE_TOP"></a>FLAG_ACTIVITY_SINGLE_TOP</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#FLAG-ACTIVITY-CLEAR-TOP"><span class="toc-text"><a href="#FLAG-ACTIVITY-CLEAR-TOP" class="headerlink" title="FLAG_ACTIVITY_CLEAR_TOP"></a>FLAG_ACTIVITY_CLEAR_TOP</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#FLAG-ACTIVITY-EXCLUDE-FROM-RECENTS"><span class="toc-text"><a href="#FLAG-ACTIVITY-EXCLUDE-FROM-RECENTS" class="headerlink" title="FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS"></a>FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-3-IntentFilter的匹配规则"><span class="toc-text"><a href="#1-3-IntentFilter&#x7684;&#x5339;&#x914D;&#x89C4;&#x5219;" class="headerlink" title="1.3 IntentFilter&#x7684;&#x5339;&#x914D;&#x89C4;&#x5219;"></a>1.3 IntentFilter&#x7684;&#x5339;&#x914D;&#x89C4;&#x5219;</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#action的匹配规则"><span class="toc-text"><a href="#action&#x7684;&#x5339;&#x914D;&#x89C4;&#x5219;" class="headerlink" title="action&#x7684;&#x5339;&#x914D;&#x89C4;&#x5219;"></a>action&#x7684;&#x5339;&#x914D;&#x89C4;&#x5219;</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#category的匹配规则"><span class="toc-text"><a href="#category&#x7684;&#x5339;&#x914D;&#x89C4;&#x5219;" class="headerlink" title="category&#x7684;&#x5339;&#x914D;&#x89C4;&#x5219;"></a>category&#x7684;&#x5339;&#x914D;&#x89C4;&#x5219;</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#data匹配规则"><span class="toc-text"><a href="#data&#x5339;&#x914D;&#x89C4;&#x5219;" class="headerlink" title="data&#x5339;&#x914D;&#x89C4;&#x5219;"></a>data&#x5339;&#x914D;&#x89C4;&#x5219;</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#data的结构"><span class="toc-text"><a href="#data&#x7684;&#x7ED3;&#x6784;" class="headerlink" title="data&#x7684;&#x7ED3;&#x6784;"></a>data&#x7684;&#x7ED3;&#x6784;</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#URI的结构"><span class="toc-text"><a href="#URI&#x7684;&#x7ED3;&#x6784;" class="headerlink" title="URI&#x7684;&#x7ED3;&#x6784;"></a>URI&#x7684;&#x7ED3;&#x6784;</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Scheme"><span class="toc-text"><a href="#Scheme" class="headerlink" title="Scheme:"></a>Scheme:</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Host："><span class="toc-text"><a href="#Host&#xFF1A;" class="headerlink" title="Host&#xFF1A;"></a>Host&#xFF1A;</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Port："><span class="toc-text"><a href="#Port&#xFF1A;" class="headerlink" title="Port&#xFF1A;"></a>Port&#xFF1A;</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#path"><span class="toc-text"><a href="#path" class="headerlink" title="path:"></a>path:</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#pathPattern"><span class="toc-text"><a href="#pathPattern" class="headerlink" title="pathPattern:"></a>pathPattern:</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#pathPrefix"><span class="toc-text"><a href="#pathPrefix" class="headerlink" title="pathPrefix:"></a>pathPrefix:</span></a></li></ol></li></ol></li></ol>
+  </div>
 
 
-        
-      </div>
-    </main>
-
-    <footer id="footer" class="footer">
-      <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
-  <span class="with-love">
-    <i class="fa fa-user"></i>
-  </span>
-  <span class="author" itemprop="copyrightHolder">tracyliu</span>
-
-  
+  </div>
+</div>
+<div class="copyright">
+    <span>本作品采用</span>
+    <a href="https://creativecommons.org/licenses/by/4.0/">知识共享署名 4.0 国际许可协议</a>
+    <span>进行许可。 转载时请注明原文链接。</span>
+</div>
+<div class="share" style="width: 100%;">
+ 
 </div>
 
-
-  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
-
-
-
-  <span class="post-meta-divider">|</span>
-
-
-
-  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
-
-
-
-
+  
+    <div class="post-nav">
+      <div class="post-nav-item post-nav-next">
         
-
-
-
-
-
-
-
+          <span>〈 </span>
+          <a href="/2017/12/25/Ubantu_bugs/" rel="next" title="Ubantu16.04踩坑小记（没有wifi，无法apt update）">
+          Ubantu16.04踩坑小记（没有wifi，无法apt update）
+          </a>
         
       </div>
-    </footer>
-
-    
-      <div class="back-to-top">
-        <i class="fa fa-arrow-up"></i>
+  
+      <div class="post-nav-item post-nav-prev">
+          
+          <a href="/2018/01/30/HLS-protocol-basic-knowledge/" rel="prev" title="HTTP Live Streaming (HLS) 协议科普扫盲">
+            HTTP Live Streaming (HLS) 协议科普扫盲
+          </a>
+          <span>〉</span>
         
       </div>
-    
+    </div>
+  
+
+
+    </div>
 
     
 
   </div>
-
+  <footer class="footer text-center">
+    <div id="bottom-inner">
+        <a class="bottom-item" href="https://blog.0xff000000.com">首页</a> |
+        <a class="bottom-item" href="" target="_blank">主站</a> |
+        <a class="bottom-item" href="https://github.com/tracyliu1" target="_blank">GitHub</a> |
+        <a class="bottom-item" href="https://hexo.io" target="_blank">Powered by hexo</a> |
+        <a class="bottom-item" href="https://github.com/KevinOfNeu/hexo-theme-xoxo" target="_blank">Theme xoxo</a>
+    </div>
+</footer>
   
 
-<script type="text/javascript">
-  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
-    window.Promise = null;
-  }
+<script>
+  (function(window, document, undefined) {
+
+    var timer = null;
+
+    function returnTop() {
+      cancelAnimationFrame(timer);
+      timer = requestAnimationFrame(function fn() {
+        var oTop = document.body.scrollTop || document.documentElement.scrollTop;
+        if (oTop > 0) {
+          document.body.scrollTop = document.documentElement.scrollTop = oTop - 50;
+          timer = requestAnimationFrame(fn);
+        } else {
+          cancelAnimationFrame(timer);
+        }
+      });
+    }
+
+    var hearts = [];
+    window.requestAnimationFrame = (function() {
+      return window.requestAnimationFrame ||
+        window.webkitRequestAnimationFrame ||
+        window.mozRequestAnimationFrame ||
+        window.oRequestAnimationFrame ||
+        window.msRequestAnimationFrame ||
+        function(callback) {
+          setTimeout(callback, 1000 / 60);
+        }
+    })();
+    init();
+
+    function init() {
+      css(".heart{z-index:9999;width: 10px;height: 10px;position: fixed;background: #f00;transform: rotate(45deg);-webkit-transform: rotate(45deg);-moz-transform: rotate(45deg);}.heart:after,.heart:before{content: '';width: inherit;height: inherit;background: inherit;border-radius: 50%;-webkit-border-radius: 50%;-moz-border-radius: 50%;position: absolute;}.heart:after{top: -5px;}.heart:before{left: -5px;}");
+      attachEvent();
+      gameloop();
+      addMenuEvent();
+    }
+
+    function gameloop() {
+      for (var i = 0; i < hearts.length; i++) {
+        if (hearts[i].alpha <= 0) {
+          document.body.removeChild(hearts[i].el);
+          hearts.splice(i, 1);
+          continue;
+        }
+        hearts[i].y--;
+        hearts[i].scale += 0.004;
+        hearts[i].alpha -= 0.013;
+        hearts[i].el.style.cssText = "left:" + hearts[i].x + "px;top:" + hearts[i].y + "px;opacity:" + hearts[i].alpha + ";transform:scale(" + hearts[i].scale + "," + hearts[i].scale + ") rotate(45deg);background:" + hearts[i].color;
+      }
+      requestAnimationFrame(gameloop);
+    }
+
+    /**
+     * 给logo设置点击事件
+     * 
+     * - 回到顶部
+     * - 出现爱心
+     */
+    function attachEvent() {
+      var old = typeof window.onclick === "function" && window.onclick;
+      var logo = document.getElementById("logo");
+      if (logo) {
+        logo.onclick = function(event) {
+          returnTop();
+          old && old();
+          createHeart(event);
+        }
+      }
+      
+    }
+
+    function createHeart(event) {
+      var d = document.createElement("div");
+      d.className = "heart";
+      hearts.push({
+        el: d,
+        x: event.clientX - 5,
+        y: event.clientY - 5,
+        scale: 1,
+        alpha: 1,
+        color: randomColor()
+      });
+      document.body.appendChild(d);
+    }
+
+    function css(css) {
+      var style = document.createElement("style");
+      style.type = "text/css";
+      try {
+        style.appendChild(document.createTextNode(css));
+      } catch (ex) {
+        style.styleSheet.cssText = css;
+      }
+      document.getElementsByTagName('head')[0].appendChild(style);
+    }
+
+    function randomColor() {
+      // return "rgb(" + (~~(Math.random() * 255)) + "," + (~~(Math.random() * 255)) + "," + (~~(Math.random() * 255)) + ")";
+      return "#F44336";
+    }
+
+    function addMenuEvent() {
+      var menu = document.getElementById('menu-main-post');
+      if (menu) {
+        var toc = document.getElementById('toc');
+        if (toc) {
+          menu.onclick = function() {
+            if (toc) {
+              if (toc.style.display == 'block') {
+                toc.style.display = 'none';
+              } else {
+                toc.style.display = 'block';
+              }
+            }
+          };
+        } else {
+          menu.style.display = 'none';
+        }
+      }
+    }
+
+  })(window, document);
 </script>
 
-
-
-
-
-
-
-
-
   
 
 
-
-
-
-
-
-
-
-
-
-
-  
-  
-    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
-  
-
-
-  
-
-
-  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
-
-  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
-
-
-
-  
-  
-
-
-  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
-
-  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
-
-
-
-  
-  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
-<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
-
-
-
-  
-
-
-  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
-
-
-
-  
-
-
-  
-
-
-
-
-	
-
-
-
-
-
-  
-
-
-
-
-
-  
-
-
-
-
-
-
-
-
-
-
-
-
-  
-
-
-
-
-
-  
-
-  
-
-  
-
-  
-  
-
-  
-
-  
-
-  
 
 </body>
 </html>

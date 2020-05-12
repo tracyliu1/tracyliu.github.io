@@ -1,0 +1,366 @@
+
+<!DOCTYPE html>
+<html lang="zh-Hans">
+
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#202020"/>
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <script src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
+  
+  
+    <meta name="keywords" content="Android调试," />
+  
+
+  
+    <meta name="description" content="it is a personal blogs" />
+  
+  
+  <link rel="icon" type="image/x-icon" href="/logo.png">
+  <title>Android Debug Tools [ tracyliu ]</title>
+  
+    <!-- stylesheets list from config.yml -->
+    
+      <link rel="stylesheet" href="//cdn.bootcss.com/pure/1.0.0/pure-min.css">
+    
+      <link rel="stylesheet" href="/css/xoxo.css">
+    
+  
+</head>
+
+
+<body>
+  <div class="nav-container">
+    <nav class="home-menu pure-menu pure-menu-horizontal">
+  <a class="pure-menu-heading" href="/">
+    <img class="avatar" src="http://yoursite.com/images/logo.png">
+    <span class="title">tracyliu</span>
+  </a>
+
+  <ul class="pure-menu-list clearfix">
+      
+          
+            <li class="pure-menu-item"><a href="/" class="pure-menu-link">首页</a></li>
+          
+      
+          
+            <li class="pure-menu-item"><a href="/archives" class="pure-menu-link">归档</a></li>
+          
+      
+          
+            <li class="pure-menu-item"><a href="/tags" class="pure-menu-link">标签</a></li>
+          
+      
+          
+            <li class="pure-menu-item"><a href="https://0xff000000.com" class="pure-menu-link">关于</a></li>
+          
+      
+  </ul>
+   
+</nav>
+  </div>
+
+  <div class="container" id="content-outer">
+    <div class="inner" id="content-inner">
+      <div class="post-container">
+  <article class="post" id="post">
+    <header class="post-header text-center">
+      <h1 class="title">
+        Android Debug Tools
+      </h1>
+      <span>
+        
+        <time class="time" datetime="2020-05-12T06:01:47.000Z">
+        2020-05-12
+      </time>
+        
+      </span>
+      <span class="slash">/</span>
+      <span class="post-meta">
+      <span class="post-tags">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android调试/">Android调试</a></li></ul>
+      </span>
+    </span>
+      <span class="slash">/</span>
+      <span class="read">
+      <span id="busuanzi_value_page_pv"></span> 点击
+    </span>
+      <span class="slash">/</span>
+      <span class="read">阅读耗时 11 分钟</span>
+    </header>
+
+    <div class="post-content">
+      <h3 id="1-bugreport"><a href="#1-bugreport" class="headerlink" title="1.bugreport"></a>1.bugreport</h3><blockquote>
+<p>java –jar chkbugreport.jar bugreport.txt</p>
+</blockquote>
+<p><a href="https://github.com/sonyxperiadev/ChkBugReport/wiki" target="_blank" rel="noopener">ChkBugReport</a></p>
+<p><a href="http://gityuan.com/2016/06/11/bugreport-2/" target="_blank" rel="noopener">bugreport实战篇</a></p>
+<hr>
+<h3 id="2-simpleperf"><a href="#2-simpleperf" class="headerlink" title="2.simpleperf"></a>2.simpleperf</h3><h2 id="simpleperf"><a href="#simpleperf" class="headerlink" title="simpleperf"></a><a href="https://developer.android.com/ndk/guides/simpleperf" target="_blank" rel="noopener">simpleperf</a></h2><h3 id="3-MAT"><a href="#3-MAT" class="headerlink" title="3. MAT"></a>3. MAT</h3><p>命令行提取hprof文件</p>
+<ol>
+<li>adb shell am dumpheap <processname> <filename></filename></processname></li>
+<li>adb pull <filename> <dir></dir></filename></li>
+<li>/android-sdk/platform-tools/hprof-conv <filename> <newfilename>.hprof</newfilename></filename></li>
+<li>使用MAT分析</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Error opening heap dump &apos;memory-20190216T171338.hprof&apos;. Check the error log for further details. Error opening heap dump &apos;memory-20190216T171338.hprof&apos;. Check the error log for further details. Unknown HPROF Version (JAVA PROFILE 1.0.3) (java.io.IOException) Unknown HPROF Version (JAVA PROFILE 1.0.3)</span><br></pre></td></tr></table></figure>
+<p>出现这个错误是因为Android导出的hprof文件格式与标准的JAVA hprof格式不一样，根本原因是虚拟机不一样造成的，在导入MAT前需要用AndroidSDK/tools/hprof-conf.exe进行转换： 例如：</p>
+<blockquote>
+<p>hprof-conv android.hprof mat.hprof<br>hprof-conv /Users/mypro/Desktop/mat/test1.hprof /Users/mypro/Desktop/mat/test2.hprof</p>
+</blockquote>
+<h4 id="使用MAT："><a href="#使用MAT：" class="headerlink" title="使用MAT："></a>使用MAT：</h4><ol>
+<li><p>在使用MAT之前，先使用as的Profile中的Memory去获取要分析的堆内存快照文件.hprof，如果要测试某个页面是否产生内存泄漏，可以先dump出没进入该页面的内存快照文件.hprof，然后，通常执行5次进入/退出该页面，然后再dump出此刻的内存快照文件.hprof，最后，将两者比较，如果内存相除明显，则可能发生内存泄露。（注意:MAT需要标准的.hprof文件，因此在as的Profiler中GC后dump出的内存快照文件.hprof必须手动使用android sdk platform-tools下的hprof-conv程序进行转换才能被MAT打开）</p>
+</li>
+<li><p>然后，使用MAT打开前面保存的2份.hprof文件，打开Overview界面，在Overview界面下面有4中action，其中最常用的就是Histogram和Dominator Tree。</p>
+</li>
+</ol>
+<ul>
+<li><p>Dominator Tree：支配树，按对象大小降序列出对象和其所引用的对象，注重引用关系分析。选择Group by package，找到当前要检测的类（或者使用顶部的Regex直接搜索），查看它的Object数目是否正确，如果多了，则判断发生了内存泄露。然后，右击该类，选择Merge Shortest Paths to GC Root中的exclude all phantom/weak/soft etc.references选项来查看该类的GC强引用链。最后，通过引用链即可看到最终强引用该类的对象。</p>
+</li>
+<li><p>Histogram：直方图注重量的分析。使用方式与Dominator Tree类似。</p>
+</li>
+</ul>
+<ol>
+<li>对比hprof文件，检测出复杂情况下的内存泄露：</li>
+</ol>
+<h5 id="通用对比方式："><a href="#通用对比方式：" class="headerlink" title="通用对比方式："></a>通用对比方式：</h5><p>在Navigation History下面选择想要对比的dominator_tree/histogram，右击选择Add to Compare Basket，然后在Compare Basket一栏中点击红色感叹号（Compare the results）生成对比表格（Compared Tables），在顶部Regex输入要检测的类，查看引用关系或对象数量去进行分析即可</p>
+<h5 id="针对于Historam的快速对比方式："><a href="#针对于Historam的快速对比方式：" class="headerlink" title="针对于Historam的快速对比方式："></a>针对于Historam的快速对比方式：</h5><p>直接选择Histogram上方的Compare to another Heap Dump选择要比较的hprof文件的Historam即可。</p>
+<hr>
+<h3 id="4-打印trace"><a href="#4-打印trace" class="headerlink" title="4.打印trace"></a>4.打印trace</h3><ol>
+<li>cat proc/[pid]/stack ==&gt; 查看kernel调用栈</li>
+<li>debuggerd -b [pid] ==&gt; 也不可以不带参数-b, 则直接输出到/data/tombstones/目录</li>
+<li>kill -3 [pid] ==&gt; 收集指定进程的trace 生成/data/anr/traces.txt文件</li>
+<li>lsof [pid] ==&gt; 查看进程所打开的文件</li>
+</ol>
+<p><a href="http://gityuan.com/2016/11/26/art-trace/" target="_blank" rel="noopener">java trace文件解读</a></p>
+<hr>
+<h3 id="5-GDB"><a href="#5-GDB" class="headerlink" title="5.GDB"></a>5.GDB</h3><p><a href="http://gityuan.com/2017/09/09/gdb/" target="_blank" rel="noopener">gdb调试 native crash</a></p>
+<hr>
+<h3 id="6-addr2line"><a href="#6-addr2line" class="headerlink" title="6.addr2line"></a>6.addr2line</h3><p><a href="http://gityuan.com/2017/09/02/addr2line/" target="_blank" rel="noopener">介绍addr2line调试命令</a></p>
+<hr>
+<h3 id="7-Profiler"><a href="#7-Profiler" class="headerlink" title="7.Profiler"></a>7.Profiler</h3><p>使用AndroidProfiler的MEMORY工具：</p>
+<p>运行程序，对每一个页面进行内存分析检查。首先，反复打开关闭页面5次，然后收到GC（点击Profile MEMORY左上角的垃圾桶图标），如果此时total内存还没有恢复到之前的数值，则可能发生了内存泄露。此时，再点击Profile MEMORY左上角的垃圾桶图标旁的heap dump按钮查看当前的内存堆栈情况，选择按包名查找，找到当前测试的Activity，如果引用了多个实例，则表明发生了内存泄露。</p>
+<p><a href="https://developer.android.google.cn/studio/intro?hl=zh_cn" target="_blank" rel="noopener">探索 Android Studio</a></p>
+<p><a href="https://developer.android.google.cn/studio/profile/android-profiler?hl=zh_cn" target="_blank" rel="noopener">利用 Android Profiler 测量应用性能</a></p>
+<blockquote>
+<p>要打开 Profiler 窗口，请依次选择 View &gt; Tool Windows &gt; Profiler，</p>
+</blockquote>
+<p><a href="https://developer.android.google.cn/studio/profile/cpu-profiler.html?hl=zh_cn" target="_blank" rel="noopener">使用 CPU Profiler 检查 CPU 活动</a></p>
+<h4 id="使用-Debug-API-记录-CPU-活动"><a href="#使用-Debug-API-记录-CPU-活动" class="headerlink" title="使用 Debug API 记录 CPU 活动"></a>使用 Debug API 记录 CPU 活动</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Debug.startMethodTracing(&quot;OkayDock&quot; );</span><br><span class="line">Debug.stopMethodTracing();</span><br></pre></td></tr></table></figure>
+<h5 id="trace文件生成位置"><a href="#trace文件生成位置" class="headerlink" title="trace文件生成位置"></a>trace文件生成位置</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/sdcard/Android/data/com.okay.dock/files/OkayDock.trace</span><br></pre></td></tr></table></figure>
+<p>可以直接用AS打开</p>
+<p><a href="https://developer.android.google.cn/studio/profile/memory-profiler.html?hl=zh_cn#save-hprof" target="_blank" rel="noopener">使用 Memory Profiler 查看 Java 堆和内存分配</a></p>
+<p><a href="https://developer.android.google.cn/studio/profile/network-profiler.html?hl=zh_cn" target="_blank" rel="noopener">使用 Network Profiler 检查网络流量</a></p>
+<p><a href="https://developer.android.google.cn/studio/profile/energy-profiler.html?hl=zh_cn" target="_blank" rel="noopener">使用 Energy Profiler 检查耗电量</a></p>
+<hr>
+<h3 id="8-Systrace"><a href="#8-Systrace" class="headerlink" title="8.Systrace"></a>8.Systrace</h3><blockquote>
+<p>/Users/tracyliu/Library/Android/sdk/platform-tools/systrace</p>
+</blockquote>
+<p><a href="https://developer.android.google.cn/studio/profile/systrace/command-line?hl=zh_cn" target="_blank" rel="noopener">在命令行上捕获系统跟踪信息</a><br><a href="https://developer.android.google.cn/studio/profile/systrace" target="_blank" rel="noopener">Systrace 概览</a><br><a href="https://source.android.google.cn/devices/tech/debug/systrace" target="_blank" rel="noopener">了解 Systrace</a></p>
+<p><a href="https://juejin.im/post/5b3cce09e51d45198651069f#heading-12" target="_blank" rel="noopener">面试Tip之Android优化工具Systrace</a><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">在进程的上面有一条很细的进度条，包含了该线程的状态：</span><br><span class="line">　　灰色： 睡眠。</span><br><span class="line">　　蓝色： 可以运行（它可以运行，但还未被调度运行）。</span><br><span class="line">　　绿色： 正在运行（调度程序认为它正在运行）。</span><br><span class="line">　　红色： 不间断的睡眠（通常发生在内核锁上）， 指出I / O负载，对于性能问题的调试非常有用</span><br><span class="line">　　橙色： 由于I / O负载导致的不间断睡眠。</span><br><span class="line">　　要查看不间断睡眠的原因（可从sched_blocked_reason跟踪点获取），请选择红色不间断睡眠切片。</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">按键操作       作用</span><br><span class="line">w             放大，[+shift]速度更快</span><br><span class="line">s             缩小，[+shift]速度更快</span><br><span class="line">a             左移，[+shift]速度更快</span><br><span class="line">d             右移，[+shift]速度更快</span><br><span class="line"></span><br><span class="line">f             放大当前选定区域</span><br><span class="line">m             标记当前选定区域</span><br><span class="line">v             高亮VSync</span><br><span class="line">g             切换是否显示60hz的网格线</span><br><span class="line">            恢复trace到初始态，这里是数字0而非字母o</span><br><span class="line"></span><br><span class="line">h             切换是否显示详情</span><br><span class="line">/             搜索关键字</span><br><span class="line">enter　　　　　　显示搜索结果，可通过← →定位搜索结果</span><br><span class="line">`             显示/隐藏脚本控制台</span><br><span class="line">?             显示帮助功能</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./systrace.py -t 10 sched gfx view wm am app webview -a com.okay.dock</span><br></pre></td></tr></table></figure>
+<p><a href="http://gityuan.com/2016/01/17/systrace/" target="_blank" rel="noopener">性能工具Systrace</a></p>
+<hr>
+<h3 id="9-Uiautomatorviewer"><a href="#9-Uiautomatorviewer" class="headerlink" title="9.Uiautomatorviewer"></a>9.Uiautomatorviewer</h3><h2 id="gt-open-Users-tracyliu-Library-Android-sdk-tools-bin-uiautomatorviewer"><a href="#gt-open-Users-tracyliu-Library-Android-sdk-tools-bin-uiautomatorviewer" class="headerlink" title="&gt; open /Users/tracyliu/Library/Android/sdk/tools/bin/uiautomatorviewer"></a>&gt; open /Users/tracyliu/Library/Android/sdk/tools/bin/uiautomatorviewer</h2><h3 id="10-反编译"><a href="#10-反编译" class="headerlink" title="10.反编译"></a>10.反编译</h3><h4 id="Apktool"><a href="#Apktool" class="headerlink" title="Apktool"></a>Apktool</h4><p><a href="https://ibotpeaches.github.io/Apktool/install/" target="_blank" rel="noopener">https://ibotpeaches.github.io/Apktool/install/</a></p>
+<blockquote>
+<p>apktool d xxx.apk<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">1. 将下载好的apktool文件与apktool_2.3.1.jar文件准备好，并将apktool_2.3.1.jar更名为apktool.jar；</span><br><span class="line">2. 将apktool.jar与apktool移动到/usr/local/bin目录下(可以通过在终端中输出命令open /usr/local/bin来打开这个目录)；</span><br><span class="line">3. 为上述两个文件增加可执行权限，即在终端中输入并执行：</span><br><span class="line"> chmod +x apktool.jar</span><br><span class="line"> chmod +x apktool</span><br><span class="line">4. 在终端输入apktool看是否可以运行，如果不可以需要在系统偏好设置中打开安全与隐私中点击仍要运行apktool.jar；</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<h4 id="dex2jar"><a href="#dex2jar" class="headerlink" title="dex2jar"></a>dex2jar</h4><p><a href="https://sourceforge.net/projects/dex2jar/files/" target="_blank" rel="noopener">https://sourceforge.net/projects/dex2jar/files/</a></p>
+<hr>
+<h3 id="11-DDMS"><a href="#11-DDMS" class="headerlink" title="11.DDMS"></a>11.DDMS</h3><p>Android Studio 3.0开始 DDMS弃用</p>
+<p>可以在</p>
+<blockquote>
+<p>SDK/tools/monitor双击打开DDMS</p>
+</blockquote>
+
+    </div>
+
+    <div>全文完。</div>
+  </article>
+  <div class="toc-container">
+    
+  <div id="toc" class="toc-article">
+    <strong class="toc-title">目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-bugreport"><span class="toc-text"><a href="#1-bugreport" class="headerlink" title="1.bugreport"></a>1.bugreport</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-simpleperf"><span class="toc-text"><a href="#2-simpleperf" class="headerlink" title="2.simpleperf"></a>2.simpleperf</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#simpleperf"><span class="toc-text"><a href="#simpleperf" class="headerlink" title="simpleperf"></a><a href="https://developer.android.com/ndk/guides/simpleperf" target="_blank" rel="noopener">simpleperf</a></span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-MAT"><span class="toc-text"><a href="#3-MAT" class="headerlink" title="3. MAT"></a>3. MAT</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#使用MAT："><span class="toc-text"><a href="#&#x4F7F;&#x7528;MAT&#xFF1A;" class="headerlink" title="&#x4F7F;&#x7528;MAT&#xFF1A;"></a>&#x4F7F;&#x7528;MAT&#xFF1A;</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#通用对比方式："><span class="toc-text"><a href="#&#x901A;&#x7528;&#x5BF9;&#x6BD4;&#x65B9;&#x5F0F;&#xFF1A;" class="headerlink" title="&#x901A;&#x7528;&#x5BF9;&#x6BD4;&#x65B9;&#x5F0F;&#xFF1A;"></a>&#x901A;&#x7528;&#x5BF9;&#x6BD4;&#x65B9;&#x5F0F;&#xFF1A;</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#针对于Historam的快速对比方式："><span class="toc-text"><a href="#&#x9488;&#x5BF9;&#x4E8E;Historam&#x7684;&#x5FEB;&#x901F;&#x5BF9;&#x6BD4;&#x65B9;&#x5F0F;&#xFF1A;" class="headerlink" title="&#x9488;&#x5BF9;&#x4E8E;Historam&#x7684;&#x5FEB;&#x901F;&#x5BF9;&#x6BD4;&#x65B9;&#x5F0F;&#xFF1A;"></a>&#x9488;&#x5BF9;&#x4E8E;Historam&#x7684;&#x5FEB;&#x901F;&#x5BF9;&#x6BD4;&#x65B9;&#x5F0F;&#xFF1A;</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-打印trace"><span class="toc-text"><a href="#4-&#x6253;&#x5370;trace" class="headerlink" title="4.&#x6253;&#x5370;trace"></a>4.&#x6253;&#x5370;trace</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-GDB"><span class="toc-text"><a href="#5-GDB" class="headerlink" title="5.GDB"></a>5.GDB</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-addr2line"><span class="toc-text"><a href="#6-addr2line" class="headerlink" title="6.addr2line"></a>6.addr2line</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-Profiler"><span class="toc-text"><a href="#7-Profiler" class="headerlink" title="7.Profiler"></a>7.Profiler</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#使用-Debug-API-记录-CPU-活动"><span class="toc-text"><a href="#&#x4F7F;&#x7528;-Debug-API-&#x8BB0;&#x5F55;-CPU-&#x6D3B;&#x52A8;" class="headerlink" title="&#x4F7F;&#x7528; Debug API &#x8BB0;&#x5F55; CPU &#x6D3B;&#x52A8;"></a>&#x4F7F;&#x7528; Debug API &#x8BB0;&#x5F55; CPU &#x6D3B;&#x52A8;</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#trace文件生成位置"><span class="toc-text"><a href="#trace&#x6587;&#x4EF6;&#x751F;&#x6210;&#x4F4D;&#x7F6E;" class="headerlink" title="trace&#x6587;&#x4EF6;&#x751F;&#x6210;&#x4F4D;&#x7F6E;"></a>trace&#x6587;&#x4EF6;&#x751F;&#x6210;&#x4F4D;&#x7F6E;</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8-Systrace"><span class="toc-text"><a href="#8-Systrace" class="headerlink" title="8.Systrace"></a>8.Systrace</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#9-Uiautomatorviewer"><span class="toc-text"><a href="#9-Uiautomatorviewer" class="headerlink" title="9.Uiautomatorviewer"></a>9.Uiautomatorviewer</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#gt-open-Users-tracyliu-Library-Android-sdk-tools-bin-uiautomatorviewer"><span class="toc-text"><a href="#gt-open-Users-tracyliu-Library-Android-sdk-tools-bin-uiautomatorviewer" class="headerlink" title="&gt; open /Users/tracyliu/Library/Android/sdk/tools/bin/uiautomatorviewer"></a>&gt; open /Users/tracyliu/Library/Android/sdk/tools/bin/uiautomatorviewer</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#10-反编译"><span class="toc-text"><a href="#10-&#x53CD;&#x7F16;&#x8BD1;" class="headerlink" title="10.&#x53CD;&#x7F16;&#x8BD1;"></a>10.&#x53CD;&#x7F16;&#x8BD1;</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Apktool"><span class="toc-text"><a href="#Apktool" class="headerlink" title="Apktool"></a>Apktool</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#dex2jar"><span class="toc-text"><a href="#dex2jar" class="headerlink" title="dex2jar"></a>dex2jar</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#11-DDMS"><span class="toc-text"><a href="#11-DDMS" class="headerlink" title="11.DDMS"></a>11.DDMS</span></a></li></ol>
+  </div>
+
+
+  </div>
+</div>
+<div class="copyright">
+    <span>本作品采用</span>
+    <a href="https://creativecommons.org/licenses/by/4.0/">知识共享署名 4.0 国际许可协议</a>
+    <span>进行许可。 转载时请注明原文链接。</span>
+</div>
+<div class="share" style="width: 100%;">
+ 
+</div>
+
+  
+    <div class="post-nav">
+      <div class="post-nav-item post-nav-next">
+        
+          <span>〈 </span>
+          <a href="/2018/04/11/BuildTypes-ProductFlavors/" rel="next" title="动态配置LauncherActivity/根据不同资源文件生成apk">
+          动态配置LauncherActivity/根据不同资源文件生成apk
+          </a>
+        
+      </div>
+  
+      <div class="post-nav-item post-nav-prev">
+          
+      </div>
+    </div>
+  
+
+
+    </div>
+
+    
+
+  </div>
+  <footer class="footer text-center">
+    <div id="bottom-inner">
+        <a class="bottom-item" href="https://blog.0xff000000.com">首页</a> |
+        <a class="bottom-item" href="" target="_blank">主站</a> |
+        <a class="bottom-item" href="https://github.com/tracyliu1" target="_blank">GitHub</a> |
+        <a class="bottom-item" href="https://hexo.io" target="_blank">Powered by hexo</a> |
+        <a class="bottom-item" href="https://github.com/KevinOfNeu/hexo-theme-xoxo" target="_blank">Theme xoxo</a>
+    </div>
+</footer>
+  
+
+<script>
+  (function(window, document, undefined) {
+
+    var timer = null;
+
+    function returnTop() {
+      cancelAnimationFrame(timer);
+      timer = requestAnimationFrame(function fn() {
+        var oTop = document.body.scrollTop || document.documentElement.scrollTop;
+        if (oTop > 0) {
+          document.body.scrollTop = document.documentElement.scrollTop = oTop - 50;
+          timer = requestAnimationFrame(fn);
+        } else {
+          cancelAnimationFrame(timer);
+        }
+      });
+    }
+
+    var hearts = [];
+    window.requestAnimationFrame = (function() {
+      return window.requestAnimationFrame ||
+        window.webkitRequestAnimationFrame ||
+        window.mozRequestAnimationFrame ||
+        window.oRequestAnimationFrame ||
+        window.msRequestAnimationFrame ||
+        function(callback) {
+          setTimeout(callback, 1000 / 60);
+        }
+    })();
+    init();
+
+    function init() {
+      css(".heart{z-index:9999;width: 10px;height: 10px;position: fixed;background: #f00;transform: rotate(45deg);-webkit-transform: rotate(45deg);-moz-transform: rotate(45deg);}.heart:after,.heart:before{content: '';width: inherit;height: inherit;background: inherit;border-radius: 50%;-webkit-border-radius: 50%;-moz-border-radius: 50%;position: absolute;}.heart:after{top: -5px;}.heart:before{left: -5px;}");
+      attachEvent();
+      gameloop();
+      addMenuEvent();
+    }
+
+    function gameloop() {
+      for (var i = 0; i < hearts.length; i++) {
+        if (hearts[i].alpha <= 0) {
+          document.body.removeChild(hearts[i].el);
+          hearts.splice(i, 1);
+          continue;
+        }
+        hearts[i].y--;
+        hearts[i].scale += 0.004;
+        hearts[i].alpha -= 0.013;
+        hearts[i].el.style.cssText = "left:" + hearts[i].x + "px;top:" + hearts[i].y + "px;opacity:" + hearts[i].alpha + ";transform:scale(" + hearts[i].scale + "," + hearts[i].scale + ") rotate(45deg);background:" + hearts[i].color;
+      }
+      requestAnimationFrame(gameloop);
+    }
+
+    /**
+     * 给logo设置点击事件
+     * 
+     * - 回到顶部
+     * - 出现爱心
+     */
+    function attachEvent() {
+      var old = typeof window.onclick === "function" && window.onclick;
+      var logo = document.getElementById("logo");
+      if (logo) {
+        logo.onclick = function(event) {
+          returnTop();
+          old && old();
+          createHeart(event);
+        }
+      }
+      
+    }
+
+    function createHeart(event) {
+      var d = document.createElement("div");
+      d.className = "heart";
+      hearts.push({
+        el: d,
+        x: event.clientX - 5,
+        y: event.clientY - 5,
+        scale: 1,
+        alpha: 1,
+        color: randomColor()
+      });
+      document.body.appendChild(d);
+    }
+
+    function css(css) {
+      var style = document.createElement("style");
+      style.type = "text/css";
+      try {
+        style.appendChild(document.createTextNode(css));
+      } catch (ex) {
+        style.styleSheet.cssText = css;
+      }
+      document.getElementsByTagName('head')[0].appendChild(style);
+    }
+
+    function randomColor() {
+      // return "rgb(" + (~~(Math.random() * 255)) + "," + (~~(Math.random() * 255)) + "," + (~~(Math.random() * 255)) + ")";
+      return "#F44336";
+    }
+
+    function addMenuEvent() {
+      var menu = document.getElementById('menu-main-post');
+      if (menu) {
+        var toc = document.getElementById('toc');
+        if (toc) {
+          menu.onclick = function() {
+            if (toc) {
+              if (toc.style.display == 'block') {
+                toc.style.display = 'none';
+              } else {
+                toc.style.display = 'block';
+              }
+            }
+          };
+        } else {
+          menu.style.display = 'none';
+        }
+      }
+    }
+
+  })(window, document);
+</script>
+
+  
+
+
+
+</body>
+</html>
