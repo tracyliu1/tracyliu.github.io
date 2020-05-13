@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="it is a personal blogs">
+  <meta name="keyword" content="hexo-theme, vuejs">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      视音频技术基础概念 | tracyliu
+    
+  </title>
+  <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+  
+    <link rel="stylesheet" href="/css/plugins/gitment.css">
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+    <script src="/js/qrious.js"></script>
+  
+  
+    <script src="/js/gitment.js"></script>
+  
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+  
+</head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>tracyliu</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">Tags</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/project/" class="item-link">Projects</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">About</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">Tags</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">Archives</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/project/" class="menu-link">Projects</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">About</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>视音频技术基础概念</h2>
+  <p class="post-date">2018-02-07</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><p>视音频技术主要包含：封装技术，视频压缩编码技术，音频压缩编码技术，如果考虑到网络传输还包括流媒体协议技术。</p>
+<h3 id="视频播放器原理"><a href="#视频播放器原理" class="headerlink" title="视频播放器原理"></a>视频播放器原理</h3><blockquote>
+<p>以播放网络视频为例，需要经过解协议 —解封装—解码视音频—视音频同步（如果播放本地文件则不需要解协议）</p>
+</blockquote>
+<p><img src="http://upload-images.jianshu.io/upload_images/1984280-da9c8325475f62b2?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="视频播放流程"></p>
+<hr>
+<h3 id="视频编码"><a href="#视频编码" class="headerlink" title="视频编码"></a>视频编码</h3><p>视频压缩编码标准：</p>
+<blockquote>
+<p>视频编码的主要作用是将视频像素数据（RGB，YUV等）压缩成为视频码流，从而降低视频的数据量。比如MPEG，H.264。</p>
+</blockquote>
+<p>主要视频编码一览（图片有些过时）</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/1984280-f44b24ccdb538a26?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="主要视频编码一览"></p>
+<p>MPEG：</p>
+<blockquote>
+<p>采用帧间压缩，仅存储连续帧之间有差别的地方。从而从而达到较大压缩比。</p>
+</blockquote>
+<p>H.264/AVC:</p>
+<blockquote>
+<p>采用事先预测和与MPEG中的P-B帧一样的帧预测方法压缩。它可以根据需要产生适合网络情况传输的视频流，还有更高的压缩比，有更好的图像质量；</p>
+</blockquote>
+<p>两者区别：</p>
+<blockquote>
+<p>1.如果从单个画面清晰度比较，MPEG4有优势；从动作连贯性上的清晰度，H.264有优势。<br>2.H264算法更加复杂，运行它需要更多的处理器和内存资源，因此对系统要求较高。<br>3.H264更加灵活，它把一些实现留给了厂商自己去实现。但不同产品之间沟通便成了很大问题（例如通过A公司的编码器，也必须通过A公司的解码器解码）。</p>
+</blockquote>
+<p>H265/HEVC：</p>
+<blockquote>
+<p>基于H.264基础上，对相关技术加以改进，以改善码流、编码质量、延时和算法复杂度之间的关系，达到最优化设置。H.265是一种更为高效的编码标准，能够在同等画质效果下将内容的体积压缩得更小，传输时更快更省带宽。</p>
+</blockquote>
+<p>I帧：</p>
+<blockquote>
+<p>关键帧 保留一副完整的画面，解码时只需要本帧数据就可以完成（因为包含完整画面）</p>
+</blockquote>
+<p>P帧：</p>
+<blockquote>
+<p>差别帧 保留这一帧跟之前帧的差别，解码时需要用之前缓存的画面叠加本帧定义的差别，生成最终画面。（P帧没有完整画面数据，只有与前一帧的画面差别的数据）</p>
+</blockquote>
+<p>B帧：</p>
+<blockquote>
+<p>双向差别帧 保留的是本帧与前后帧的差别，解码B帧，不仅要取得之前的缓存画面，还要解码之后的画面，通过前后画面与本帧数据的叠加取得最终的画面。B帧压缩率高，但解码时CPU会比较累。</p>
+</blockquote>
+<p>帧内压缩：</p>
+<blockquote>
+<p>intraframe,当压缩一帧图像时，仅考虑本帧的数据而不考虑相邻帧之间的冗余信息，帧内一般采用有损压缩算法。</p>
+</blockquote>
+<p>帧间压缩：</p>
+<blockquote>
+<p>interframe，时间压缩（Temporal compression）,它通过比较时间轴上不同帧之间的数据进行压缩。帧间压缩一般是无损的。</p>
+</blockquote>
+<p>muxing（合成）：</p>
+<blockquote>
+<p>将视频流、音频流甚至是字幕流封装到一个文件中（容器格式（FLV，TS））。作为一个信号传输。</p>
+</blockquote>
+<p>码率控制：</p>
+<blockquote>
+<p>多码率：根据当前网络环境自定义码率：</p>
+</blockquote>
+<hr>
+<h3 id="音频编码技术"><a href="#音频编码技术" class="headerlink" title="音频编码技术"></a>音频编码技术</h3><blockquote>
+<p>音频编码的主要作用是将音频采样数据（PCM等）压缩成为音频码流，从而降低音频的数据量。</p>
+</blockquote>
+<p><img src="http://upload-images.jianshu.io/upload_images/1984280-423857a77b67353b?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="主要音频编码技术"></p>
+<hr>
+<h3 id="视频封装格式"><a href="#视频封装格式" class="headerlink" title="视频封装格式"></a>视频封装格式</h3><blockquote>
+<p>TS:一种流媒体封装格式，流媒体封装的好处是不需要加载索引再播放，大大减少了首次载入的延迟，如果片子较长，MP4文件的索引相当大，影响用户体验。</p>
+</blockquote>
+<p>主要封装格式一览<br><img src="http://upload-images.jianshu.io/upload_images/1984280-71289461af7ce8c1?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="主要封装格式一览"></p>
+<p>为什么要用TS：</p>
+<blockquote>
+<p>这是因为两个TS片段可以无缝拼接，播放器能够连续播放。</p>
+<p>FLV:一种流媒体封装格式，由于它形成的文件极小、加载速度极快，使得网络观看视频文件成为可能，因此FLV成为了当今主流视频格式。</p>
+</blockquote>
+<h3 id="流媒体协议"><a href="#流媒体协议" class="headerlink" title="流媒体协议"></a>流媒体协议</h3><p>RTMP：</p>
+<blockquote>
+<p>实时消息传输协议，RTMP协议用于对象、视频、音频的传输，这个协议建立在TCP协议或者轮询HTTP协议之上。<br>RTMP协议就像一个用来装数据包的容器，这些数据可以是FLV中的视音频数据。一个单个的链接可以通过不同的通道传输多路网络流，这些通道中的包都是按照固定大小传输的。</p>
+</blockquote>
+<p>HLS：<br><a href="https://tracyliu1.github.io/2018/01/30/HLS-protocol-basic-knowledge/" target="_blank" rel="noopener">HTTP Live Streaming (HLS) 协议科普扫盲</a></p>
+<p>主要流媒体协议一览</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/1984280-2b5a0ab59f2d2e6c?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="这里写图片描述"></p>
+<hr>
+<h3 id="流媒体服务器"><a href="#流媒体服务器" class="headerlink" title="流媒体服务器"></a>流媒体服务器</h3><p>常用服务器：</p>
+<blockquote>
+<p>SRS:国人开发的优秀开源流媒体服务器系统<br>BMS:SRS的的商业版<br>Nginx:免费开源web服务器，常用来配置流媒体服务器。</p>
+</blockquote>
+<p>数据分发：</p>
+<blockquote>
+<p>CDN:内容分发网络，将网站的内容发布到最接近用户的网络“边缘”，使用户可以就近取得所需的内容，解决internet网络拥挤的状况，提高用户访问网站的响应速度。作用相当于中介。</p>
+</blockquote>
+<p>CDN工作原理：</p>
+<blockquote>
+<p>以请求流媒体数据为例</p>
+<ol>
+<li>上传流媒体到源服务器</li>
+<li>源服务器储存流媒体数据</li>
+<li>客户端播放流媒体，向CDN请求编码后的流媒体数据</li>
+<li>CDN响应请求，若节点上没有该流媒体数据存在，则向源服务器继续请求流媒体数据；若节点上已经缓存了该视频文件，则跳到第6步。</li>
+<li>源服务器响应CDN的请求，将流媒体分发到相应的CDN节点上。</li>
+<li>CDN将流媒体发送到客户端。</li>
+</ol>
+</blockquote>
+<p>带宽：</p>
+<blockquote>
+<p>在固定的时间可传输的数据总量，比如64位、800MHz的前端总线，它的数据传输率就等64bit×800MHz÷8(Byte)=6.4GB/s</p>
+</blockquote>
+<p>回源：</p>
+<blockquote>
+<p>当有用户访问某一个URL的时候，如果被解析到的那个CDN节点没有缓存相应的内容，或者是缓存已经到期，就会到源服务器获取搜索，如果没有人访问，那么CDN节点不会主动去源站拿。</p>
+</blockquote>
+<p>负载均衡：</p>
+<blockquote>
+<p>由多台服务器以对称的方式组成一个服务器集合，每台服务器都具有等价的地位，都可以单独对外提供服务而无需其他服务器的辅助，通过某种负载分担技术，将外部发送来的请求均匀分配到对称结构中的某一台服务器上，而接收到请求的服务器独立的地回应客户的请求。<br>均衡负载能够平均分配客户请求到服务器列阵，籍此提供快速获取重要数据，解决大量并发访问服务问题。<br>这种集群技术可以用最少的投资获得接近于大型主机的性能。</p>
+</blockquote>
+<p>Qos（带宽管理）：</p>
+<blockquote>
+<p>限制每一个组群的带宽，让有限的带宽发挥最大的效用。</p>
+</blockquote>
+<hr>
+<p><a href="http://blog.csdn.net/leixiaohua1020/article/details/18893769" target="_blank" rel="noopener">[总结]视音频编解码技术零基础学习方法</a><br><a href="https://mp.weixin.qq.com/s?__biz=MzI2OTQxMTM4OQ==&amp;mid=2247484573&amp;idx=1&amp;sn=ae7dbf3d349664f0914a6b1ca7478e15&amp;chksm=eae1f1cfdd9678d9f13dd3220676131a09748cea9ea7fbf7c83c14cc4add0de60edc91a38fa2#rd" target="_blank" rel="noopener">开发直播app中要了解的原理</a></p>
+</section>
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a href="/tags#音视频" >
+    <span class="tag-code">音视频</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2018/01/30/Instrumentation-click-drag-keycode-foucs-loss/">
+        <span class="nav-arrow">← </span>
+        
+          Android Instrumentation 模拟点击、拖拽、发送keycode、焦点异常丢失。
+        
+      </a>
+    
+    
+      <a class="nav-right" href="/2018/03/27/LoopLayout-CustomView/">
+        
+          LoopLayout_CustomView
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+      <div class="qrcode">
+        <canvas id="share-qrcode"></canvas>
+        <p class="notice">扫描二维码，分享此文章</p>
+      </div>
+    
+    <!-- 二维码 END -->
+    
+      <!-- Gitment START -->
+      <div id="comments"></div>
+      <!-- Gitment END -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#视频播放器原理"><span class="toc-nav-text"><a href="#&#x89C6;&#x9891;&#x64AD;&#x653E;&#x5668;&#x539F;&#x7406;" class="headerlink" title="&#x89C6;&#x9891;&#x64AD;&#x653E;&#x5668;&#x539F;&#x7406;"></a>&#x89C6;&#x9891;&#x64AD;&#x653E;&#x5668;&#x539F;&#x7406;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#视频编码"><span class="toc-nav-text"><a href="#&#x89C6;&#x9891;&#x7F16;&#x7801;" class="headerlink" title="&#x89C6;&#x9891;&#x7F16;&#x7801;"></a>&#x89C6;&#x9891;&#x7F16;&#x7801;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#音频编码技术"><span class="toc-nav-text"><a href="#&#x97F3;&#x9891;&#x7F16;&#x7801;&#x6280;&#x672F;" class="headerlink" title="&#x97F3;&#x9891;&#x7F16;&#x7801;&#x6280;&#x672F;"></a>&#x97F3;&#x9891;&#x7F16;&#x7801;&#x6280;&#x672F;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#视频封装格式"><span class="toc-nav-text"><a href="#&#x89C6;&#x9891;&#x5C01;&#x88C5;&#x683C;&#x5F0F;" class="headerlink" title="&#x89C6;&#x9891;&#x5C01;&#x88C5;&#x683C;&#x5F0F;"></a>&#x89C6;&#x9891;&#x5C01;&#x88C5;&#x683C;&#x5F0F;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#流媒体协议"><span class="toc-nav-text"><a href="#&#x6D41;&#x5A92;&#x4F53;&#x534F;&#x8BAE;" class="headerlink" title="&#x6D41;&#x5A92;&#x4F53;&#x534F;&#x8BAE;"></a>&#x6D41;&#x5A92;&#x4F53;&#x534F;&#x8BAE;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#流媒体服务器"><span class="toc-nav-text"><a href="#&#x6D41;&#x5A92;&#x4F53;&#x670D;&#x52A1;&#x5668;" class="headerlink" title="&#x6D41;&#x5A92;&#x4F53;&#x670D;&#x52A1;&#x5668;"></a>&#x6D41;&#x5A92;&#x4F53;&#x670D;&#x52A1;&#x5668;</span></a></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'http://yoursite.com/2018/02/07/basic-concept-of-audio-and-video/';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+  <script>
+    var qr = new QRious({
+      element: document.getElementById('share-qrcode'),
+      value: document.location.href
+    });
+  </script>
+
+
+
+  <script>
+    var gitmentConfig = "yanm1ng";
+    if (gitmentConfig !== 'undefined') {
+      var gitment = new Gitment({
+        id: "视音频技术基础概念",
+        owner: "yanm1ng",
+        repo: "yanm1ng.github.io",
+        oauth: {
+          client_id: "0f87e490e00ee3fd87ef",
+          client_secret: "4a9d2b148e7971c2201ad12131ce8bf8159ccd2e"
+        },
+        theme: {
+          render(state, instance) {
+            const container = document.createElement('div')
+            container.lang = "en-US"
+            container.className = 'gitment-container gitment-root-container'
+            container.appendChild(instance.renderHeader(state, instance))
+            container.appendChild(instance.renderEditor(state, instance))
+            container.appendChild(instance.renderComments(state, instance))
+            container.appendChild(instance.renderFooter(state, instance))
+            return container;
+          }
+        }
+      })
+      gitment.render(document.getElementById('comments'))
+    }
+  </script>
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2020 | Proudly powered by <a href="https://hexo.io" target="_blank">Hexo</a>
+    <br>
+    Theme by <a href="https://github.com/yanm1ng">yanm1ng</a>
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+<script src="/js/script.js"></script>
+  </body>
+</html>
