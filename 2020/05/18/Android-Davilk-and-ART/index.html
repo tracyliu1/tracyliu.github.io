@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="it is a personal blogs">
+  <meta name="keyword" content="hexo-theme, vuejs">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      Android Davilk and ART | tracyliu
+    
+  </title>
+  <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+  
+    <link rel="stylesheet" href="/css/plugins/gitment.css">
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+    <script src="/js/qrious.js"></script>
+  
+  
+    <script src="/js/gitment.js"></script>
+  
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+  
+</head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>tracyliu</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">Tags</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/project/" class="item-link">Projects</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">About</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">Tags</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">Archives</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/project/" class="menu-link">Projects</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">About</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>Android Davilk and ART</h2>
+  <p class="post-date">2020-05-18</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><h4 id="DVM与JVM的区别"><a href="#DVM与JVM的区别" class="headerlink" title="DVM与JVM的区别"></a>DVM与JVM的区别</h4><ul>
+<li>JVM基于栈，DVM基于寄存器</li>
+</ul>
+<p>寄存器是 CPU 上面的一块存储空间，栈是内存上面的一段连续的存储空间。</p>
+<ul>
+<li>DVM 执行的 .dex 文件，JVM 执行 .class 文件。</li>
+<li>DVM：允许运行多个虚拟机实例，每一个应用启动都运行一个单独的虚拟机，并且运行在一个独立的进程中JVM：只能运行一个实例，也就是所有应用都运行在同一个 JVM 中</li>
+</ul>
+<h3 id="Davilk虚拟机"><a href="#Davilk虚拟机" class="headerlink" title="Davilk虚拟机"></a>Davilk虚拟机</h3><h4 id="JIT"><a href="#JIT" class="headerlink" title="JIT"></a>JIT</h4><p>JIT(Just In Time Compiler， 即时编译)，Android 2.2 版本提出的</p>
+<p><img src="https://user-gold-cdn.xitu.io/2018/12/27/167edb8c1592ea5f?imageView2/0/w/1280/h/960/format/webp/ignore-error/1" alt="image"></p>
+<h5 id="JIT-模式的缺点："><a href="#JIT-模式的缺点：" class="headerlink" title="JIT 模式的缺点："></a>JIT 模式的缺点：</h5><ul>
+<li>每次启动应用都需要重新编译</li>
+<li>运行时比较耗电，造成电池额外的开销</li>
+</ul>
+<h5 id="系统编译中控制JIT的位置"><a href="#系统编译中控制JIT的位置" class="headerlink" title="系统编译中控制JIT的位置"></a>系统编译中控制JIT的位置</h5><blockquote>
+<p>/build/target/product/runtime_libart.mk<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \</span><br><span class="line">    dalvik.vm.image-dex2oat-Xms=64m \</span><br><span class="line">    dalvik.vm.image-dex2oat-Xmx=64m \</span><br><span class="line">    dalvik.vm.dex2oat-Xms=64m \</span><br><span class="line">    dalvik.vm.dex2oat-Xmx=512m \</span><br><span class="line">    ro.dalvik.vm.native.bridge=0 \</span><br><span class="line">    dalvik.vm.usejit=true \</span><br><span class="line">    dalvik.vm.usejitprofiles=true \</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<p>JIT 虚拟机执行的本地机器码：</p>
+<blockquote>
+<p>.java –&gt; java bytecode(.class) –&gt; dalvik bytecode(.dex) –&gt; optimized dalvik bytecode(.odex)</p>
+<p>#####</p>
+</blockquote>
+<ul>
+<li>DEX means Dalvik EXcutable file.</li>
+<li>ODEX means Optimized Dalvik EXcutable file.</li>
+</ul>
+<h4 id="ART虚拟机"><a href="#ART虚拟机" class="headerlink" title="ART虚拟机"></a>ART虚拟机</h4><p>ART 即 Android Runtime。在 ART 环境中，应用在第一次安装的时候，字节码就会预先编译成机器码，使其成为真正的本地应用。这个过程叫做预编译（ AOT, Ahead-Of-Time ）</p>
+<p>ART 虚拟机执行的本地机器码：</p>
+<blockquote>
+<p>.java –&gt; java bytecode(.class) –&gt; dalvik bytecode(.dex) –&gt; optimized android runtime machine code(.oat)</p>
+</blockquote>
+<h5 id="ART-对-Garbage-Collection（GC）过程的改进："><a href="#ART-对-Garbage-Collection（GC）过程的改进：" class="headerlink" title="ART 对 Garbage Collection（GC）过程的改进："></a>ART 对 Garbage Collection（GC）过程的改进：</h5><ul>
+<li>只有一次 GC 暂停（Dalvik 需要两次）</li>
+<li>在 GC 保持暂停状态期间并行处理</li>
+<li>在清理最近分配的短时对象这种特殊情况中，回收器的总 GC 时间更短<br>优化了垃圾回收的工效，能够更加及时地进行并行垃圾回收，这使得 GC_FOR_ALLOC 事件在典型用例中极为罕见</li>
+<li>压缩 GC 以减少后台内存使用和碎片</li>
+</ul>
+<p>AOT 模式解决了应用启动和运行速度和耗电问题的同时也带来了另外两个问题：</p>
+<ul>
+<li>应用安装和系统升级之后的应用优化比较耗时</li>
+<li>优化后的文件会占用额外的存储空间</li>
+</ul>
+<h5 id="AOT-和-JIT-的不同"><a href="#AOT-和-JIT-的不同" class="headerlink" title="AOT 和 JIT 的不同"></a>AOT 和 JIT 的不同</h5><blockquote>
+<p>JIT 是在运行时进行编译，是动态编译，并且每次运行程序的时候都需要对 odex 重新进行编译；而 AOT 是静态编译，应用在安装的时候会启动 dex2oat 过程把 dex 预编译成 ELF 文件，每次运行程序的时候不用重新编译，是真正意义上的本地应用    </p>
+</blockquote>
+<h5 id="dexopt-与-dex2oat-区别"><a href="#dexopt-与-dex2oat-区别" class="headerlink" title="dexopt 与 dex2oat 区别"></a>dexopt 与 dex2oat 区别</h5><p><img src="https://user-gold-cdn.xitu.io/2020/5/18/17223616433f8ac0?w=800&amp;h=729&amp;f=png&amp;s=22462" alt="image"></p>
+<ul>
+<li><p>dexopt 是对 dex 文件 进行 verification 和 optimization 的操作，其对 dex 文件的优化结果变成了 odex 文件，这个文件和 dex 文件很像，只是使用了一些优化操作码（譬如优化调用虚拟指令等）。</p>
+</li>
+<li><p>dex2oat 是对 dex 文件的 AOT 提前编译操作，其需要一个 dex 文件，然后对其进行编译，结果是一个本地可执行的 ELF 文件，可以直接被本地处理器执行。</p>
+</li>
+</ul>
+<blockquote>
+<p>dexopt was used to optimize DEX to ODEX (optimized DEX) which contains the optimized bytecode.</p>
+<p>With AOT, dex2oat is used to optimize and compile DEX into an OAT file which may contain machine code in the ELF format.</p>
+</blockquote>
+<h4 id="Android系统对预编译的处理"><a href="#Android系统对预编译的处理" class="headerlink" title="Android系统对预编译的处理"></a>Android系统对预编译的处理</h4><ul>
+<li><p>编译的时候针对user版本会对apk进行处理，将里面的class.dex文件拿出来单独处理为odex,apk文件中只留下一些资源文件</p>
+</li>
+<li><p>第一次开机耗时会比较长，中间有大量的dex2oat的log存在，也是针对每个APK在做dex优化</p>
+</li>
+</ul>
+<h5 id="LOCAL-DEX-PREOPT"><a href="#LOCAL-DEX-PREOPT" class="headerlink" title="LOCAL_DEX_PREOPT"></a>LOCAL_DEX_PREOPT</h5><p>这个变量设置为false可以使整个系统使用提前优化的时候，某个app不使用提前优化。在Android.mk中给该变量赋值为false,则编译生成的文件没有oat文件，也就意味着没有被提前优化。</p>
+<h4 id="Android-7-0-AOT-JIT-混合编译模式"><a href="#Android-7-0-AOT-JIT-混合编译模式" class="headerlink" title="Android 7.0 AOT/JIT 混合编译模式"></a>Android 7.0 AOT/JIT 混合编译模式</h4><p><img src="https://user-gold-cdn.xitu.io/2018/12/27/167edc5d0d0a45c2?imageView2/0/w/1280/h/960/format/webp/ignore-error/1" alt="image"></p>
+<h5 id="混合编译模式的特点是："><a href="#混合编译模式的特点是：" class="headerlink" title="混合编译模式的特点是："></a>混合编译模式的特点是：</h5><ul>
+<li>应用在安装的时候 dex 不会被编译</li>
+<li>应用在运行时 dex 文件先通过解析器（Interpreter）后会被直接执行（这一步骤跟 Android 2.2 - Android 4.4之前的行为一致），与此同时，热点函数（Hot Code）会被识别并被 JIT 编译后存储在 jit code cache 中并生成 profile 文件以记录热点函数的信息。</li>
+<li>手机进入 IDLE（空闲） 或者 Charging（充电） 状态的时候，系统会扫描 App 目录下的 profile 文件并执行 AOT 过程进行编译。</li>
+</ul>
+<h4 id="Android-8-0"><a href="#Android-8-0" class="headerlink" title="Android 8.0"></a>Android 8.0</h4><p>Android O 版本中，将会生成以下文件：</p>
+<ul>
+<li>.vdex：其中包含 APK 的未压缩 DEX 代码，以及一些旨在加快验证速度的元数据。</li>
+<li>.odex：其中包含 APK 中已经过 AOT 编译的方法代码。</li>
+<li>.art (optional)：其中包含 APK 中列出的某些字符串和类的 ART 内部表示，用于加快应用启动速度。</li>
+</ul>
+<hr>
+<h4 id="Davilk-and-ART-运行时堆的不同"><a href="#Davilk-and-ART-运行时堆的不同" class="headerlink" title="Davilk and ART 运行时堆的不同"></a>Davilk and ART 运行时堆的不同</h4><h5 id="DVK的运行时堆"><a href="#DVK的运行时堆" class="headerlink" title="DVK的运行时堆"></a>DVK的运行时堆</h5><p>DVK的运行时堆主要由两个Space以及多个辅助数据结构组成，两个Space分别是Zygote Space（Zygote Heap）和Allocation Space（Active Heap）。</p>
+<ul>
+<li>Zygote Space用来管理Zygote进程在启动过程中预加载和创建的各种对象，Zygote Space中不会触发GC，所有进程都共享该区域，比如系统资源。</li>
+<li>Allocation Space是在Zygote进程fork第一个子进程之前创建的，它是一种私有进程，Zygote进程和fock的子进程在Allocation Space上进行对象分配和释放。 </li>
+</ul>
+<h5 id="除了这两个Space，还包含以下数据结构："><a href="#除了这两个Space，还包含以下数据结构：" class="headerlink" title="除了这两个Space，还包含以下数据结构："></a>除了这两个Space，还包含以下数据结构：</h5><ul>
+<li>Card Table： 用于DVM Concurrent GC，当第一次进行垃圾标记后，记录垃圾信息。</li>
+<li>Heap Bitmap： 有两个Heap Bitmap，一个用来记录上次GC存活的对象，另一个用来记录这次GC存活的对象。</li>
+<li>Mark Stack： DVM的运行时堆使用标记-清除（Mark-Sweep）算法进行GC，不了解标记-清除算法的同学查看Java虚拟机（四）垃圾收集算法这篇文章。Mark Stack就是在GC的标记阶段使用的，它用来遍历存活的对象。</li>
+</ul>
+<h5 id="ART的运行时堆"><a href="#ART的运行时堆" class="headerlink" title="ART的运行时堆"></a>ART的运行时堆</h5><ol>
+<li>与DVM的GC不同的是，ART的GC类型有多种，主要分为Mark-Sweep GC和Compacting GC。ART的运行时堆的空间根据不同的GC类型也有着不同的划分，如果采用的是Mark-Sweep GC，运行时堆主要是由四个Space和多个辅助数据结构组成，四个Space分别是Zygote Space、Allocation Space、Image Space和Large Object Space。Zygote Space、Allocation Space和DVM中的作用是一样的。</li>
+</ol>
+<ul>
+<li>Image Space用来存放一些预加载类，</li>
+<li>Large Object Space用来分配一些大对象（默认大小为12k）。<br>其中Zygote Space和Image Space是进程间共享的。<br> 采用Mark-Sweep GC的运行时堆空间划分如下图所示。</li>
+</ul>
+<ol>
+<li><img src="https://user-gold-cdn.xitu.io/2020/5/18/1722361601334a5d?w=777&amp;h=215&amp;f=png&amp;s=9399" alt="è¿éåå¾çæè¿°"> </li>
+</ol>
+<h5 id="除了这四个Space，ART的Java堆中还包括两个Mod-Union-Table，一个Card-Table，两个Heap-Bitmap，两个Object-Map，以及三个Object-Stack"><a href="#除了这四个Space，ART的Java堆中还包括两个Mod-Union-Table，一个Card-Table，两个Heap-Bitmap，两个Object-Map，以及三个Object-Stack" class="headerlink" title="除了这四个Space，ART的Java堆中还包括两个Mod Union Table，一个Card Table，两个Heap Bitmap，两个Object Map，以及三个Object Stack"></a>除了这四个Space，ART的Java堆中还包括两个Mod Union Table，一个Card Table，两个Heap Bitmap，两个Object Map，以及三个Object Stack</h5><hr>
+<p><a href="https://linghaolu.github.io/dalvik/2016/08/16/dalvik-dexopt.html" target="_blank" rel="noopener">Dalvik Optimization and Verification With dexopt</a></p>
+<p><a href="https://docplayer.net/49015509-Dalvik-and-art-jonathan-levin.html" target="_blank" rel="noopener">Dalvík and ART. Jonathan Levin</a></p>
+<p><a href="https://source.android.com/devices/tech/dalvik/configure" target="_blank" rel="noopener">配置Art</a></p>
+</section>
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a href="/tags#interview" >
+    <span class="tag-code">interview</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2020/05/13/analyze-leakcanry2-0/">
+        <span class="nav-arrow">← </span>
+        
+          不深入的分析leakcanry2.0
+        
+      </a>
+    
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+      <div class="qrcode">
+        <canvas id="share-qrcode"></canvas>
+        <p class="notice">扫描二维码，分享此文章</p>
+      </div>
+    
+    <!-- 二维码 END -->
+    
+      <!-- Gitment START -->
+      <div id="comments"></div>
+      <!-- Gitment END -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#DVM与JVM的区别"><span class="toc-nav-text"><a href="#DVM&#x4E0E;JVM&#x7684;&#x533A;&#x522B;" class="headerlink" title="DVM&#x4E0E;JVM&#x7684;&#x533A;&#x522B;"></a>DVM&#x4E0E;JVM&#x7684;&#x533A;&#x522B;</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#Davilk虚拟机"><span class="toc-nav-text"><a href="#Davilk&#x865A;&#x62DF;&#x673A;" class="headerlink" title="Davilk&#x865A;&#x62DF;&#x673A;"></a>Davilk&#x865A;&#x62DF;&#x673A;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#JIT"><span class="toc-nav-text"><a href="#JIT" class="headerlink" title="JIT"></a>JIT</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#JIT-模式的缺点："><span class="toc-nav-text"><a href="#JIT-&#x6A21;&#x5F0F;&#x7684;&#x7F3A;&#x70B9;&#xFF1A;" class="headerlink" title="JIT &#x6A21;&#x5F0F;&#x7684;&#x7F3A;&#x70B9;&#xFF1A;"></a>JIT &#x6A21;&#x5F0F;&#x7684;&#x7F3A;&#x70B9;&#xFF1A;</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#系统编译中控制JIT的位置"><span class="toc-nav-text"><a href="#&#x7CFB;&#x7EDF;&#x7F16;&#x8BD1;&#x4E2D;&#x63A7;&#x5236;JIT&#x7684;&#x4F4D;&#x7F6E;" class="headerlink" title="&#x7CFB;&#x7EDF;&#x7F16;&#x8BD1;&#x4E2D;&#x63A7;&#x5236;JIT&#x7684;&#x4F4D;&#x7F6E;"></a>&#x7CFB;&#x7EDF;&#x7F16;&#x8BD1;&#x4E2D;&#x63A7;&#x5236;JIT&#x7684;&#x4F4D;&#x7F6E;</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#ART虚拟机"><span class="toc-nav-text"><a href="#ART&#x865A;&#x62DF;&#x673A;" class="headerlink" title="ART&#x865A;&#x62DF;&#x673A;"></a>ART&#x865A;&#x62DF;&#x673A;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#ART-对-Garbage-Collection（GC）过程的改进："><span class="toc-nav-text"><a href="#ART-&#x5BF9;-Garbage-Collection&#xFF08;GC&#xFF09;&#x8FC7;&#x7A0B;&#x7684;&#x6539;&#x8FDB;&#xFF1A;" class="headerlink" title="ART &#x5BF9; Garbage Collection&#xFF08;GC&#xFF09;&#x8FC7;&#x7A0B;&#x7684;&#x6539;&#x8FDB;&#xFF1A;"></a>ART &#x5BF9; Garbage Collection&#xFF08;GC&#xFF09;&#x8FC7;&#x7A0B;&#x7684;&#x6539;&#x8FDB;&#xFF1A;</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#AOT-和-JIT-的不同"><span class="toc-nav-text"><a href="#AOT-&#x548C;-JIT-&#x7684;&#x4E0D;&#x540C;" class="headerlink" title="AOT &#x548C; JIT &#x7684;&#x4E0D;&#x540C;"></a>AOT &#x548C; JIT &#x7684;&#x4E0D;&#x540C;</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#dexopt-与-dex2oat-区别"><span class="toc-nav-text"><a href="#dexopt-&#x4E0E;-dex2oat-&#x533A;&#x522B;" class="headerlink" title="dexopt &#x4E0E; dex2oat &#x533A;&#x522B;"></a>dexopt &#x4E0E; dex2oat &#x533A;&#x522B;</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#Android系统对预编译的处理"><span class="toc-nav-text"><a href="#Android&#x7CFB;&#x7EDF;&#x5BF9;&#x9884;&#x7F16;&#x8BD1;&#x7684;&#x5904;&#x7406;" class="headerlink" title="Android&#x7CFB;&#x7EDF;&#x5BF9;&#x9884;&#x7F16;&#x8BD1;&#x7684;&#x5904;&#x7406;"></a>Android&#x7CFB;&#x7EDF;&#x5BF9;&#x9884;&#x7F16;&#x8BD1;&#x7684;&#x5904;&#x7406;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#LOCAL-DEX-PREOPT"><span class="toc-nav-text"><a href="#LOCAL-DEX-PREOPT" class="headerlink" title="LOCAL_DEX_PREOPT"></a>LOCAL_DEX_PREOPT</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#Android-7-0-AOT-JIT-混合编译模式"><span class="toc-nav-text"><a href="#Android-7-0-AOT-JIT-&#x6DF7;&#x5408;&#x7F16;&#x8BD1;&#x6A21;&#x5F0F;" class="headerlink" title="Android 7.0 AOT/JIT &#x6DF7;&#x5408;&#x7F16;&#x8BD1;&#x6A21;&#x5F0F;"></a>Android 7.0 AOT/JIT &#x6DF7;&#x5408;&#x7F16;&#x8BD1;&#x6A21;&#x5F0F;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#混合编译模式的特点是："><span class="toc-nav-text"><a href="#&#x6DF7;&#x5408;&#x7F16;&#x8BD1;&#x6A21;&#x5F0F;&#x7684;&#x7279;&#x70B9;&#x662F;&#xFF1A;" class="headerlink" title="&#x6DF7;&#x5408;&#x7F16;&#x8BD1;&#x6A21;&#x5F0F;&#x7684;&#x7279;&#x70B9;&#x662F;&#xFF1A;"></a>&#x6DF7;&#x5408;&#x7F16;&#x8BD1;&#x6A21;&#x5F0F;&#x7684;&#x7279;&#x70B9;&#x662F;&#xFF1A;</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#Android-8-0"><span class="toc-nav-text"><a href="#Android-8-0" class="headerlink" title="Android 8.0"></a>Android 8.0</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#Davilk-and-ART-运行时堆的不同"><span class="toc-nav-text"><a href="#Davilk-and-ART-&#x8FD0;&#x884C;&#x65F6;&#x5806;&#x7684;&#x4E0D;&#x540C;" class="headerlink" title="Davilk and ART &#x8FD0;&#x884C;&#x65F6;&#x5806;&#x7684;&#x4E0D;&#x540C;"></a>Davilk and ART &#x8FD0;&#x884C;&#x65F6;&#x5806;&#x7684;&#x4E0D;&#x540C;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#DVK的运行时堆"><span class="toc-nav-text"><a href="#DVK&#x7684;&#x8FD0;&#x884C;&#x65F6;&#x5806;" class="headerlink" title="DVK&#x7684;&#x8FD0;&#x884C;&#x65F6;&#x5806;"></a>DVK&#x7684;&#x8FD0;&#x884C;&#x65F6;&#x5806;</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#除了这两个Space，还包含以下数据结构："><span class="toc-nav-text"><a href="#&#x9664;&#x4E86;&#x8FD9;&#x4E24;&#x4E2A;Space&#xFF0C;&#x8FD8;&#x5305;&#x542B;&#x4EE5;&#x4E0B;&#x6570;&#x636E;&#x7ED3;&#x6784;&#xFF1A;" class="headerlink" title="&#x9664;&#x4E86;&#x8FD9;&#x4E24;&#x4E2A;Space&#xFF0C;&#x8FD8;&#x5305;&#x542B;&#x4EE5;&#x4E0B;&#x6570;&#x636E;&#x7ED3;&#x6784;&#xFF1A;"></a>&#x9664;&#x4E86;&#x8FD9;&#x4E24;&#x4E2A;Space&#xFF0C;&#x8FD8;&#x5305;&#x542B;&#x4EE5;&#x4E0B;&#x6570;&#x636E;&#x7ED3;&#x6784;&#xFF1A;</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#ART的运行时堆"><span class="toc-nav-text"><a href="#ART&#x7684;&#x8FD0;&#x884C;&#x65F6;&#x5806;" class="headerlink" title="ART&#x7684;&#x8FD0;&#x884C;&#x65F6;&#x5806;"></a>ART&#x7684;&#x8FD0;&#x884C;&#x65F6;&#x5806;</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#除了这四个Space，ART的Java堆中还包括两个Mod-Union-Table，一个Card-Table，两个Heap-Bitmap，两个Object-Map，以及三个Object-Stack"><span class="toc-nav-text"><a href="#&#x9664;&#x4E86;&#x8FD9;&#x56DB;&#x4E2A;Space&#xFF0C;ART&#x7684;Java&#x5806;&#x4E2D;&#x8FD8;&#x5305;&#x62EC;&#x4E24;&#x4E2A;Mod-Union-Table&#xFF0C;&#x4E00;&#x4E2A;Card-Table&#xFF0C;&#x4E24;&#x4E2A;Heap-Bitmap&#xFF0C;&#x4E24;&#x4E2A;Object-Map&#xFF0C;&#x4EE5;&#x53CA;&#x4E09;&#x4E2A;Object-Stack" class="headerlink" title="&#x9664;&#x4E86;&#x8FD9;&#x56DB;&#x4E2A;Space&#xFF0C;ART&#x7684;Java&#x5806;&#x4E2D;&#x8FD8;&#x5305;&#x62EC;&#x4E24;&#x4E2A;Mod Union Table&#xFF0C;&#x4E00;&#x4E2A;Card Table&#xFF0C;&#x4E24;&#x4E2A;Heap Bitmap&#xFF0C;&#x4E24;&#x4E2A;Object Map&#xFF0C;&#x4EE5;&#x53CA;&#x4E09;&#x4E2A;Object Stack"></a>&#x9664;&#x4E86;&#x8FD9;&#x56DB;&#x4E2A;Space&#xFF0C;ART&#x7684;Java&#x5806;&#x4E2D;&#x8FD8;&#x5305;&#x62EC;&#x4E24;&#x4E2A;Mod Union Table&#xFF0C;&#x4E00;&#x4E2A;Card Table&#xFF0C;&#x4E24;&#x4E2A;Heap Bitmap&#xFF0C;&#x4E24;&#x4E2A;Object Map&#xFF0C;&#x4EE5;&#x53CA;&#x4E09;&#x4E2A;Object Stack</span></a></li></ol></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'http://yoursite.com/2020/05/18/Android-Davilk-and-ART/';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+  <script>
+    var qr = new QRious({
+      element: document.getElementById('share-qrcode'),
+      value: document.location.href
+    });
+  </script>
+
+
+
+  <script>
+    var gitmentConfig = "";
+    if (gitmentConfig !== 'undefined') {
+      var gitment = new Gitment({
+        id: "Android Davilk and ART",
+        owner: "",
+        repo: "",
+        oauth: {
+          client_id: "",
+          client_secret: ""
+        },
+        theme: {
+          render(state, instance) {
+            const container = document.createElement('div')
+            container.lang = "en-US"
+            container.className = 'gitment-container gitment-root-container'
+            container.appendChild(instance.renderHeader(state, instance))
+            container.appendChild(instance.renderEditor(state, instance))
+            container.appendChild(instance.renderComments(state, instance))
+            container.appendChild(instance.renderFooter(state, instance))
+            return container;
+          }
+        }
+      })
+      gitment.render(document.getElementById('comments'))
+    }
+  </script>
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2020 | Proudly powered by <a href="https://hexo.io" target="_blank">Hexo</a>
+    <br>
+    Theme by <a href="https://github.com/yanm1ng">yanm1ng</a>
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+<script src="/js/script.js"></script>
+  </body>
+</html>

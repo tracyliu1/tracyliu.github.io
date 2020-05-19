@@ -72,7 +72,7 @@
       
         <li class="list-item">
           
-            <a href="/" class="item-link">Home</a>
+            <a href="/" class="item-link active">Home</a>
           
         </li>
       
@@ -111,7 +111,7 @@
         
           <li class="menu-item">
             
-              <a href="/" class="menu-link">Home</a>
+              <a href="/" class="menu-link mobile-active">Home</a>
             
           </li>
         
@@ -144,108 +144,45 @@
   </div>
 </header>
 
-    <div id="article-banner">
-  <h2>Archives</h2>
-  <p class="post-date">文章归档</p>
+    <main class="app-body">
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a href="/2017/12/25/Ubantu_bugs/">Ubantu16.04踩坑小记（没有wifi，无法apt update）</a>
+      </h2>
+      <p class="article-date">December 25, 2017</p>
+      
+        
+  <a href="/tags#ubuntu" >
+    <span class="tag-code">ubuntu</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          1.装机后，无法连接wifi.因为ubantu系统没有识别到无线网卡，需要在“设置”——“附加驱动”中 勾选Broadcom。
+
+无法连接wifi.因为ubantu系统没有识别到无线网卡，需要在“设置”——“附加驱动”中 勾选Broadcom。
+#如果还不行，尝试禁用secure bootU ...
+        
+      </div>
+      <a class="more" href="/2017/12/25/Ubantu_bugs/">Read more</a>
+    </article>
+  
+
+  
+    <div class="guide-pager">
+  
+    <a href="/"><span class="page-arrow">← </span>Prev</a>
+  
+  
+    <a class="unvisible" href="/">Next <span class="page-arrow">→</span></a>
+  
 </div>
-<main class="app-body" id="archives">
-  
-  
-  
-    <section class="time-section">
-  <h1 class="section-year">
-    2020
-  </h1>
-  <div class="section-list">
-    
-    
-      <div class="section-list-item">
-        <a href="/2020/05/18/Android-Davilk-and-ART/" class="archive-title">Android Davilk and ART</a>
-        <p class="archive-date">05-18</p>
-      </div>
-    
-      <div class="section-list-item">
-        <a href="/2020/05/13/analyze-leakcanry2-0/" class="archive-title">不深入的分析leakcanry2.0</a>
-        <p class="archive-date">05-13</p>
-      </div>
-    
-      <div class="section-list-item">
-        <a href="/2020/05/13/analyze-leakcanary1-5/" class="archive-title">leakcanary1.5代码流程</a>
-        <p class="archive-date">05-13</p>
-      </div>
-    
-      <div class="section-list-item">
-        <a href="/2020/05/12/Android-Debug-Tools/" class="archive-title">Android Debug Tools</a>
-        <p class="archive-date">05-12</p>
-      </div>
-    
-  </div>
-</section>
-  
-    <section class="time-section">
-  <h1 class="section-year">
-    2018
-  </h1>
-  <div class="section-list">
-    
-    
-      <div class="section-list-item">
-        <a href="/2018/04/11/BuildTypes-ProductFlavors/" class="archive-title">动态配置LauncherActivity/根据不同资源文件生成apk</a>
-        <p class="archive-date">04-11</p>
-      </div>
-    
-      <div class="section-list-item">
-        <a href="/2018/03/27/LoopLayout-CustomView/" class="archive-title">LoopLayout_CustomView</a>
-        <p class="archive-date">03-27</p>
-      </div>
-    
-      <div class="section-list-item">
-        <a href="/2018/02/07/basic-concept-of-audio-and-video/" class="archive-title">视音频技术基础概念</a>
-        <p class="archive-date">02-07</p>
-      </div>
-    
-      <div class="section-list-item">
-        <a href="/2018/01/30/Instrumentation-click-drag-keycode-foucs-loss/" class="archive-title">Android Instrumentation 模拟点击、拖拽、发送keycode、焦点异常丢失。</a>
-        <p class="archive-date">01-30</p>
-      </div>
-    
-      <div class="section-list-item">
-        <a href="/2018/01/30/HLS-protocol-basic-knowledge/" class="archive-title">HTTP Live Streaming (HLS) 协议科普扫盲</a>
-        <p class="archive-date">01-30</p>
-      </div>
-    
-      <div class="section-list-item">
-        <a href="/2018/01/29/Activity-LifeCycle-and-Launch-Mode/" class="archive-title">艺术探索—一、Activity的生命周期全面分析</a>
-        <p class="archive-date">01-29</p>
-      </div>
-    
-  </div>
-</section>
-  
-    <section class="time-section">
-  <h1 class="section-year">
-    2017
-  </h1>
-  <div class="section-list">
-    
-    
-      <div class="section-list-item">
-        <a href="/2017/12/25/Ubantu_bugs/" class="archive-title">Ubantu16.04踩坑小记（没有wifi，无法apt update）</a>
-        <p class="archive-date">12-25</p>
-      </div>
-    
-  </div>
-</section>
   
 </main>
 
-<script>
-  (function () {
-    var url = 'http://yoursite.com/archives/2020/index.html';
-    $('#article-banner').geopattern(url);
-    $('.header').removeClass('fixed-header');
-  })();
-</script>
+
     <div class="scroll-top">
   <span class="arrow-icon"></span>
 </div>
