@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="it is a personal blogs">
+  <meta name="keyword" content="hexo-theme, vuejs">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      ActivityThread中关于GC的操作 | tracyliu
+    
+  </title>
+  <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+  
+    <link rel="stylesheet" href="/css/plugins/gitment.css">
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+    <script src="/js/qrious.js"></script>
+  
+  
+    <script src="/js/gitment.js"></script>
+  
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+  
+</head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>tracyliu</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">Tags</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/project/" class="item-link">Projects</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">About</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">Tags</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">Archives</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/project/" class="menu-link">Projects</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">About</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>ActivityThread中关于GC的操作</h2>
+  <p class="post-date">2020-06-28</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><h3 id="1-什么时候调用updateOomAdjLocked-进行回收？"><a href="#1-什么时候调用updateOomAdjLocked-进行回收？" class="headerlink" title="1. 什么时候调用updateOomAdjLocked() 进行回收？"></a>1. 什么时候调用updateOomAdjLocked() 进行回收？</h3><p>首先，所有进程的创建均涉及AT的main()方法</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">public static void main(String[] args) &#123;</span><br><span class="line">     </span><br><span class="line">      ActivityThread thread = new ActivityThread();</span><br><span class="line">      thread.attach(false);</span><br><span class="line"></span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+<h4 id="attach"><a href="#attach" class="headerlink" title="attach()"></a>attach()</h4><p>BinderInternal.addGcWatcher 添加gc watcher对象，当Davilk内存占用大于3/4时，会执行releaseSomeActivity()</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">private void attach(boolean system) &#123;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"> // Watch for getting close to heap limit.</span><br><span class="line">          BinderInternal.addGcWatcher(new Runnable() &#123;</span><br><span class="line">              @Override public void run() &#123;</span><br><span class="line">                  if (!mSomeActivitiesChanged) &#123;</span><br><span class="line">                      return;</span><br><span class="line">                  &#125;</span><br><span class="line">                  Runtime runtime = Runtime.getRuntime();</span><br><span class="line">                  long dalvikMax = runtime.maxMemory();</span><br><span class="line">                  long dalvikUsed = runtime.totalMemory() - runtime.freeMemory();</span><br><span class="line">                  if (dalvikUsed &gt; ((3*dalvikMax)/4)) &#123;</span><br><span class="line">                      if (DEBUG_MEMORY_TRIM) Slog.d(TAG, &quot;Dalvik max=&quot; + (dalvikMax/1024)</span><br><span class="line">                              + &quot; total=&quot; + (runtime.totalMemory()/1024)</span><br><span class="line">                              + &quot; used=&quot; + (dalvikUsed/1024));</span><br><span class="line">                      mSomeActivitiesChanged = false;</span><br><span class="line">                      try &#123;</span><br><span class="line">                          mgr.releaseSomeActivities(mAppThread);</span><br><span class="line">                      &#125; catch (RemoteException e) &#123;</span><br><span class="line">                          throw e.rethrowFromSystemServer();</span><br><span class="line">                      &#125;</span><br><span class="line">                  &#125;</span><br><span class="line">              &#125;</span><br><span class="line">          &#125;);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="AMS-releaseSomeActivities"><a href="#AMS-releaseSomeActivities" class="headerlink" title="AMS#releaseSomeActivities()"></a>AMS#releaseSomeActivities()</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">@Override</span><br><span class="line">   public void releaseSomeActivities(IApplicationThread appInt) &#123;</span><br><span class="line">       synchronized(this) &#123;</span><br><span class="line">           final long origId = Binder.clearCallingIdentity();</span><br><span class="line">           try &#123;</span><br><span class="line">               ProcessRecord app = getRecordForAppLocked(appInt);</span><br><span class="line">               mStackSupervisor.releaseSomeActivitiesLocked(app, &quot;low-mem&quot;);</span><br><span class="line">           &#125; finally &#123;</span><br><span class="line">               Binder.restoreCallingIdentity(origId);</span><br><span class="line">           &#125;</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<h4 id="ASS-releaseSomeActivitiesLocked"><a href="#ASS-releaseSomeActivitiesLocked" class="headerlink" title="ASS#releaseSomeActivitiesLocked()"></a>ASS#releaseSomeActivitiesLocked()</h4><p>以下情况均不执行</p>
+<ul>
+<li>如果发现正在执行destory的Activity </li>
+<li>如果一个activity处于不可销毁的状态</li>
+<li>如果当前进程只有一个taskrecord不执行</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line">void releaseSomeActivitiesLocked(ProcessRecord app, String reason) &#123;</span><br><span class="line">    // Examine all activities currently running in the process.</span><br><span class="line">    TaskRecord firstTask = null;</span><br><span class="line">    // Tasks is non-null only if two or more tasks are found.</span><br><span class="line">    ArraySet&lt;TaskRecord&gt; tasks = null;</span><br><span class="line">    if (DEBUG_RELEASE) Slog.d(TAG_RELEASE, &quot;Trying to release some activities in &quot; + app);</span><br><span class="line">    for (int i = 0; i &lt; app.activities.size(); i++) &#123;</span><br><span class="line">        ActivityRecord r = app.activities.get(i);</span><br><span class="line">        // First, if we find an activity that is in the process of being destroyed,</span><br><span class="line">        // then we just aren&apos;t going to do anything for now; we want things to settle</span><br><span class="line">        // down before we try to prune more activities.</span><br><span class="line">        //如果正在finishing  destorying destoryed 不继续执行</span><br><span class="line">        if (r.finishing || r.state == DESTROYING || r.state == DESTROYED) &#123;</span><br><span class="line">            if (DEBUG_RELEASE) Slog.d(TAG_RELEASE, &quot;Abort release; already destroying: &quot; + r);</span><br><span class="line">            return;</span><br><span class="line">        &#125;</span><br><span class="line">        // Don&apos;t consider any activies that are currently not in a state where they</span><br><span class="line">        // can be destroyed.</span><br><span class="line">        //如果一个activity处于不可销毁的状态</span><br><span class="line">        if (r.visible || !r.stopped || !r.haveState || r.state == RESUMED || r.state == PAUSING</span><br><span class="line">                || r.state == PAUSED || r.state == STOPPING) &#123;</span><br><span class="line">            if (DEBUG_RELEASE) Slog.d(TAG_RELEASE, &quot;Not releasing in-use activity: &quot; + r);</span><br><span class="line">            continue;</span><br><span class="line">        &#125;</span><br><span class="line">        if (r.task != null) &#123;</span><br><span class="line">        </span><br><span class="line">            if (DEBUG_RELEASE) Slog.d(TAG_RELEASE, &quot;Collecting release task &quot; + r.task</span><br><span class="line">                    + &quot; from &quot; + r);</span><br><span class="line">            if (firstTask == null) &#123;</span><br><span class="line">                firstTask = r.task;</span><br><span class="line">            &#125; else if (firstTask != r.task) &#123;</span><br><span class="line">                if (tasks == null) &#123;</span><br><span class="line">                    tasks = new ArraySet&lt;&gt;();</span><br><span class="line">                    tasks.add(firstTask);</span><br><span class="line">                &#125;</span><br><span class="line">                tasks.add(r.task);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">     // APP当前进程中，至少两个TaskRecord才有必要走Activity的销毁逻辑</span><br><span class="line">    if (tasks == null) &#123;</span><br><span class="line">        if (DEBUG_RELEASE) Slog.d(TAG_RELEASE, &quot;Didn&apos;t find two or more tasks to release&quot;);</span><br><span class="line">        return;</span><br><span class="line">    &#125;</span><br><span class="line">    // If we have activities in multiple tasks that are in a position to be destroyed,</span><br><span class="line">    // let&apos;s iterate through the tasks and release the oldest one.</span><br><span class="line">    final int numDisplays = mActivityDisplays.size();</span><br><span class="line">    for (int displayNdx = 0; displayNdx &lt; numDisplays; ++displayNdx) &#123;</span><br><span class="line">        final ArrayList&lt;ActivityStack&gt; stacks = mActivityDisplays.valueAt(displayNdx).mStacks;</span><br><span class="line">        // Step through all stacks starting from behind, to hit the oldest things first.</span><br><span class="line">        for (int stackNdx = 0; stackNdx &lt; stacks.size(); stackNdx++) &#123;</span><br><span class="line">            final ActivityStack stack = stacks.get(stackNdx);</span><br><span class="line">            // Try to release activities in this stack; if we manage to, we are done.</span><br><span class="line">            if (stack.releaseSomeActivitiesLocked(app, tasks, reason) &gt; 0) &#123;</span><br><span class="line">                return;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="AS-releaseSomeActivitiesLocked"><a href="#AS-releaseSomeActivitiesLocked" class="headerlink" title="AS#releaseSomeActivitiesLocked()"></a>AS#releaseSomeActivitiesLocked()</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line">final int releaseSomeActivitiesLocked(ProcessRecord app, ArraySet&lt;TaskRecord&gt; tasks,</span><br><span class="line">           String reason) &#123;</span><br><span class="line">       // Iterate over tasks starting at the back (oldest) first.</span><br><span class="line">       if (DEBUG_RELEASE) Slog.d(TAG_RELEASE, &quot;Trying to release some activities in &quot; + app);</span><br><span class="line">       int maxTasks = tasks.size() / 4;</span><br><span class="line">       if (maxTasks &lt; 1) &#123;</span><br><span class="line">           maxTasks = 1;</span><br><span class="line">       &#125;</span><br><span class="line">       int numReleased = 0;</span><br><span class="line">       for (int taskNdx = 0; taskNdx &lt; mTaskHistory.size() &amp;&amp; maxTasks &gt; 0; taskNdx++) &#123;</span><br><span class="line">           final TaskRecord task = mTaskHistory.get(taskNdx);</span><br><span class="line">           if (!tasks.contains(task)) &#123;</span><br><span class="line">               continue;</span><br><span class="line">           &#125;</span><br><span class="line">           if (DEBUG_RELEASE) Slog.d(TAG_RELEASE, &quot;Looking for activities to release in &quot; + task);</span><br><span class="line">           int curNum = 0;</span><br><span class="line">           final ArrayList&lt;ActivityRecord&gt; activities = task.mActivities;</span><br><span class="line">           for (int actNdx = 0; actNdx &lt; activities.size(); actNdx++) &#123;</span><br><span class="line">               final ActivityRecord activity = activities.get(actNdx);</span><br><span class="line">               //判断如果可以destory</span><br><span class="line">               if (activity.app == app &amp;&amp; activity.isDestroyable()) &#123;</span><br><span class="line">                   if (DEBUG_RELEASE) Slog.v(TAG_RELEASE, &quot;Destroying &quot; + activity</span><br><span class="line">                           + &quot; in state &quot; + activity.state + &quot; resumed=&quot; + mResumedActivity</span><br><span class="line">                           + &quot; pausing=&quot; + mPausingActivity + &quot; for reason &quot; + reason);</span><br><span class="line">                   destroyActivityLocked(activity, true, reason);</span><br><span class="line">                   if (activities.get(actNdx) != activity) &#123;</span><br><span class="line">                       // Was removed from list, back up so we don&apos;t miss the next one.</span><br><span class="line">                       actNdx--;</span><br><span class="line">                   &#125;</span><br><span class="line">                   curNum++;</span><br><span class="line">               &#125;</span><br><span class="line">           &#125;</span><br><span class="line">           if (curNum &gt; 0) &#123;</span><br><span class="line">               numReleased += curNum;</span><br><span class="line">               maxTasks--;</span><br><span class="line">               if (mTaskHistory.get(taskNdx) != task) &#123;</span><br><span class="line">                   // The entire task got removed, back up so we don&apos;t miss the next one.</span><br><span class="line">                   taskNdx--;</span><br><span class="line">               &#125;</span><br><span class="line">           &#125;</span><br><span class="line">       &#125;</span><br><span class="line">       if (DEBUG_RELEASE) Slog.d(TAG_RELEASE,</span><br><span class="line">               &quot;Done releasing: did &quot; + numReleased + &quot; activities&quot;);</span><br><span class="line">       return numReleased;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<h5 id="destroyActivityLocked-activity-true-reason"><a href="#destroyActivityLocked-activity-true-reason" class="headerlink" title="destroyActivityLocked(activity, true, reason)"></a>destroyActivityLocked(activity, true, reason)</h5><ul>
+<li>mService.updateLruProcessLocked(r.app, false, null);</li>
+<li>mService.updateOomAdjLocked();</li>
+<li>调用AT#scheduleDestroyActivity</li>
+</ul>
+<hr>
+<h2 id="2-分析BinderInternal"><a href="#2-分析BinderInternal" class="headerlink" title="2.分析BinderInternal"></a>2.分析BinderInternal</h2><p>BinderInternal内部有sGcWatchers对应一个runnable list，<br>BinderInternal重写了finalize()方法。</p>
+<h5 id="根据JVM的原理，JVM垃圾回收器准备释放内存前，会先调用该对象finalize。"><a href="#根据JVM的原理，JVM垃圾回收器准备释放内存前，会先调用该对象finalize。" class="headerlink" title="根据JVM的原理，JVM垃圾回收器准备释放内存前，会先调用该对象finalize。"></a>根据JVM的原理，JVM垃圾回收器准备释放内存前，会先调用该对象finalize。</h5><p>当执行GC的时候，会依次执行每个runnabe的run()方法，并根据具体内存情况（3/4 davilk memory）进行操作。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">public class BinderInternal &#123;</span><br><span class="line">    static WeakReference&lt;GcWatcher&gt; sGcWatcher</span><br><span class="line">            = new WeakReference&lt;GcWatcher&gt;(new GcWatcher());</span><br><span class="line">    static ArrayList&lt;Runnable&gt; sGcWatchers = new ArrayList&lt;&gt;(); //</span><br><span class="line">    static Runnable[] sTmpWatchers = new Runnable[1]; //数组</span><br><span class="line">    static long sLastGcTime;</span><br><span class="line"></span><br><span class="line">    static final class GcWatcher &#123;</span><br><span class="line">        @Override</span><br><span class="line">        protected void finalize() throws Throwable &#123;</span><br><span class="line">            handleGc();</span><br><span class="line">            sLastGcTime = SystemClock.uptimeMillis();</span><br><span class="line">            synchronized (sGcWatchers) &#123;</span><br><span class="line">                sTmpWatchers = sGcWatchers.toArray(sTmpWatchers);</span><br><span class="line">            &#125;</span><br><span class="line">            for (int i=0; i&lt;sTmpWatchers.length; i++) &#123;</span><br><span class="line">                if (sTmpWatchers[i] != null) &#123;</span><br><span class="line">                    sTmpWatchers[i].run();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            sGcWatcher = new WeakReference&lt;GcWatcher&gt;(new GcWatcher());</span><br><span class="line">            /*finallize方法最后重新创建了一个GcWatcher的弱引用。sGcWatcher是一个静态对象，</span><br><span class="line">            如果它是一个强引用，那么他就会存在静态引用方法区，就会导致这个强引用的GC线程无法回收。</span><br><span class="line">            所以作为弱引用，引用对象在被回收时就会触发sGcWatcher的finalize方法，执行结束时仔new一个弱引用出来，以保证下次的调用。*/</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    </span><br><span class="line">    public static void forceGc(String reason) &#123;</span><br><span class="line">        EventLog.writeEvent(2741, reason);</span><br><span class="line">        VMRuntime.getRuntime().requestConcurrentGC();</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<h3 id="3-关于ActivityThread-forceGC"><a href="#3-关于ActivityThread-forceGC" class="headerlink" title="3.关于ActivityThread#forceGC"></a>3.关于ActivityThread#forceGC</h3><p>AT种有两处调用forceGC,reason分别是“bg” 和 “mem”</p>
+<h4 id="3-1-BinderInternal-forceGc-“mem”"><a href="#3-1-BinderInternal-forceGc-“mem”" class="headerlink" title="3.1 BinderInternal.forceGc(“mem”)"></a>3.1 BinderInternal.forceGc(“mem”)</h4><h5 id="关注AMS-scheduleAppGcsLocked"><a href="#关注AMS-scheduleAppGcsLocked" class="headerlink" title="关注AMS#scheduleAppGcsLocked()"></a>关注AMS#scheduleAppGcsLocked()</h5><p>该方法分别在以下情况被调用</p>
+<ul>
+<li>AMS#doLowMemReportIfNeededLocked  lowmemory时候</li>
+<li>windowsVisibleLocked   window可见变化</li>
+<li>BroadcastQueue#processNextBroadcast 处理完广播 size = 0</li>
+</ul>
+<p>判断mProcessesToGc数量大于0，发送GC_BACKGROUND_PROCESSES_MSG<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line">    * Schedule the execution of all pending app GCs.</span><br><span class="line">    */</span><br><span class="line">   final void scheduleAppGcsLocked() &#123;</span><br><span class="line">       mHandler.removeMessages(GC_BACKGROUND_PROCESSES_MSG);</span><br><span class="line"></span><br><span class="line">       if (mProcessesToGc.size() &gt; 0) &#123;</span><br><span class="line">           // Schedule a GC for the time to the next process.</span><br><span class="line">           ProcessRecord proc = mProcessesToGc.get(0);</span><br><span class="line">           Message msg = mHandler.obtainMessage(GC_BACKGROUND_PROCESSES_MSG);</span><br><span class="line"></span><br><span class="line">           long when = proc.lastRequestedGc + GC_MIN_INTERVAL;</span><br><span class="line">           long now = SystemClock.uptimeMillis();</span><br><span class="line">           if (when &lt; (now+GC_TIMEOUT)) &#123;</span><br><span class="line">               when = now + GC_TIMEOUT;</span><br><span class="line">           &#125;</span><br><span class="line">           mHandler.sendMessageAtTime(msg, when);</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure></p>
+<p>performAppGcsIfAppropriateLocked()<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">case GC_BACKGROUND_PROCESSES_MSG: &#123;</span><br><span class="line">                synchronized (ActivityManagerService.this) &#123;</span><br><span class="line">                    performAppGcsIfAppropriateLocked();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125; break;</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line">  * If all looks good, perform GCs on all processes waiting for them.</span><br><span class="line">  */</span><br><span class="line"> final void performAppGcsIfAppropriateLocked() &#123;</span><br><span class="line">     if (canGcNowLocked()) &#123; //判断是否可以GC，根据广播 sleep 等判断</span><br><span class="line">         performAppGcsLocked();</span><br><span class="line">         return;</span><br><span class="line">     &#125;</span><br><span class="line">     // Still not idle, wait some more.</span><br><span class="line">     scheduleAppGcsLocked();  //不可以则等待</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+<p> performAppGcsLocked()，根据时间判断当前时间和上次时间+GC默认间隔做判断</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line">   * Perform GCs on all processes that are waiting for it, but only</span><br><span class="line">   * if things are idle.</span><br><span class="line">   */</span><br><span class="line">  final void performAppGcsLocked() &#123;</span><br><span class="line">      final int N = mProcessesToGc.size();</span><br><span class="line">      if (N &lt;= 0) &#123;</span><br><span class="line">          return;</span><br><span class="line">      &#125;</span><br><span class="line">      if (canGcNowLocked()) &#123;</span><br><span class="line">          while (mProcessesToGc.size() &gt; 0) &#123;</span><br><span class="line">              ProcessRecord proc = mProcessesToGc.remove(0);</span><br><span class="line">              if (proc.curRawAdj &gt; ProcessList.PERCEPTIBLE_APP_ADJ || proc.reportLowMemory) &#123;</span><br><span class="line">              //如果上次GC时间 + 最小GC间隔 小于等于 现在时间</span><br><span class="line">                  if ((proc.lastRequestedGc+GC_MIN_INTERVAL)</span><br><span class="line">                          &lt;= SystemClock.uptimeMillis()) &#123;</span><br><span class="line">                      // To avoid spamming the system, we will GC processes one</span><br><span class="line">                      // at a time, waiting a few seconds between each.</span><br><span class="line">                      performAppGcLocked(proc); //准备GC</span><br><span class="line">                      scheduleAppGcsLocked();//等待</span><br><span class="line">                      return;</span><br><span class="line">                  &#125; else &#123;</span><br><span class="line">                      // It hasn&apos;t been long enough since we last GCed this</span><br><span class="line">                      // process...  put it in the list to wait for its time.</span><br><span class="line">                      addProcessToGcListLocked(proc);</span><br><span class="line">                      break;</span><br><span class="line">                  &#125;</span><br><span class="line">              &#125;</span><br><span class="line">          &#125;</span><br><span class="line"></span><br><span class="line">          scheduleAppGcsLocked();//等待</span><br><span class="line">      &#125;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+<p> performAppGcLocked(proc)<a href=""></a><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line">  * Ask a given process to GC right now.</span><br><span class="line">  */</span><br><span class="line"> final void performAppGcLocked(ProcessRecord app) &#123;</span><br><span class="line">     try &#123;</span><br><span class="line">         app.lastRequestedGc = SystemClock.uptimeMillis();</span><br><span class="line">         if (app.thread != null) &#123;</span><br><span class="line">             if (app.reportLowMemory) &#123;</span><br><span class="line">                 app.reportLowMemory = false;</span><br><span class="line">                 app.thread.scheduleLowMemory(); //如果是lowmemory</span><br><span class="line">             &#125; else &#123;</span><br><span class="line">                 app.thread.processInBackground();</span><br><span class="line">             &#125;</span><br><span class="line">         &#125;</span><br><span class="line">     &#125; catch (Exception e) &#123;</span><br><span class="line">         // whatever.</span><br><span class="line">     &#125;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure></p>
+<h4 id="AT-handleLowMemory"><a href="#AT-handleLowMemory" class="headerlink" title="AT#handleLowMemory()"></a>AT#handleLowMemory()</h4><p>处理了各级onLowMemory的回调，释放非system的sqlite 释放service，调用GC<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">final void handleLowMemory() &#123;</span><br><span class="line">     ArrayList&lt;ComponentCallbacks2&gt; callbacks = collectComponentCallbacks(true, null);</span><br><span class="line"></span><br><span class="line">     final int N = callbacks.size();</span><br><span class="line">     for (int i=0; i&lt;N; i++) &#123;</span><br><span class="line">         callbacks.get(i).onLowMemory();//各级执行onLowMemory回调</span><br><span class="line">     &#125;</span><br><span class="line"></span><br><span class="line">     // Ask SQLite to free up as much memory as it can, mostly from its page caches.</span><br><span class="line">     if (Process.myUid() != Process.SYSTEM_UID) &#123; //释放sqlite</span><br><span class="line">         int sqliteReleased = SQLiteDatabase.releaseMemory();</span><br><span class="line">         EventLog.writeEvent(SQLITE_MEM_RELEASED_EVENT_LOG_TAG, sqliteReleased);</span><br><span class="line">     &#125;</span><br><span class="line"></span><br><span class="line">     // Ask graphics to free up as much as possible (font/image caches)</span><br><span class="line">     Canvas.freeCaches();//释放canvas</span><br><span class="line"></span><br><span class="line">     // Ask text layout engine to free also as much as possible</span><br><span class="line">     Canvas.freeTextLayoutCaches();</span><br><span class="line"></span><br><span class="line">     BinderInternal.forceGc(&quot;mem&quot;);</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure></p>
+<h5 id="以上是BinderInternal-forceGc-“mem”"><a href="#以上是BinderInternal-forceGc-“mem”" class="headerlink" title="以上是BinderInternal.forceGc(“mem”);"></a>以上是BinderInternal.forceGc(“mem”);</h5><hr>
+<h4 id="3-2-BinderInternal-forceGc-“bg”"><a href="#3-2-BinderInternal-forceGc-“bg”" class="headerlink" title="3.2 BinderInternal.forceGc(“bg”);"></a>3.2 BinderInternal.forceGc(“bg”);</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">void scheduleGcIdler() &#123;</span><br><span class="line">      if (!mGcIdlerScheduled) &#123;</span><br><span class="line">          mGcIdlerScheduled = true;</span><br><span class="line">          Looper.myQueue().addIdleHandler(mGcIdler);</span><br><span class="line">      &#125;</span><br><span class="line">      mH.removeMessages(H.GC_WHEN_IDLE);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  void unscheduleGcIdler() &#123;</span><br><span class="line">      if (mGcIdlerScheduled) &#123;</span><br><span class="line">          mGcIdlerScheduled = false;</span><br><span class="line">          Looper.myQueue().removeIdleHandler(mGcIdler);</span><br><span class="line">      &#125;</span><br><span class="line">      mH.removeMessages(H.GC_WHEN_IDLE);</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+<h4 id="AT-processInBackground"><a href="#AT-processInBackground" class="headerlink" title="AT#processInBackground()"></a>AT#processInBackground()</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">void scheduleGcIdler() &#123;</span><br><span class="line">        if (!mGcIdlerScheduled) &#123;</span><br><span class="line">            mGcIdlerScheduled = true;</span><br><span class="line">            Looper.myQueue().addIdleHandler(mGcIdler);</span><br><span class="line">        &#125;</span><br><span class="line">        mH.removeMessages(H.GC_WHEN_IDLE);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>GcIdler实现了IdleHandler，内部执行doGcIfNeeded()</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">final class GcIdler implements MessageQueue.IdleHandler &#123;</span><br><span class="line">       @Override</span><br><span class="line">       public final boolean queueIdle() &#123;</span><br><span class="line">           doGcIfNeeded();</span><br><span class="line">           return false;</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<p>mPendingIdleHandlers即是mGcIdler组成的数组</p>
+<h6 id="MessageQueue"><a href="#MessageQueue" class="headerlink" title="MessageQueue"></a>MessageQueue</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br><span class="line">Message next() &#123;</span><br><span class="line">... // Run the idle handlers. // We only ever reach this code block during the first iteration.</span><br><span class="line">for (int i = 0; i &lt; pendingIdleHandlerCount; i++) &#123; </span><br><span class="line">final IdleHandler idler = mPendingIdleHandlers[i];</span><br><span class="line">mPendingIdleHandlers[i] = null; // release the reference to the handler boolean keep = false;</span><br><span class="line">try &#123; </span><br><span class="line"></span><br><span class="line">keep = idler.queueIdle();   </span><br><span class="line">    </span><br><span class="line">&#125; catch (Throwable t) &#123;</span><br><span class="line">Log.wtf(TAG, &quot;IdleHandler threw exception&quot;, t); </span><br><span class="line">    </span><br><span class="line">&#125; </span><br><span class="line">if (!keep) &#123;</span><br><span class="line">synchronized (this) &#123;</span><br><span class="line">mIdleHandlers.remove(idler); </span><br><span class="line">    </span><br><span class="line">&#125; </span><br><span class="line">&#125; &#125; ... &#125;</span><br></pre></td></tr></table></figure>
+<p>由此可知在MessageQueue执行next方法时会调用queueIdle()<br>再来看doGcIfNeeded()<br>根据上次GC的时间加上两次GC间隔的最小时间5s，判断当前是否要GC</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">void doGcIfNeeded() &#123;</span><br><span class="line">        mGcIdlerScheduled = false;</span><br><span class="line">        final long now = SystemClock.uptimeMillis();</span><br><span class="line">        //Slog.i(TAG, &quot;**** WE MIGHT WANT TO GC: then=&quot; + Binder.getLastGcTime()</span><br><span class="line">        //        + &quot;m now=&quot; + now);</span><br><span class="line">        if ((BinderInternal.getLastGcTime()+MIN_TIME_BETWEEN_GCS) &lt; now) &#123;//默认5s</span><br><span class="line">            //Slog.i(TAG, &quot;**** WE DO, WE DO WANT TO GC!&quot;);</span><br><span class="line">            BinderInternal.forceGc(&quot;bg&quot;);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>#### </p>
+<hr>
+<p><a href="http://wossoneri.github.io/2019/11/18/[Android][Framework]Something-about-activity-recycle/#toc-heading-2" target="_blank" rel="noopener">关于Activity回收你要知道的事情</a></p>
+</section>
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a href="/tags#GC" >
+    <span class="tag-code">GC</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2020/05/18/Android-Davilk-and-ART/">
+        <span class="nav-arrow">← </span>
+        
+          Android Davilk and ART
+        
+      </a>
+    
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+      <div class="qrcode">
+        <canvas id="share-qrcode"></canvas>
+        <p class="notice">扫描二维码，分享此文章</p>
+      </div>
+    
+    <!-- 二维码 END -->
+    
+      <!-- Gitment START -->
+      <div id="comments"></div>
+      <!-- Gitment END -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#1-什么时候调用updateOomAdjLocked-进行回收？"><span class="toc-nav-text"><a href="#1-&#x4EC0;&#x4E48;&#x65F6;&#x5019;&#x8C03;&#x7528;updateOomAdjLocked-&#x8FDB;&#x884C;&#x56DE;&#x6536;&#xFF1F;" class="headerlink" title="1. &#x4EC0;&#x4E48;&#x65F6;&#x5019;&#x8C03;&#x7528;updateOomAdjLocked() &#x8FDB;&#x884C;&#x56DE;&#x6536;&#xFF1F;"></a>1. &#x4EC0;&#x4E48;&#x65F6;&#x5019;&#x8C03;&#x7528;updateOomAdjLocked() &#x8FDB;&#x884C;&#x56DE;&#x6536;&#xFF1F;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#attach"><span class="toc-nav-text"><a href="#attach" class="headerlink" title="attach()"></a>attach()</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#AMS-releaseSomeActivities"><span class="toc-nav-text"><a href="#AMS-releaseSomeActivities" class="headerlink" title="AMS#releaseSomeActivities()"></a>AMS#releaseSomeActivities()</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#ASS-releaseSomeActivitiesLocked"><span class="toc-nav-text"><a href="#ASS-releaseSomeActivitiesLocked" class="headerlink" title="ASS#releaseSomeActivitiesLocked()"></a>ASS#releaseSomeActivitiesLocked()</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#AS-releaseSomeActivitiesLocked"><span class="toc-nav-text"><a href="#AS-releaseSomeActivitiesLocked" class="headerlink" title="AS#releaseSomeActivitiesLocked()"></a>AS#releaseSomeActivitiesLocked()</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#destroyActivityLocked-activity-true-reason"><span class="toc-nav-text"><a href="#destroyActivityLocked-activity-true-reason" class="headerlink" title="destroyActivityLocked(activity, true, reason)"></a>destroyActivityLocked(activity, true, reason)</span></a></li></ol></li></ol></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2-分析BinderInternal"><span class="toc-nav-text"><a href="#2-&#x5206;&#x6790;BinderInternal" class="headerlink" title="2.&#x5206;&#x6790;BinderInternal"></a>2.&#x5206;&#x6790;BinderInternal</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#根据JVM的原理，JVM垃圾回收器准备释放内存前，会先调用该对象finalize。"><span class="toc-nav-text"><a href="#&#x6839;&#x636E;JVM&#x7684;&#x539F;&#x7406;&#xFF0C;JVM&#x5783;&#x573E;&#x56DE;&#x6536;&#x5668;&#x51C6;&#x5907;&#x91CA;&#x653E;&#x5185;&#x5B58;&#x524D;&#xFF0C;&#x4F1A;&#x5148;&#x8C03;&#x7528;&#x8BE5;&#x5BF9;&#x8C61;finalize&#x3002;" class="headerlink" title="&#x6839;&#x636E;JVM&#x7684;&#x539F;&#x7406;&#xFF0C;JVM&#x5783;&#x573E;&#x56DE;&#x6536;&#x5668;&#x51C6;&#x5907;&#x91CA;&#x653E;&#x5185;&#x5B58;&#x524D;&#xFF0C;&#x4F1A;&#x5148;&#x8C03;&#x7528;&#x8BE5;&#x5BF9;&#x8C61;finalize&#x3002;"></a>&#x6839;&#x636E;JVM&#x7684;&#x539F;&#x7406;&#xFF0C;JVM&#x5783;&#x573E;&#x56DE;&#x6536;&#x5668;&#x51C6;&#x5907;&#x91CA;&#x653E;&#x5185;&#x5B58;&#x524D;&#xFF0C;&#x4F1A;&#x5148;&#x8C03;&#x7528;&#x8BE5;&#x5BF9;&#x8C61;finalize&#x3002;</span></a></li></ol></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#3-关于ActivityThread-forceGC"><span class="toc-nav-text"><a href="#3-&#x5173;&#x4E8E;ActivityThread-forceGC" class="headerlink" title="3.&#x5173;&#x4E8E;ActivityThread#forceGC"></a>3.&#x5173;&#x4E8E;ActivityThread#forceGC</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#3-1-BinderInternal-forceGc-“mem”"><span class="toc-nav-text"><a href="#3-1-BinderInternal-forceGc-&#x201C;mem&#x201D;" class="headerlink" title="3.1 BinderInternal.forceGc(&#x201C;mem&#x201D;)"></a>3.1 BinderInternal.forceGc(&#x201C;mem&#x201D;)</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#关注AMS-scheduleAppGcsLocked"><span class="toc-nav-text"><a href="#&#x5173;&#x6CE8;AMS-scheduleAppGcsLocked" class="headerlink" title="&#x5173;&#x6CE8;AMS#scheduleAppGcsLocked()"></a>&#x5173;&#x6CE8;AMS#scheduleAppGcsLocked()</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#AT-handleLowMemory"><span class="toc-nav-text"><a href="#AT-handleLowMemory" class="headerlink" title="AT#handleLowMemory()"></a>AT#handleLowMemory()</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#以上是BinderInternal-forceGc-“mem”"><span class="toc-nav-text"><a href="#&#x4EE5;&#x4E0A;&#x662F;BinderInternal-forceGc-&#x201C;mem&#x201D;" class="headerlink" title="&#x4EE5;&#x4E0A;&#x662F;BinderInternal.forceGc(&#x201C;mem&#x201D;);"></a>&#x4EE5;&#x4E0A;&#x662F;BinderInternal.forceGc(&#x201C;mem&#x201D;);</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#3-2-BinderInternal-forceGc-“bg”"><span class="toc-nav-text"><a href="#3-2-BinderInternal-forceGc-&#x201C;bg&#x201D;" class="headerlink" title="3.2 BinderInternal.forceGc(&#x201C;bg&#x201D;);"></a>3.2 BinderInternal.forceGc(&#x201C;bg&#x201D;);</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#AT-processInBackground"><span class="toc-nav-text"><a href="#AT-processInBackground" class="headerlink" title="AT#processInBackground()"></a>AT#processInBackground()</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-6"><a class="toc-nav-link" href="#MessageQueue"><span class="toc-nav-text"><a href="#MessageQueue" class="headerlink" title="MessageQueue"></a>MessageQueue</span></a></li></ol></li></ol></li></ol></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'http://yoursite.com/2020/06/28/ActivityThread-GC/';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+  <script>
+    var qr = new QRious({
+      element: document.getElementById('share-qrcode'),
+      value: document.location.href
+    });
+  </script>
+
+
+
+  <script>
+    var gitmentConfig = "";
+    if (gitmentConfig !== 'undefined') {
+      var gitment = new Gitment({
+        id: "ActivityThread中关于GC的操作",
+        owner: "",
+        repo: "",
+        oauth: {
+          client_id: "",
+          client_secret: ""
+        },
+        theme: {
+          render(state, instance) {
+            const container = document.createElement('div')
+            container.lang = "en-US"
+            container.className = 'gitment-container gitment-root-container'
+            container.appendChild(instance.renderHeader(state, instance))
+            container.appendChild(instance.renderEditor(state, instance))
+            container.appendChild(instance.renderComments(state, instance))
+            container.appendChild(instance.renderFooter(state, instance))
+            return container;
+          }
+        }
+      })
+      gitment.render(document.getElementById('comments'))
+    }
+  </script>
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2020 | Proudly powered by <a href="https://hexo.io" target="_blank">Hexo</a>
+    <br>
+    Theme by <a href="https://github.com/yanm1ng">yanm1ng</a>
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+<script src="/js/script.js"></script>
+  </body>
+</html>

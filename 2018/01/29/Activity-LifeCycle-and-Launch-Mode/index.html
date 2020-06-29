@@ -365,7 +365,7 @@
 <p>下面分情况说明</p>
 <p>(1) 如下过来规则</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;intent-filter&gt;</span><br><span class="line">      &lt;data android:mimeType=&quot;image/*&quot;/&gt;</span><br><span class="line">  &lt;/intent-filter&gt;</span><br></pre></td></tr></table></figure>
-<p>​这种规则指定了媒体类型为所有类型的图片，那么Intent中的mimeType属性必须为“image/*”才能匹配，这种情况下虽然过滤规则没有指定URI，但是Intent中的URI部分的schema必须为content或者file才能匹配，这点是需要尤其注意的。   </p>
+<p>这种规则指定了媒体类型为所有类型的图片，那么Intent中的mimeType属性必须为“image/*”才能匹配，这种情况下虽然过滤规则没有指定URI，但是Intent中的URI部分的schema必须为content或者file才能匹配，这点是需要尤其注意的。   </p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">intent.setDataAndType(Uri.parse(&quot;file://abc&quot;),&quot;image/png&quot;);</span><br></pre></td></tr></table></figure>
 <p> 另外，如果要为Intent指定完整的data，必须调用setDataAndType方法，不能先调用setData再调用setType，因为这两个方法会清除彼此的值。由下面setData源码可知</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">public Intent setData(Uri data) &#123;</span><br><span class="line">    mData = data;</span><br><span class="line">    mType = null;</span><br><span class="line">    return this;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
@@ -385,10 +385,6 @@
       <div class="tags">
         <span>Tags:</span>
         
-  <a href="/tags#Activity" >
-    <span class="tag-code">Activity</span>
-  </a>
-
   <a href="/tags#Android开发艺术探索" >
     <span class="tag-code">Android开发艺术探索</span>
   </a>
