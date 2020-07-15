@@ -10,7 +10,7 @@
   
   <title>
     
-      Android Davilk and ART | tracyliu
+      Android VM 01 JVM 、DVM、ART简介 | tracyliu
     
   </title>
   <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
@@ -145,8 +145,8 @@
 </header>
 
     <div id="article-banner">
-  <h2>Android Davilk and ART</h2>
-  <p class="post-date">2020-05-18</p>
+  <h2>Android VM 01 JVM 、DVM、ART简介</h2>
+  <p class="post-date">2020-07-15</p>
   <div class="arrow-down">
     <a href="javascript:;"></a>
   </div>
@@ -154,7 +154,7 @@
 <main class="app-body flex-box">
   <!-- Article START -->
   <article class="post-article">
-    <section class="markdown-content"><h4 id="DVM与JVM的区别"><a href="#DVM与JVM的区别" class="headerlink" title="DVM与JVM的区别"></a>DVM与JVM的区别</h4><ul>
+    <section class="markdown-content"><h3 id="1-DVM与JVM的区别"><a href="#1-DVM与JVM的区别" class="headerlink" title="1.DVM与JVM的区别"></a>1.DVM与JVM的区别</h3><ul>
 <li>JVM基于栈，DVM基于寄存器</li>
 </ul>
 <p>寄存器是 CPU 上面的一块存储空间，栈是内存上面的一段连续的存储空间。</p>
@@ -162,7 +162,19 @@
 <li>DVM 执行的 .dex 文件，JVM 执行 .class 文件。</li>
 <li>DVM：允许运行多个虚拟机实例，每一个应用启动都运行一个单独的虚拟机，并且运行在一个独立的进程中JVM：只能运行一个实例，也就是所有应用都运行在同一个 JVM 中</li>
 </ul>
-<h3 id="Davilk虚拟机"><a href="#Davilk虚拟机" class="headerlink" title="Davilk虚拟机"></a>Davilk虚拟机</h3><h4 id="JIT"><a href="#JIT" class="headerlink" title="JIT"></a>JIT</h4><p>JIT(Just In Time Compiler， 即时编译)，Android 2.2 版本提出的</p>
+<p>Java虚拟机使用的指令只占一个字节，因而称为字节码。基于寄存器的指令由于需要指定源地址和目标地址，因此需要占用更多的指令空间。Dalvik虚拟机的某些指令需要占用两个字节。基于栈和基于寄存器的指令集各有优劣，一般而言，执行同样的功能，前者需要更多的指令（主要是load和store指令），而后者需要更多的指令空间。需要更多指令意味着要多占用CPU时间，而需要更多指令空间意味着数据缓冲（d-cache）更易失效</p>
+<h4 id="dex-和-class区别"><a href="#dex-和-class区别" class="headerlink" title=".dex 和 .class区别"></a>.dex 和 .class区别</h4><p><img src="https://yqfile.alicdn.com/img_d4d1bbadbe3f5f56a530eaaeaff33678.png" alt="dex 和 class文件区别"></p>
+<h5 id="dex格式文件使用共享的、特定类型的常量池机制来节省内存。常量池存储类中的所有字面常量，它包括字符串常量、字段常量等值。"><a href="#dex格式文件使用共享的、特定类型的常量池机制来节省内存。常量池存储类中的所有字面常量，它包括字符串常量、字段常量等值。" class="headerlink" title="dex格式文件使用共享的、特定类型的常量池机制来节省内存。常量池存储类中的所有字面常量，它包括字符串常量、字段常量等值。"></a>dex格式文件使用共享的、特定类型的常量池机制来节省内存。常量池存储类中的所有字面常量，它包括字符串常量、字段常量等值。</h5><hr>
+<h3 id="2-Davilk虚拟机"><a href="#2-Davilk虚拟机" class="headerlink" title="2.Davilk虚拟机"></a>2.Davilk虚拟机</h3><h4 id="2-1-Davilk做出的优化"><a href="#2-1-Davilk做出的优化" class="headerlink" title="2.1 Davilk做出的优化"></a>2.1 Davilk做出的优化</h4><ul>
+<li>将多个类文件收集到同一个dex文件中，以便节省空间；</li>
+<li>使用只读的内存映射方式加载dex文件，以便可以多进程共享dex文件，节省程序加载时间；</li>
+<li>提前调整好字节序（byte order）和字对齐（word alignment）方式，使得它们更适合于本地机器，以便提高指令执行速度；</li>
+<li>尽量提前进行字节码验证（bytecode verification），提高程序的加载速度；</li>
+<li>需要重写字节码的优化要提前进行。</li>
+</ul>
+<h4 id="2-2-Davilk执行流程"><a href="#2-2-Davilk执行流程" class="headerlink" title="2.2 Davilk执行流程"></a>2.2 Davilk执行流程</h4><p><img src="https://yqfile.alicdn.com/img_5940971bb8cb02925da966d4df4734eb.png" alt="Davilk执行流程"></p>
+<p>一个应用首先经过DX工具将class文件转换成Dalvik虚拟机可以执行的dex文件，然后由类加载器加载原生类和Java类，接着由解释器根据指令集对Dalvik字节码进行解释、执行。最后，根据dvm_arch参数选择编译的目标机体系结构</p>
+<h4 id="2-3-JIT"><a href="#2-3-JIT" class="headerlink" title="2.3 JIT"></a>2.3 JIT</h4><p>JIT(Just In Time Compiler， 即时编译)，Android 2.2 版本提出的</p>
 <p><img src="https://user-gold-cdn.xitu.io/2018/12/27/167edb8c1592ea5f?imageView2/0/w/1280/h/960/format/webp/ignore-error/1" alt="image"></p>
 <h5 id="JIT-模式的缺点："><a href="#JIT-模式的缺点：" class="headerlink" title="JIT 模式的缺点："></a>JIT 模式的缺点：</h5><ul>
 <li>每次启动应用都需要重新编译</li>
@@ -180,12 +192,26 @@
 <li>DEX means Dalvik EXcutable file.</li>
 <li>ODEX means Optimized Dalvik EXcutable file.</li>
 </ul>
-<h4 id="ART虚拟机"><a href="#ART虚拟机" class="headerlink" title="ART虚拟机"></a>ART虚拟机</h4><p>ART 即 Android Runtime。在 ART 环境中，应用在第一次安装的时候，字节码就会预先编译成机器码，使其成为真正的本地应用。这个过程叫做预编译（ AOT, Ahead-Of-Time ）</p>
+<h4 id="2-4-Dex文件"><a href="#2-4-Dex文件" class="headerlink" title="2.4 Dex文件"></a>2.4 Dex文件</h4><p><img src="https://yqfile.alicdn.com/img_84cec7d7ebed28e62e75a762d9ee3707.png" alt="dex结构"></p>
+<ul>
+<li>header：存储了各个数据类型的起始地址、偏移量等信息。</li>
+<li>proto_ids：描述函数原型信息，包括返回值，参数信息。比如“test:()V”</li>
+<li>methods_ids：函数信息，包括所属类及对应的proto信息。</li>
+</ul>
+<p><a href="https://blog.csdn.net/joye123/article/details/78379109" target="_blank" rel="noopener">https://blog.csdn.net/joye123/article/details/78379109</a></p>
+<p>虽然dex文件的结构很紧凑，但想要运行时的性能得到进一步提升，还需要对dex文件进行进一步优化。</p>
+<h4 id="dex优化"><a href="#dex优化" class="headerlink" title="dex优化"></a>dex优化</h4><ul>
+<li>调整所有字段的字节序和对齐结构中的每一个域</li>
+<li>验证dex文件中的所有类</li>
+<li>对一些特定的类进行优化，对方法里的操作码进行优化</li>
+</ul>
+<hr>
+<h3 id="3-ART"><a href="#3-ART" class="headerlink" title="3.ART"></a>3.ART</h3><p>ART 即 Android Runtime。在 ART 环境中，应用在第一次安装的时候，字节码就会预先编译成机器码，使其成为真正的本地应用。这个过程叫做预编译（ AOT, Ahead-Of-Time ）</p>
 <p>ART 虚拟机执行的本地机器码：</p>
 <blockquote>
 <p>.java –&gt; java bytecode(.class) –&gt; dalvik bytecode(.dex) –&gt; optimized android runtime machine code(.oat)</p>
 </blockquote>
-<h5 id="ART-对-Garbage-Collection（GC）过程的改进："><a href="#ART-对-Garbage-Collection（GC）过程的改进：" class="headerlink" title="ART 对 Garbage Collection（GC）过程的改进："></a>ART 对 Garbage Collection（GC）过程的改进：</h5><ul>
+<h4 id="3-1-ART-对-Garbage-Collection（GC）过程的改进："><a href="#3-1-ART-对-Garbage-Collection（GC）过程的改进：" class="headerlink" title="3.1 ART 对 Garbage Collection（GC）过程的改进："></a>3.1 ART 对 Garbage Collection（GC）过程的改进：</h4><ul>
 <li>只有一次 GC 暂停（Dalvik 需要两次）</li>
 <li>在 GC 保持暂停状态期间并行处理</li>
 <li>在清理最近分配的短时对象这种特殊情况中，回收器的总 GC 时间更短<br>优化了垃圾回收的工效，能够更加及时地进行并行垃圾回收，这使得 GC_FOR_ALLOC 事件在典型用例中极为罕见</li>
@@ -196,10 +222,20 @@
 <li>应用安装和系统升级之后的应用优化比较耗时</li>
 <li>优化后的文件会占用额外的存储空间</li>
 </ul>
-<h5 id="AOT-和-JIT-的不同"><a href="#AOT-和-JIT-的不同" class="headerlink" title="AOT 和 JIT 的不同"></a>AOT 和 JIT 的不同</h5><blockquote>
+<h4 id="3-2-OAT文件"><a href="#3-2-OAT文件" class="headerlink" title="3.2 OAT文件"></a>3.2 OAT文件</h4><p><img src="http://qiangbo-workspace.oss-cn-shanghai.aliyuncs.com/AndroidNewFeatureBook/Chapter3/art_oat_file.png" alt="image"></p>
+<p>从这个图中我们看到，OAT文件中包含的内容有：</p>
+<ul>
+<li>ELF Header：ELF头信息。</li>
+<li>oatdata symbol：oatdata符号，其地址指向了OAT头信息。</li>
+<li>Header：Oat文件的头信息，详细描述了Oat文件中的内容。例如：Oat文件的版本，Dex文件个数，指令集等等信息。Header，Dex File数组以及Class Metadata数组都位于ELF的只读数据段.rodata中。</li>
+<li>Dex File数组：生成该Oat文件的Dex文件，可能包含多个。</li>
+<li>Class Metadata数组：Dex中包含的类的基本信息，可能包含多个。通过其中的信息可以索引到编译后的机器码。</li>
+<li>编译后的方法代码数组：每个方法编译后对应的机器码，可能包含多个。这些内容位于代码段（.text）中。</li>
+</ul>
+<h4 id="3-3-AOT-和-JIT-的不同"><a href="#3-3-AOT-和-JIT-的不同" class="headerlink" title="3.3 AOT 和 JIT 的不同"></a>3.3 AOT 和 JIT 的不同</h4><blockquote>
 <p>JIT 是在运行时进行编译，是动态编译，并且每次运行程序的时候都需要对 odex 重新进行编译；而 AOT 是静态编译，应用在安装的时候会启动 dex2oat 过程把 dex 预编译成 ELF 文件，每次运行程序的时候不用重新编译，是真正意义上的本地应用    </p>
 </blockquote>
-<h5 id="dexopt-与-dex2oat-区别"><a href="#dexopt-与-dex2oat-区别" class="headerlink" title="dexopt 与 dex2oat 区别"></a>dexopt 与 dex2oat 区别</h5><p><img src="https://user-gold-cdn.xitu.io/2020/5/18/17223616433f8ac0?w=800&amp;h=729&amp;f=png&amp;s=22462" alt="image"></p>
+<h4 id="3-4-dexopt-与-dex2oat-区别"><a href="#3-4-dexopt-与-dex2oat-区别" class="headerlink" title="3.4 dexopt 与 dex2oat 区别"></a>3.4 dexopt 与 dex2oat 区别</h4><p><img src="https://user-gold-cdn.xitu.io/2020/5/18/17223616433f8ac0?w=800&amp;h=729&amp;f=png&amp;s=22462" alt="image"></p>
 <ul>
 <li><p>dexopt 是对 dex 文件 进行 verification 和 optimization 的操作，其对 dex 文件的优化结果变成了 odex 文件，这个文件和 dex 文件很像，只是使用了一些优化操作码（譬如优化调用虚拟指令等）。</p>
 </li>
@@ -210,13 +246,14 @@
 <p>dexopt was used to optimize DEX to ODEX (optimized DEX) which contains the optimized bytecode.</p>
 <p>With AOT, dex2oat is used to optimize and compile DEX into an OAT file which may contain machine code in the ELF format.</p>
 </blockquote>
-<h4 id="Android系统对预编译的处理"><a href="#Android系统对预编译的处理" class="headerlink" title="Android系统对预编译的处理"></a>Android系统对预编译的处理</h4><ul>
+<h4 id="3-5-Android系统对预编译的处理"><a href="#3-5-Android系统对预编译的处理" class="headerlink" title="3.5 Android系统对预编译的处理"></a>3.5 Android系统对预编译的处理</h4><ul>
 <li><p>编译的时候针对user版本会对apk进行处理，将里面的class.dex文件拿出来单独处理为odex,apk文件中只留下一些资源文件</p>
 </li>
 <li><p>第一次开机耗时会比较长，中间有大量的dex2oat的log存在，也是针对每个APK在做dex优化</p>
 </li>
 </ul>
 <h5 id="LOCAL-DEX-PREOPT"><a href="#LOCAL-DEX-PREOPT" class="headerlink" title="LOCAL_DEX_PREOPT"></a>LOCAL_DEX_PREOPT</h5><p>这个变量设置为false可以使整个系统使用提前优化的时候，某个app不使用提前优化。在Android.mk中给该变量赋值为false,则编译生成的文件没有oat文件，也就意味着没有被提前优化。</p>
+<hr>
 <h4 id="Android-7-0-AOT-JIT-混合编译模式"><a href="#Android-7-0-AOT-JIT-混合编译模式" class="headerlink" title="Android 7.0 AOT/JIT 混合编译模式"></a>Android 7.0 AOT/JIT 混合编译模式</h4><p><img src="https://user-gold-cdn.xitu.io/2018/12/27/167edc5d0d0a45c2?imageView2/0/w/1280/h/960/format/webp/ignore-error/1" alt="image"></p>
 <h5 id="混合编译模式的特点是："><a href="#混合编译模式的特点是：" class="headerlink" title="混合编译模式的特点是："></a>混合编译模式的特点是：</h5><ul>
 <li>应用在安装的时候 dex 不会被编译</li>
@@ -230,38 +267,19 @@
 <li>.art (optional)：其中包含 APK 中列出的某些字符串和类的 ART 内部表示，用于加快应用启动速度。</li>
 </ul>
 <hr>
-<h4 id="Davilk-and-ART-运行时堆的不同"><a href="#Davilk-and-ART-运行时堆的不同" class="headerlink" title="Davilk and ART 运行时堆的不同"></a>Davilk and ART 运行时堆的不同</h4><h5 id="DVK的运行时堆"><a href="#DVK的运行时堆" class="headerlink" title="DVK的运行时堆"></a>DVK的运行时堆</h5><p>DVK的运行时堆主要由两个Space以及多个辅助数据结构组成，两个Space分别是Zygote Space（Zygote Heap）和Allocation Space（Active Heap）。</p>
-<ul>
-<li>Zygote Space用来管理Zygote进程在启动过程中预加载和创建的各种对象，Zygote Space中不会触发GC，所有进程都共享该区域，比如系统资源。</li>
-<li>Allocation Space是在Zygote进程fork第一个子进程之前创建的，它是一种私有进程，Zygote进程和fock的子进程在Allocation Space上进行对象分配和释放。 </li>
-</ul>
-<h5 id="除了这两个Space，还包含以下数据结构："><a href="#除了这两个Space，还包含以下数据结构：" class="headerlink" title="除了这两个Space，还包含以下数据结构："></a>除了这两个Space，还包含以下数据结构：</h5><ul>
-<li>Card Table： 用于DVM Concurrent GC，当第一次进行垃圾标记后，记录垃圾信息。</li>
-<li>Heap Bitmap： 有两个Heap Bitmap，一个用来记录上次GC存活的对象，另一个用来记录这次GC存活的对象。</li>
-<li>Mark Stack： DVM的运行时堆使用标记-清除（Mark-Sweep）算法进行GC，不了解标记-清除算法的同学查看Java虚拟机（四）垃圾收集算法这篇文章。Mark Stack就是在GC的标记阶段使用的，它用来遍历存活的对象。</li>
-</ul>
-<h5 id="ART的运行时堆"><a href="#ART的运行时堆" class="headerlink" title="ART的运行时堆"></a>ART的运行时堆</h5><ol>
-<li>与DVM的GC不同的是，ART的GC类型有多种，主要分为Mark-Sweep GC和Compacting GC。ART的运行时堆的空间根据不同的GC类型也有着不同的划分，如果采用的是Mark-Sweep GC，运行时堆主要是由四个Space和多个辅助数据结构组成，四个Space分别是Zygote Space、Allocation Space、Image Space和Large Object Space。Zygote Space、Allocation Space和DVM中的作用是一样的。</li>
-</ol>
-<ul>
-<li>Image Space用来存放一些预加载类，</li>
-<li>Large Object Space用来分配一些大对象（默认大小为12k）。<br>其中Zygote Space和Image Space是进程间共享的。<br> 采用Mark-Sweep GC的运行时堆空间划分如下图所示。</li>
-</ul>
-<ol>
-<li><img src="https://user-gold-cdn.xitu.io/2020/5/18/1722361601334a5d?w=777&amp;h=215&amp;f=png&amp;s=9399" alt="è¿éåå¾çæè¿°"> </li>
-</ol>
-<h5 id="除了这四个Space，ART的Java堆中还包括两个Mod-Union-Table，一个Card-Table，两个Heap-Bitmap，两个Object-Map，以及三个Object-Stack"><a href="#除了这四个Space，ART的Java堆中还包括两个Mod-Union-Table，一个Card-Table，两个Heap-Bitmap，两个Object-Map，以及三个Object-Stack" class="headerlink" title="除了这四个Space，ART的Java堆中还包括两个Mod Union Table，一个Card Table，两个Heap Bitmap，两个Object Map，以及三个Object Stack"></a>除了这四个Space，ART的Java堆中还包括两个Mod Union Table，一个Card Table，两个Heap Bitmap，两个Object Map，以及三个Object Stack</h5><hr>
 <p><a href="https://linghaolu.github.io/dalvik/2016/08/16/dalvik-dexopt.html" target="_blank" rel="noopener">Dalvik Optimization and Verification With dexopt</a></p>
 <p><a href="https://docplayer.net/49015509-Dalvik-and-art-jonathan-levin.html" target="_blank" rel="noopener">Dalvík and ART. Jonathan Levin</a></p>
 <p><a href="https://source.android.com/devices/tech/dalvik/configure" target="_blank" rel="noopener">配置Art</a></p>
+<p><a href="https://yq.aliyun.com/articles/270460?spm=a2c4e.11153940.0.0.15e66442tABkeG" target="_blank" rel="noopener">理解Android虚拟机体系结构(转)</a></p>
+<p><a href="https://blog.csdn.net/luoshengyang/article/details/8852432?spm=a2c4e.10696291.0.0.3e6c19a42MPMdr" target="_blank" rel="noopener">Dalvik虚拟机简要介绍和学习计划</a></p>
 </section>
     <!-- Tags START -->
     
       <div class="tags">
         <span>Tags:</span>
         
-  <a href="/tags#interview" >
-    <span class="tag-code">interview</span>
+  <a href="/tags#Android VM" >
+    <span class="tag-code">Android VM</span>
   </a>
 
       </div>
@@ -272,17 +290,17 @@
   <div class="nav-container">
     <!-- reverse left and right to put prev and next in a more logic postition -->
     
-      <a class="nav-left" href="/2020/05/13/analyze-leakcanry2-0/">
+      <a class="nav-left" href="/2020/06/28/ActivityThread-GC/">
         <span class="nav-arrow">← </span>
         
-          不深入的分析leakcanry2.0
+          ActivityThread中关于GC的操作
         
       </a>
     
     
-      <a class="nav-right" href="/2020/06/28/ActivityThread-GC/">
+      <a class="nav-right" href="/2020/07/15/Android-VM-02-Dalvik/">
         
-          ActivityThread中关于GC的操作
+          Android VM 02.Davilk 启动 内存 GC
         
         <span class="nav-arrow"> →</span>
       </a>
@@ -331,7 +349,7 @@
   <div class="toc-main">
     <strong class="toc-title">Catalog</strong>
     
-      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#DVM与JVM的区别"><span class="toc-nav-text"><a href="#DVM&#x4E0E;JVM&#x7684;&#x533A;&#x522B;" class="headerlink" title="DVM&#x4E0E;JVM&#x7684;&#x533A;&#x522B;"></a>DVM&#x4E0E;JVM&#x7684;&#x533A;&#x522B;</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#Davilk虚拟机"><span class="toc-nav-text"><a href="#Davilk&#x865A;&#x62DF;&#x673A;" class="headerlink" title="Davilk&#x865A;&#x62DF;&#x673A;"></a>Davilk&#x865A;&#x62DF;&#x673A;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#JIT"><span class="toc-nav-text"><a href="#JIT" class="headerlink" title="JIT"></a>JIT</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#JIT-模式的缺点："><span class="toc-nav-text"><a href="#JIT-&#x6A21;&#x5F0F;&#x7684;&#x7F3A;&#x70B9;&#xFF1A;" class="headerlink" title="JIT &#x6A21;&#x5F0F;&#x7684;&#x7F3A;&#x70B9;&#xFF1A;"></a>JIT &#x6A21;&#x5F0F;&#x7684;&#x7F3A;&#x70B9;&#xFF1A;</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#系统编译中控制JIT的位置"><span class="toc-nav-text"><a href="#&#x7CFB;&#x7EDF;&#x7F16;&#x8BD1;&#x4E2D;&#x63A7;&#x5236;JIT&#x7684;&#x4F4D;&#x7F6E;" class="headerlink" title="&#x7CFB;&#x7EDF;&#x7F16;&#x8BD1;&#x4E2D;&#x63A7;&#x5236;JIT&#x7684;&#x4F4D;&#x7F6E;"></a>&#x7CFB;&#x7EDF;&#x7F16;&#x8BD1;&#x4E2D;&#x63A7;&#x5236;JIT&#x7684;&#x4F4D;&#x7F6E;</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#ART虚拟机"><span class="toc-nav-text"><a href="#ART&#x865A;&#x62DF;&#x673A;" class="headerlink" title="ART&#x865A;&#x62DF;&#x673A;"></a>ART&#x865A;&#x62DF;&#x673A;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#ART-对-Garbage-Collection（GC）过程的改进："><span class="toc-nav-text"><a href="#ART-&#x5BF9;-Garbage-Collection&#xFF08;GC&#xFF09;&#x8FC7;&#x7A0B;&#x7684;&#x6539;&#x8FDB;&#xFF1A;" class="headerlink" title="ART &#x5BF9; Garbage Collection&#xFF08;GC&#xFF09;&#x8FC7;&#x7A0B;&#x7684;&#x6539;&#x8FDB;&#xFF1A;"></a>ART &#x5BF9; Garbage Collection&#xFF08;GC&#xFF09;&#x8FC7;&#x7A0B;&#x7684;&#x6539;&#x8FDB;&#xFF1A;</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#AOT-和-JIT-的不同"><span class="toc-nav-text"><a href="#AOT-&#x548C;-JIT-&#x7684;&#x4E0D;&#x540C;" class="headerlink" title="AOT &#x548C; JIT &#x7684;&#x4E0D;&#x540C;"></a>AOT &#x548C; JIT &#x7684;&#x4E0D;&#x540C;</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#dexopt-与-dex2oat-区别"><span class="toc-nav-text"><a href="#dexopt-&#x4E0E;-dex2oat-&#x533A;&#x522B;" class="headerlink" title="dexopt &#x4E0E; dex2oat &#x533A;&#x522B;"></a>dexopt &#x4E0E; dex2oat &#x533A;&#x522B;</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#Android系统对预编译的处理"><span class="toc-nav-text"><a href="#Android&#x7CFB;&#x7EDF;&#x5BF9;&#x9884;&#x7F16;&#x8BD1;&#x7684;&#x5904;&#x7406;" class="headerlink" title="Android&#x7CFB;&#x7EDF;&#x5BF9;&#x9884;&#x7F16;&#x8BD1;&#x7684;&#x5904;&#x7406;"></a>Android&#x7CFB;&#x7EDF;&#x5BF9;&#x9884;&#x7F16;&#x8BD1;&#x7684;&#x5904;&#x7406;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#LOCAL-DEX-PREOPT"><span class="toc-nav-text"><a href="#LOCAL-DEX-PREOPT" class="headerlink" title="LOCAL_DEX_PREOPT"></a>LOCAL_DEX_PREOPT</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#Android-7-0-AOT-JIT-混合编译模式"><span class="toc-nav-text"><a href="#Android-7-0-AOT-JIT-&#x6DF7;&#x5408;&#x7F16;&#x8BD1;&#x6A21;&#x5F0F;" class="headerlink" title="Android 7.0 AOT/JIT &#x6DF7;&#x5408;&#x7F16;&#x8BD1;&#x6A21;&#x5F0F;"></a>Android 7.0 AOT/JIT &#x6DF7;&#x5408;&#x7F16;&#x8BD1;&#x6A21;&#x5F0F;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#混合编译模式的特点是："><span class="toc-nav-text"><a href="#&#x6DF7;&#x5408;&#x7F16;&#x8BD1;&#x6A21;&#x5F0F;&#x7684;&#x7279;&#x70B9;&#x662F;&#xFF1A;" class="headerlink" title="&#x6DF7;&#x5408;&#x7F16;&#x8BD1;&#x6A21;&#x5F0F;&#x7684;&#x7279;&#x70B9;&#x662F;&#xFF1A;"></a>&#x6DF7;&#x5408;&#x7F16;&#x8BD1;&#x6A21;&#x5F0F;&#x7684;&#x7279;&#x70B9;&#x662F;&#xFF1A;</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#Android-8-0"><span class="toc-nav-text"><a href="#Android-8-0" class="headerlink" title="Android 8.0"></a>Android 8.0</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#Davilk-and-ART-运行时堆的不同"><span class="toc-nav-text"><a href="#Davilk-and-ART-&#x8FD0;&#x884C;&#x65F6;&#x5806;&#x7684;&#x4E0D;&#x540C;" class="headerlink" title="Davilk and ART &#x8FD0;&#x884C;&#x65F6;&#x5806;&#x7684;&#x4E0D;&#x540C;"></a>Davilk and ART &#x8FD0;&#x884C;&#x65F6;&#x5806;&#x7684;&#x4E0D;&#x540C;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#DVK的运行时堆"><span class="toc-nav-text"><a href="#DVK&#x7684;&#x8FD0;&#x884C;&#x65F6;&#x5806;" class="headerlink" title="DVK&#x7684;&#x8FD0;&#x884C;&#x65F6;&#x5806;"></a>DVK&#x7684;&#x8FD0;&#x884C;&#x65F6;&#x5806;</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#除了这两个Space，还包含以下数据结构："><span class="toc-nav-text"><a href="#&#x9664;&#x4E86;&#x8FD9;&#x4E24;&#x4E2A;Space&#xFF0C;&#x8FD8;&#x5305;&#x542B;&#x4EE5;&#x4E0B;&#x6570;&#x636E;&#x7ED3;&#x6784;&#xFF1A;" class="headerlink" title="&#x9664;&#x4E86;&#x8FD9;&#x4E24;&#x4E2A;Space&#xFF0C;&#x8FD8;&#x5305;&#x542B;&#x4EE5;&#x4E0B;&#x6570;&#x636E;&#x7ED3;&#x6784;&#xFF1A;"></a>&#x9664;&#x4E86;&#x8FD9;&#x4E24;&#x4E2A;Space&#xFF0C;&#x8FD8;&#x5305;&#x542B;&#x4EE5;&#x4E0B;&#x6570;&#x636E;&#x7ED3;&#x6784;&#xFF1A;</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#ART的运行时堆"><span class="toc-nav-text"><a href="#ART&#x7684;&#x8FD0;&#x884C;&#x65F6;&#x5806;" class="headerlink" title="ART&#x7684;&#x8FD0;&#x884C;&#x65F6;&#x5806;"></a>ART&#x7684;&#x8FD0;&#x884C;&#x65F6;&#x5806;</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#除了这四个Space，ART的Java堆中还包括两个Mod-Union-Table，一个Card-Table，两个Heap-Bitmap，两个Object-Map，以及三个Object-Stack"><span class="toc-nav-text"><a href="#&#x9664;&#x4E86;&#x8FD9;&#x56DB;&#x4E2A;Space&#xFF0C;ART&#x7684;Java&#x5806;&#x4E2D;&#x8FD8;&#x5305;&#x62EC;&#x4E24;&#x4E2A;Mod-Union-Table&#xFF0C;&#x4E00;&#x4E2A;Card-Table&#xFF0C;&#x4E24;&#x4E2A;Heap-Bitmap&#xFF0C;&#x4E24;&#x4E2A;Object-Map&#xFF0C;&#x4EE5;&#x53CA;&#x4E09;&#x4E2A;Object-Stack" class="headerlink" title="&#x9664;&#x4E86;&#x8FD9;&#x56DB;&#x4E2A;Space&#xFF0C;ART&#x7684;Java&#x5806;&#x4E2D;&#x8FD8;&#x5305;&#x62EC;&#x4E24;&#x4E2A;Mod Union Table&#xFF0C;&#x4E00;&#x4E2A;Card Table&#xFF0C;&#x4E24;&#x4E2A;Heap Bitmap&#xFF0C;&#x4E24;&#x4E2A;Object Map&#xFF0C;&#x4EE5;&#x53CA;&#x4E09;&#x4E2A;Object Stack"></a>&#x9664;&#x4E86;&#x8FD9;&#x56DB;&#x4E2A;Space&#xFF0C;ART&#x7684;Java&#x5806;&#x4E2D;&#x8FD8;&#x5305;&#x62EC;&#x4E24;&#x4E2A;Mod Union Table&#xFF0C;&#x4E00;&#x4E2A;Card Table&#xFF0C;&#x4E24;&#x4E2A;Heap Bitmap&#xFF0C;&#x4E24;&#x4E2A;Object Map&#xFF0C;&#x4EE5;&#x53CA;&#x4E09;&#x4E2A;Object Stack</span></a></li></ol></li></ol>
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#1-DVM与JVM的区别"><span class="toc-nav-text"><a href="#1-DVM&#x4E0E;JVM&#x7684;&#x533A;&#x522B;" class="headerlink" title="1.DVM&#x4E0E;JVM&#x7684;&#x533A;&#x522B;"></a>1.DVM&#x4E0E;JVM&#x7684;&#x533A;&#x522B;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#dex-和-class区别"><span class="toc-nav-text"><a href="#dex-&#x548C;-class&#x533A;&#x522B;" class="headerlink" title=".dex &#x548C; .class&#x533A;&#x522B;"></a>.dex &#x548C; .class&#x533A;&#x522B;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#dex格式文件使用共享的、特定类型的常量池机制来节省内存。常量池存储类中的所有字面常量，它包括字符串常量、字段常量等值。"><span class="toc-nav-text"><a href="#dex&#x683C;&#x5F0F;&#x6587;&#x4EF6;&#x4F7F;&#x7528;&#x5171;&#x4EAB;&#x7684;&#x3001;&#x7279;&#x5B9A;&#x7C7B;&#x578B;&#x7684;&#x5E38;&#x91CF;&#x6C60;&#x673A;&#x5236;&#x6765;&#x8282;&#x7701;&#x5185;&#x5B58;&#x3002;&#x5E38;&#x91CF;&#x6C60;&#x5B58;&#x50A8;&#x7C7B;&#x4E2D;&#x7684;&#x6240;&#x6709;&#x5B57;&#x9762;&#x5E38;&#x91CF;&#xFF0C;&#x5B83;&#x5305;&#x62EC;&#x5B57;&#x7B26;&#x4E32;&#x5E38;&#x91CF;&#x3001;&#x5B57;&#x6BB5;&#x5E38;&#x91CF;&#x7B49;&#x503C;&#x3002;" class="headerlink" title="dex&#x683C;&#x5F0F;&#x6587;&#x4EF6;&#x4F7F;&#x7528;&#x5171;&#x4EAB;&#x7684;&#x3001;&#x7279;&#x5B9A;&#x7C7B;&#x578B;&#x7684;&#x5E38;&#x91CF;&#x6C60;&#x673A;&#x5236;&#x6765;&#x8282;&#x7701;&#x5185;&#x5B58;&#x3002;&#x5E38;&#x91CF;&#x6C60;&#x5B58;&#x50A8;&#x7C7B;&#x4E2D;&#x7684;&#x6240;&#x6709;&#x5B57;&#x9762;&#x5E38;&#x91CF;&#xFF0C;&#x5B83;&#x5305;&#x62EC;&#x5B57;&#x7B26;&#x4E32;&#x5E38;&#x91CF;&#x3001;&#x5B57;&#x6BB5;&#x5E38;&#x91CF;&#x7B49;&#x503C;&#x3002;"></a>dex&#x683C;&#x5F0F;&#x6587;&#x4EF6;&#x4F7F;&#x7528;&#x5171;&#x4EAB;&#x7684;&#x3001;&#x7279;&#x5B9A;&#x7C7B;&#x578B;&#x7684;&#x5E38;&#x91CF;&#x6C60;&#x673A;&#x5236;&#x6765;&#x8282;&#x7701;&#x5185;&#x5B58;&#x3002;&#x5E38;&#x91CF;&#x6C60;&#x5B58;&#x50A8;&#x7C7B;&#x4E2D;&#x7684;&#x6240;&#x6709;&#x5B57;&#x9762;&#x5E38;&#x91CF;&#xFF0C;&#x5B83;&#x5305;&#x62EC;&#x5B57;&#x7B26;&#x4E32;&#x5E38;&#x91CF;&#x3001;&#x5B57;&#x6BB5;&#x5E38;&#x91CF;&#x7B49;&#x503C;&#x3002;</span></a></li></ol></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2-Davilk虚拟机"><span class="toc-nav-text"><a href="#2-Davilk&#x865A;&#x62DF;&#x673A;" class="headerlink" title="2.Davilk&#x865A;&#x62DF;&#x673A;"></a>2.Davilk&#x865A;&#x62DF;&#x673A;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#2-1-Davilk做出的优化"><span class="toc-nav-text"><a href="#2-1-Davilk&#x505A;&#x51FA;&#x7684;&#x4F18;&#x5316;" class="headerlink" title="2.1 Davilk&#x505A;&#x51FA;&#x7684;&#x4F18;&#x5316;"></a>2.1 Davilk&#x505A;&#x51FA;&#x7684;&#x4F18;&#x5316;</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#2-2-Davilk执行流程"><span class="toc-nav-text"><a href="#2-2-Davilk&#x6267;&#x884C;&#x6D41;&#x7A0B;" class="headerlink" title="2.2 Davilk&#x6267;&#x884C;&#x6D41;&#x7A0B;"></a>2.2 Davilk&#x6267;&#x884C;&#x6D41;&#x7A0B;</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#2-3-JIT"><span class="toc-nav-text"><a href="#2-3-JIT" class="headerlink" title="2.3 JIT"></a>2.3 JIT</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#JIT-模式的缺点："><span class="toc-nav-text"><a href="#JIT-&#x6A21;&#x5F0F;&#x7684;&#x7F3A;&#x70B9;&#xFF1A;" class="headerlink" title="JIT &#x6A21;&#x5F0F;&#x7684;&#x7F3A;&#x70B9;&#xFF1A;"></a>JIT &#x6A21;&#x5F0F;&#x7684;&#x7F3A;&#x70B9;&#xFF1A;</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#系统编译中控制JIT的位置"><span class="toc-nav-text"><a href="#&#x7CFB;&#x7EDF;&#x7F16;&#x8BD1;&#x4E2D;&#x63A7;&#x5236;JIT&#x7684;&#x4F4D;&#x7F6E;" class="headerlink" title="&#x7CFB;&#x7EDF;&#x7F16;&#x8BD1;&#x4E2D;&#x63A7;&#x5236;JIT&#x7684;&#x4F4D;&#x7F6E;"></a>&#x7CFB;&#x7EDF;&#x7F16;&#x8BD1;&#x4E2D;&#x63A7;&#x5236;JIT&#x7684;&#x4F4D;&#x7F6E;</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#2-4-Dex文件"><span class="toc-nav-text"><a href="#2-4-Dex&#x6587;&#x4EF6;" class="headerlink" title="2.4 Dex&#x6587;&#x4EF6;"></a>2.4 Dex&#x6587;&#x4EF6;</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#dex优化"><span class="toc-nav-text"><a href="#dex&#x4F18;&#x5316;" class="headerlink" title="dex&#x4F18;&#x5316;"></a>dex&#x4F18;&#x5316;</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#3-ART"><span class="toc-nav-text"><a href="#3-ART" class="headerlink" title="3.ART"></a>3.ART</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#3-1-ART-对-Garbage-Collection（GC）过程的改进："><span class="toc-nav-text"><a href="#3-1-ART-&#x5BF9;-Garbage-Collection&#xFF08;GC&#xFF09;&#x8FC7;&#x7A0B;&#x7684;&#x6539;&#x8FDB;&#xFF1A;" class="headerlink" title="3.1 ART &#x5BF9; Garbage Collection&#xFF08;GC&#xFF09;&#x8FC7;&#x7A0B;&#x7684;&#x6539;&#x8FDB;&#xFF1A;"></a>3.1 ART &#x5BF9; Garbage Collection&#xFF08;GC&#xFF09;&#x8FC7;&#x7A0B;&#x7684;&#x6539;&#x8FDB;&#xFF1A;</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#3-2-OAT文件"><span class="toc-nav-text"><a href="#3-2-OAT&#x6587;&#x4EF6;" class="headerlink" title="3.2 OAT&#x6587;&#x4EF6;"></a>3.2 OAT&#x6587;&#x4EF6;</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#3-3-AOT-和-JIT-的不同"><span class="toc-nav-text"><a href="#3-3-AOT-&#x548C;-JIT-&#x7684;&#x4E0D;&#x540C;" class="headerlink" title="3.3 AOT &#x548C; JIT &#x7684;&#x4E0D;&#x540C;"></a>3.3 AOT &#x548C; JIT &#x7684;&#x4E0D;&#x540C;</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#3-4-dexopt-与-dex2oat-区别"><span class="toc-nav-text"><a href="#3-4-dexopt-&#x4E0E;-dex2oat-&#x533A;&#x522B;" class="headerlink" title="3.4 dexopt &#x4E0E; dex2oat &#x533A;&#x522B;"></a>3.4 dexopt &#x4E0E; dex2oat &#x533A;&#x522B;</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#3-5-Android系统对预编译的处理"><span class="toc-nav-text"><a href="#3-5-Android&#x7CFB;&#x7EDF;&#x5BF9;&#x9884;&#x7F16;&#x8BD1;&#x7684;&#x5904;&#x7406;" class="headerlink" title="3.5 Android&#x7CFB;&#x7EDF;&#x5BF9;&#x9884;&#x7F16;&#x8BD1;&#x7684;&#x5904;&#x7406;"></a>3.5 Android&#x7CFB;&#x7EDF;&#x5BF9;&#x9884;&#x7F16;&#x8BD1;&#x7684;&#x5904;&#x7406;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#LOCAL-DEX-PREOPT"><span class="toc-nav-text"><a href="#LOCAL-DEX-PREOPT" class="headerlink" title="LOCAL_DEX_PREOPT"></a>LOCAL_DEX_PREOPT</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#Android-7-0-AOT-JIT-混合编译模式"><span class="toc-nav-text"><a href="#Android-7-0-AOT-JIT-&#x6DF7;&#x5408;&#x7F16;&#x8BD1;&#x6A21;&#x5F0F;" class="headerlink" title="Android 7.0 AOT/JIT &#x6DF7;&#x5408;&#x7F16;&#x8BD1;&#x6A21;&#x5F0F;"></a>Android 7.0 AOT/JIT &#x6DF7;&#x5408;&#x7F16;&#x8BD1;&#x6A21;&#x5F0F;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#混合编译模式的特点是："><span class="toc-nav-text"><a href="#&#x6DF7;&#x5408;&#x7F16;&#x8BD1;&#x6A21;&#x5F0F;&#x7684;&#x7279;&#x70B9;&#x662F;&#xFF1A;" class="headerlink" title="&#x6DF7;&#x5408;&#x7F16;&#x8BD1;&#x6A21;&#x5F0F;&#x7684;&#x7279;&#x70B9;&#x662F;&#xFF1A;"></a>&#x6DF7;&#x5408;&#x7F16;&#x8BD1;&#x6A21;&#x5F0F;&#x7684;&#x7279;&#x70B9;&#x662F;&#xFF1A;</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#Android-8-0"><span class="toc-nav-text"><a href="#Android-8-0" class="headerlink" title="Android 8.0"></a>Android 8.0</span></a></li></ol></li></ol>
     
   </div>
 </aside>
@@ -341,7 +359,7 @@
 
 <script>
   (function () {
-    var url = 'http://yoursite.com/2020/05/18/Android-Davilk-and-ART/';
+    var url = 'http://yoursite.com/2020/07/15/Android-VM-01-JVM-DVM-introduce/';
     var banner = ''
     if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
       $('#article-banner').css({
@@ -403,7 +421,7 @@
     var gitmentConfig = "";
     if (gitmentConfig !== 'undefined') {
       var gitment = new Gitment({
-        id: "Android Davilk and ART",
+        id: "Android VM 01 JVM 、DVM、ART简介",
         owner: "",
         repo: "",
         oauth: {

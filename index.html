@@ -148,6 +148,57 @@
   
     <article class="article-card">
       <h2 class="article-head">
+        <a href="/2020/07/15/Android-VM-02-Dalvik/">Android VM 02.Davilk 启动 内存 GC</a>
+      </h2>
+      <p class="article-date">July 15, 2020</p>
+      
+        
+  <a href="/tags#Android VM" >
+    <span class="tag-code">Android VM</span>
+  </a>
+
+  <a href="/tags#Dalvik" >
+    <span class="tag-code">Dalvik</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          1. DVM启动流程android开机后，加载init.rc文件，会启动app_process进程，在对应app_main.cpp的main()中，调用AndroidRuntime.cpp
+base/cmds/app_process/app_main.cpp123456if (zygote) ...
+        
+      </div>
+      <a class="more" href="/2020/07/15/Android-VM-02-Dalvik/">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a href="/2020/07/15/Android-VM-01-JVM-DVM-introduce/">Android VM 01 JVM 、DVM、ART简介</a>
+      </h2>
+      <p class="article-date">July 15, 2020</p>
+      
+        
+  <a href="/tags#Android VM" >
+    <span class="tag-code">Android VM</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          1.DVM与JVM的区别
+JVM基于栈，DVM基于寄存器
+
+寄存器是 CPU 上面的一块存储空间，栈是内存上面的一段连续的存储空间。
+
+DVM 执行的 .dex 文件，JVM 执行 .class 文件。
+DVM：允许运行多个虚拟机实例，每一个应用启动都运行一个单独的虚拟机，并且运行在一个独立 ...
+        
+      </div>
+      <a class="more" href="/2020/07/15/Android-VM-01-JVM-DVM-introduce/">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
         <a href="/2020/06/28/ActivityThread-GC/">ActivityThread中关于GC的操作</a>
       </h2>
       <p class="article-date">June 28, 2020</p>
@@ -165,32 +216,6 @@
         
       </div>
       <a class="more" href="/2020/06/28/ActivityThread-GC/">Read more</a>
-    </article>
-  
-    <article class="article-card">
-      <h2 class="article-head">
-        <a href="/2020/05/18/Android-Davilk-and-ART/">Android Davilk and ART</a>
-      </h2>
-      <p class="article-date">May 18, 2020</p>
-      
-        
-  <a href="/tags#interview" >
-    <span class="tag-code">interview</span>
-  </a>
-
-      
-      <div class="article-summary">
-        
-          DVM与JVM的区别
-JVM基于栈，DVM基于寄存器
-
-寄存器是 CPU 上面的一块存储空间，栈是内存上面的一段连续的存储空间。
-
-DVM 执行的 .dex 文件，JVM 执行 .class 文件。
-DVM：允许运行多个虚拟机实例，每一个应用启动都运行一个单独的虚拟机，并且运行在一个独立的进 ...
-        
-      </div>
-      <a class="more" href="/2020/05/18/Android-Davilk-and-ART/">Read more</a>
     </article>
   
     <article class="article-card">
@@ -366,28 +391,6 @@ Android系统坐标系，X轴正方向为右，Y轴正方向为下（与数学�
         
       </div>
       <a class="more" href="/2018/01/30/Instrumentation-click-drag-keycode-foucs-loss/">Read more</a>
-    </article>
-  
-    <article class="article-card">
-      <h2 class="article-head">
-        <a href="/2018/01/30/HLS-protocol-basic-knowledge/">HTTP Live Streaming (HLS) 协议科普扫盲</a>
-      </h2>
-      <p class="article-date">January 30, 2018</p>
-      
-        
-  <a href="/tags#hls" >
-    <span class="tag-code">hls</span>
-  </a>
-
-      
-      <div class="article-summary">
-        
-          HTTP Live Streaming: HLS是一个由苹果公司提出的基于HTTP的流媒体网络传输协议，可以实现流媒体的直播（live）和点播(vod)。
-HLS协议规定：
-HLS协议由HTTP+M3U8+TS三部分组成，其中，HTTP是传输协议，M3U8是索引文件，TS是视音频的媒体信息。 ...
-        
-      </div>
-      <a class="more" href="/2018/01/30/HLS-protocol-basic-knowledge/">Read more</a>
     </article>
   
 

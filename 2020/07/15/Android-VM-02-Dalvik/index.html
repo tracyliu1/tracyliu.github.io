@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="it is a personal blogs">
+  <meta name="keyword" content="hexo-theme, vuejs">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      Android VM 02.Davilk 启动 内存 GC | tracyliu
+    
+  </title>
+  <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+  
+    <link rel="stylesheet" href="/css/plugins/gitment.css">
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+    <script src="/js/qrious.js"></script>
+  
+  
+    <script src="/js/gitment.js"></script>
+  
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+  
+</head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>tracyliu</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">Tags</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/project/" class="item-link">Projects</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">About</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">Tags</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">Archives</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/project/" class="menu-link">Projects</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">About</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>Android VM 02.Davilk 启动 内存 GC</h2>
+  <p class="post-date">2020-07-15</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><h3 id="1-DVM启动流程"><a href="#1-DVM启动流程" class="headerlink" title="1. DVM启动流程"></a>1. DVM启动流程</h3><p>android开机后，加载init.rc文件，会启动app_process进程，在对应app_main.cpp的main()中，调用AndroidRuntime.cpp</p>
+<h5 id="base-cmds-app-process-app-main-cpp"><a href="#base-cmds-app-process-app-main-cpp" class="headerlink" title="base/cmds/app_process/app_main.cpp"></a>base/cmds/app_process/app_main.cpp</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">if (zygote) &#123;</span><br><span class="line">    runtime.start(&quot;com.android.internal.os.ZygoteInit&quot;, args, zygote);</span><br><span class="line">&#125; else if (className) &#123;</span><br><span class="line">    runtime.start(&quot;com.android.internal.os.RuntimeInit&quot;, args, zygote);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="1-1-AndroidRuntime启动"><a href="#1-1-AndroidRuntime启动" class="headerlink" title="1.1 AndroidRuntime启动"></a>1.1 AndroidRuntime启动</h4><blockquote>
+<p>base/core/jni/AndroidRuntime.cpp</p>
+</blockquote>
+<p><img src="https://yqfile.alicdn.com/img_c2c942a390bba076c59db73f90146b78.png" alt="image"></p>
+<p>AndroidRuntime类主要做了以下几件事情：</p>
+<ul>
+<li>调用startVM创建一个Dalvik虚拟机，JNI_CreateJavaVM真正创建并初始化虚拟机实例</li>
+<li>调用startReg注册Android核心类的JNI方法</li>
+<li>通过Zygote进程进入Java层</li>
+</ul>
+<p>在JNI中，dvmCreateJNIEnv为当前线程创建和初始化一个JNI环境，即一个JNIEnvExt对象。最后调用dvmStartup来初始化前面创建的Dalvik虚拟机实例。函数dvmInitZygote调用了系统的setpgid来设置当前进程，即Zygote进程的进程组ID。这一步完成后，Dalvik虚拟机的创建和初始化工作就完成了</p>
+<h5 id="start"><a href="#start" class="headerlink" title="start()"></a>start()</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">void AndroidRuntime::start(const char* className, const Vector&lt;String8&gt;&amp; options, bool zygote)</span><br><span class="line">&#123;</span><br><span class="line">     /* start the virtual machine */</span><br><span class="line">    JniInvocation jni_invocation;</span><br><span class="line">    jni_invocation.Init(NULL);</span><br><span class="line">    //启动虚拟机</span><br><span class="line">    if (startVm(&amp;mJavaVM, &amp;env, zygote) != 0) &#123;</span><br><span class="line">        return;</span><br><span class="line">    &#125;</span><br><span class="line">    onVmCreated(env);</span><br><span class="line"></span><br><span class="line">    /*</span><br><span class="line">     * Register android functions.</span><br><span class="line">     */</span><br><span class="line">    if (startReg(env) &lt; 0) &#123;//注册JNI</span><br><span class="line">        ALOGE(&quot;Unable to register all android natives\n&quot;);</span><br><span class="line">        return;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="1-2-决定启动Art还是Dalvik"><a href="#1-2-决定启动Art还是Dalvik" class="headerlink" title="1.2 决定启动Art还是Dalvik"></a>1.2 决定启动Art还是Dalvik</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">JniInvocation jni_invocation;</span><br><span class="line">  jni_invocation.Init(NULL);</span><br></pre></td></tr></table></figure>
+<p>JniInvocation这个结构是在/libnativehelper/目录下定义的。对于虚拟机的选择也就是在这里确定的。persist.sys.dalvik.vm.lib属性的值实际上是so文件的路径，可能是libdvm.so，也可能是libart.so，前者是Dalvik虚拟机的实现，而后者就是ART虚拟机的实现。</p>
+<p><img src="http://qiangbo-workspace.oss-cn-shanghai.aliyuncs.com/AndroidNewFeatureBook/Chapter3/dalvik_art_switch.png" alt="image"></p>
+<h4 id="1-3-重点分析startVM"><a href="#1-3-重点分析startVM" class="headerlink" title="1.3 重点分析startVM()"></a>1.3 重点分析startVM()</h4><p>删除了部分代码</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br></pre></td><td class="code"><pre><span class="line">   int AndroidRuntime::startVm(JavaVM** pJavaVM, JNIEnv** pEnv, bool zygote)</span><br><span class="line">&#123;</span><br><span class="line">   </span><br><span class="line">    bool checkJni = false;</span><br><span class="line">    //控制Dalvik虚拟机在调用外部jni链接库的时候是否对其做安全性检验。可填写的值为true和false。若值为true，会增加程序的兼容性和稳定性，但也会增加其加载和执行的时间,推荐为false。</span><br><span class="line">    property_get(&quot;dalvik.vm.checkjni&quot;, propBuf, &quot;&quot;);</span><br><span class="line">    if (strcmp(propBuf, &quot;true&quot;) == 0) &#123;</span><br><span class="line">        checkJni = true;</span><br><span class="line">    &#125; else if (strcmp(propBuf, &quot;false&quot;) != 0) &#123;</span><br><span class="line">        /* property is neither true nor false; fall back on kernel parameter */</span><br><span class="line">        property_get(&quot;ro.kernel.android.checkjni&quot;, propBuf, &quot;&quot;);</span><br><span class="line">        if (propBuf[0] == &apos;1&apos;) &#123;</span><br><span class="line">            checkJni = true;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    </span><br><span class="line">    //本参数控制Dalvik虚拟机的程序执行机制</span><br><span class="line">    property_get(&quot;dalvik.vm.execution-mode&quot;, propBuf, &quot;&quot;);</span><br><span class="line">    //portable表示以兼容模式运行(脚本翻译模式)，此模式下程序的兼容性最高，但其执行效率最低(程序优化度依赖于dalvik虚拟机版本)。官方默认此模式</span><br><span class="line">    if (strcmp(propBuf, &quot;int:portable&quot;) == 0) &#123;/</span><br><span class="line">        executionMode = kEMIntPortable; </span><br><span class="line">    //fast表示以快速自优化模式运行(脚本翻译和预优化混合)，此模式下程序的兼容性很高，执行效率也比较高。因为此时dalvik虚拟机允许程序使用自己的预定义优化模式和代码(包括C/C++/汇编代码)。推荐使用。</span><br><span class="line">    &#125; else if (strcmp(propBuf, &quot;int:fast&quot;) == 0) &#123;</span><br><span class="line">        executionMode = kEMIntFast;</span><br><span class="line">    //jit表示以Just-In-Time模式运行(JIT模式)，此模式下程序的兼容性最差，但程序一旦加载后其运行效率最高(与C/C++直接编 写的程序效率无异)，因为在此模式下dalvik虚拟机会预先将Java程序翻译成针对机器平台的本地语言(Native)，同时完全允许代码中的所有预 优化和代码，允许所有不安全的非托管代码，同时不严谨的程序如果运行在JIT模式可能会造成内存泄露。</span><br><span class="line">    &#125; else if (strcmp(propBuf, &quot;int:jit&quot;) == 0) &#123;</span><br><span class="line">        executionMode = kEMJitCompiler;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    //本参数控制Dalvik虚拟机的堆栈记录调试文件。用于系统调试，一般用户对其调整无意义。</span><br><span class="line">    parseRuntimeOption(&quot;dalvik.vm.stack-trace-file&quot;, stackTraceFileBuf, &quot;-Xstacktracefile:&quot;);</span><br><span class="line"></span><br><span class="line">  </span><br><span class="line"></span><br><span class="line">    /*</span><br><span class="line">     * The default starting and maximum size of the heap.  Larger</span><br><span class="line">     * values should be specified in a product property override.</span><br><span class="line">     */</span><br><span class="line">     //参数控制Dalvik虚拟机在启动一个应用程序之后为其分配的初始堆栈大小</span><br><span class="line">    parseRuntimeOption(&quot;dalvik.vm.heapstartsize&quot;, heapstartsizeOptsBuf, &quot;-Xms&quot;, &quot;4m&quot;);</span><br><span class="line">    //参数控制单个Dalvik虚拟机可以分配到的最大堆栈量</span><br><span class="line">    parseRuntimeOption(&quot;dalvik.vm.heapsize&quot;, heapsizeOptsBuf, &quot;-Xmx&quot;, &quot;16m&quot;);</span><br><span class="line">    //指定标准app的最大堆栈，如果在mainfest中设置Android:largeheap=”true”时，应用会使用最大内存，超过这个值会有 OOM产生</span><br><span class="line">    parseRuntimeOption(&quot;dalvik.vm.heapgrowthlimit&quot;, heapgrowthlimitOptsBuf, &quot;-XX:HeapGrowthLimit=&quot;);</span><br><span class="line">    </span><br><span class="line">    //与-XX：HeapTargetUtilization结合使用，以确定堆需要增长时堆的增长量</span><br><span class="line">    parseRuntimeOption(&quot;dalvik.vm.heapminfree&quot;, heapminfreeOptsBuf, &quot;-XX:HeapMinFree=&quot;);</span><br><span class="line">    parseRuntimeOption(&quot;dalvik.vm.heapmaxfree&quot;, heapmaxfreeOptsBuf, &quot;-XX:HeapMaxFree=&quot;);</span><br><span class="line">    //为VM提供了关于应该允许托管堆满的程度的提示</span><br><span class="line">    parseRuntimeOption(&quot;dalvik.vm.heaptargetutilization&quot;,</span><br><span class="line">                       heaptargetutilizationOptsBuf,</span><br><span class="line">                       &quot;-XX:HeapTargetUtilization=&quot;);</span><br><span class="line"></span><br><span class="line">    /*</span><br><span class="line">     * JIT related options.</span><br><span class="line">     */</span><br><span class="line">    parseRuntimeOption(&quot;dalvik.vm.usejit&quot;, usejitOptsBuf, &quot;-Xusejit:&quot;);</span><br><span class="line">    parseRuntimeOption(&quot;dalvik.vm.jitmaxsize&quot;, jitmaxsizeOptsBuf, &quot;-Xjitmaxsize:&quot;);</span><br><span class="line">    parseRuntimeOption(&quot;dalvik.vm.jitinitialsize&quot;, jitinitialsizeOptsBuf, &quot;-Xjitinitialsize:&quot;);</span><br><span class="line">    parseRuntimeOption(&quot;dalvik.vm.jitthreshold&quot;, jitthresholdOptsBuf, &quot;-Xjitthreshold:&quot;);</span><br><span class="line">    property_get(&quot;dalvik.vm.usejitprofiles&quot;, useJitProfilesOptsBuf, &quot;&quot;);</span><br><span class="line">    if (strcmp(useJitProfilesOptsBuf, &quot;true&quot;) == 0) &#123;</span><br><span class="line">        addOption(&quot;-Xjitsaveprofilinginfo&quot;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    parseRuntimeOption(&quot;dalvik.vm.jitprithreadweight&quot;,</span><br><span class="line">                       jitprithreadweightOptBuf,</span><br><span class="line">                       &quot;-Xjitprithreadweight:&quot;);</span><br><span class="line"></span><br><span class="line">    parseRuntimeOption(&quot;dalvik.vm.jittransitionweight&quot;,</span><br><span class="line">                       jittransitionweightOptBuf,</span><br><span class="line">                       &quot;-Xjittransitionweight:&quot;);</span><br><span class="line"></span><br><span class="line">    property_get(&quot;ro.config.low_ram&quot;, propBuf, &quot;&quot;);</span><br><span class="line">    if (strcmp(propBuf, &quot;true&quot;) == 0) &#123;</span><br><span class="line">      addOption(&quot;-XX:LowMemoryMode&quot;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    parseRuntimeOption(&quot;dalvik.vm.gctype&quot;, gctypeOptsBuf, &quot;-Xgc:&quot;);</span><br><span class="line">    parseRuntimeOption(&quot;dalvik.vm.backgroundgctype&quot;, backgroundgcOptsBuf, &quot;-XX:BackgroundGC=&quot;);</span><br><span class="line"></span><br><span class="line">    /*</span><br><span class="line">     * Enable debugging only for apps forked from zygote.</span><br><span class="line">     * Set suspend=y to pause during VM init and use android ADB transport.</span><br><span class="line">     */</span><br><span class="line">    if (zygote) &#123;</span><br><span class="line">      addOption(&quot;-agentlib:jdwp=transport=dt_android_adb,suspend=n,server=y&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">    //控制Dalvik虚拟机调试记录程序内部锁资源争夺的阈值，默认值是500。多用于程序的数据统计，对性能较调意义不大</span><br><span class="line">    parseRuntimeOption(&quot;dalvik.vm.lockprof.threshold&quot;,</span><br><span class="line">                       lockProfThresholdBuf,</span><br><span class="line">                       &quot;-Xlockprofthreshold:&quot;);</span><br><span class="line"></span><br><span class="line">    if (executionMode == kEMIntPortable) &#123;</span><br><span class="line">        addOption(&quot;-Xint:portable&quot;);</span><br><span class="line">    &#125; else if (executionMode == kEMIntFast) &#123;</span><br><span class="line">        addOption(&quot;-Xint:fast&quot;);</span><br><span class="line">    &#125; else if (executionMode == kEMJitCompiler) &#123;</span><br><span class="line">        addOption(&quot;-Xint:jit&quot;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    // If we are booting without the real /data, don&apos;t spend time compiling.</span><br><span class="line">    property_get(&quot;vold.decrypt&quot;, voldDecryptBuf, &quot;&quot;);</span><br><span class="line">    bool skip_compilation = ((strcmp(voldDecryptBuf, &quot;trigger_restart_min_framework&quot;) == 0) ||</span><br><span class="line">                             (strcmp(voldDecryptBuf, &quot;1&quot;) == 0));</span><br><span class="line"></span><br><span class="line">    // Extra options for boot.art/boot.oat image generation.</span><br><span class="line">    parseCompilerRuntimeOption(&quot;dalvik.vm.image-dex2oat-Xms&quot;, dex2oatXmsImageFlagsBuf,</span><br><span class="line">                               &quot;-Xms&quot;, &quot;-Ximage-compiler-option&quot;);</span><br><span class="line">    parseCompilerRuntimeOption(&quot;dalvik.vm.image-dex2oat-Xmx&quot;, dex2oatXmxImageFlagsBuf,</span><br><span class="line">                               &quot;-Xmx&quot;, &quot;-Ximage-compiler-option&quot;);</span><br><span class="line">    if (skip_compilation) &#123;</span><br><span class="line">        addOption(&quot;-Ximage-compiler-option&quot;);</span><br><span class="line">        addOption(&quot;--compiler-filter=verify-none&quot;);</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        parseCompilerOption(&quot;dalvik.vm.image-dex2oat-filter&quot;, dex2oatImageCompilerFilterBuf,</span><br><span class="line">                            &quot;--compiler-filter=&quot;, &quot;-Ximage-compiler-option&quot;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    // Make sure there is a preloaded-classes file.</span><br><span class="line">    if (!hasFile(&quot;/system/etc/preloaded-classes&quot;)) &#123;</span><br><span class="line">        ALOGE(&quot;Missing preloaded-classes file, /system/etc/preloaded-classes not found: %s\n&quot;,</span><br><span class="line">              strerror(errno));</span><br><span class="line">        return -1;</span><br><span class="line">    &#125;</span><br><span class="line">    addOption(&quot;-Ximage-compiler-option&quot;);</span><br><span class="line">    addOption(&quot;--image-classes=/system/etc/preloaded-classes&quot;);</span><br><span class="line"></span><br><span class="line">    // If there is a compiled-classes file, push it.</span><br><span class="line">    if (hasFile(&quot;/system/etc/compiled-classes&quot;)) &#123;</span><br><span class="line">        addOption(&quot;-Ximage-compiler-option&quot;);</span><br><span class="line">        addOption(&quot;--compiled-classes=/system/etc/compiled-classes&quot;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    property_get(&quot;dalvik.vm.image-dex2oat-flags&quot;, dex2oatImageFlagsBuf, &quot;&quot;);</span><br><span class="line">    parseExtraOpts(dex2oatImageFlagsBuf, &quot;-Ximage-compiler-option&quot;);</span><br><span class="line"></span><br><span class="line">    // Extra options for DexClassLoader.</span><br><span class="line">    parseCompilerRuntimeOption(&quot;dalvik.vm.dex2oat-Xms&quot;, dex2oatXmsFlagsBuf,</span><br><span class="line">                               &quot;-Xms&quot;, &quot;-Xcompiler-option&quot;);</span><br><span class="line">    parseCompilerRuntimeOption(&quot;dalvik.vm.dex2oat-Xmx&quot;, dex2oatXmxFlagsBuf,</span><br><span class="line">                               &quot;-Xmx&quot;, &quot;-Xcompiler-option&quot;);</span><br><span class="line">    if (skip_compilation) &#123;</span><br><span class="line">        addOption(&quot;-Xcompiler-option&quot;);</span><br><span class="line">        addOption(&quot;--compiler-filter=verify-none&quot;);</span><br><span class="line"></span><br><span class="line">        // We skip compilation when a minimal runtime is brought up for decryption. In that case</span><br><span class="line">        // /data is temporarily backed by a tmpfs, which is usually small.</span><br><span class="line">        // If the system image contains prebuilts, they will be relocated into the tmpfs. In this</span><br><span class="line">        // specific situation it is acceptable to *not* relocate and run out of the prebuilts</span><br><span class="line">        // directly instead.</span><br><span class="line">        addOption(&quot;--runtime-arg&quot;);</span><br><span class="line">        addOption(&quot;-Xnorelocate&quot;);</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        parseCompilerOption(&quot;dalvik.vm.dex2oat-filter&quot;, dex2oatCompilerFilterBuf,</span><br><span class="line">                            &quot;--compiler-filter=&quot;, &quot;-Xcompiler-option&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">    parseCompilerOption(&quot;dalvik.vm.dex2oat-threads&quot;, dex2oatThreadsBuf, &quot;-j&quot;, &quot;-Xcompiler-option&quot;);</span><br><span class="line">    parseCompilerOption(&quot;dalvik.vm.image-dex2oat-threads&quot;, dex2oatThreadsImageBuf, &quot;-j&quot;,</span><br><span class="line">                        &quot;-Ximage-compiler-option&quot;);</span><br></pre></td></tr></table></figure>
+<hr>
+<h3 id="2-Davilk内存"><a href="#2-Davilk内存" class="headerlink" title="2.Davilk内存"></a>2.Davilk内存</h3><h4 id="2-1-内存分配"><a href="#2-1-内存分配" class="headerlink" title="2.1 内存分配"></a>2.1 内存分配</h4><h5 id="源码中heap-parameter的位置"><a href="#源码中heap-parameter的位置" class="headerlink" title="源码中heap parameter的位置"></a>源码中heap parameter的位置</h5><blockquote>
+<p>frameworks/native/build/phone-hdpi-1024-dalvik-heap.mk</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">PRODUCT_PROPERTY_OVERRIDES += \</span><br><span class="line">    dalvik.vm.heapstartsize=5m \ #初始化dalvik分配的内存大小。</span><br><span class="line">    dalvik.vm.heapsize=32m \#：在mainfest中设置android:largeheap=”true”时，应用的最大内存，超过这个值会有OOM产生。</span><br><span class="line">    dalvik.vm.heaptargetutilization=0.75 \</span><br><span class="line">    dalvik.vm.heapminfree=512k \</span><br><span class="line">    dalvik.vm.heapmaxfree=2m</span><br></pre></td></tr></table></figure>
+<p>如果依照如下设定<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">dalvik.vm.heapstartsize=8m</span><br><span class="line">dalvik.vm.heapgrowthlimit=64m</span><br><span class="line">dalvik.vm.heapsize=256m</span><br></pre></td></tr></table></figure></p>
+<ul>
+<li>每开启一个App，就会划出8m空间给它。如果使用过程超出8m，就会再次增加8m。但是只能增加7次空间，因为最大的空间为64m。超过了就会产生OOM。</li>
+<li>heapsize=256m，单个虚拟机分配的最大内存，相当于可以运行4个64m的应用。超过内存的部分就会进行内存回收，一方面是强制关闭一些应用，另一方面是加载新应用划分新的内存，这时候设备就会出现卡顿。</li>
+<li>有些人喜欢用小widget，比如每个只占3-5m，如果按照8m去分配，每个小应用都会多浪费3m的内存。这种情况就可以把heapstartsize改小，可以增加可用内存。</li>
+</ul>
+<h4 id="内存分配流程"><a href="#内存分配流程" class="headerlink" title="内存分配流程"></a>内存分配流程</h4><ol>
+<li><p>首先判断一下需要申请的size是不是过大，如果申请的size超过了堆的最大限制，则转入步骤6</p>
+</li>
+<li><p>尝试分配，如果成功则返回，失败则转入步骤3</p>
+</li>
+<li>判断是否gc正在进行垃圾回收，如果正在进行则等待回收完成之后，尝试分配。如果成功则返回，失败则转入步骤4</li>
+<li>自己启动gc进行垃圾回收，这里gcForMalloc的参数是false。所以不会回收软引用，回收完成后尝试分配，如果成功则返回，失败则转入步骤5</li>
+<li>调用dvmHeapSourceAllocAndGrow尝试分配，这个函数会扩张堆。所以heap startup的时候可以给一个比较小的初始堆，实在不够用再调用它进行扩张</li>
+<li>进入回收软引用阶段，这里gcForMalloc的参数是ture，所以需要回收软引用。然后调用dvmHeapSourceAllocAndGrow尝试分配，如果失败则抛出OOM。</li>
+</ol>
+<h4 id="重要调优参数"><a href="#重要调优参数" class="headerlink" title="重要调优参数"></a>重要调优参数</h4><h6 id="dalvik-vm-heapstartsize"><a href="#dalvik-vm-heapstartsize" class="headerlink" title="dalvik.vm.heapstartsize"></a>dalvik.vm.heapstartsize</h6><p>堆分配的初始大小，调整这个值会影响到应用的流畅性和整体ram消耗。这个值越小，系统ram消耗越慢，但是由于初始值较小，一些较大的应用需要扩张这个堆，从而引发gc和堆调整的策略，会应用反应更慢。相反，这个值越大系统ram消耗越快，但是程序更流畅。</p>
+<h6 id="dalvik-vm-heapgrowthlimit"><a href="#dalvik-vm-heapgrowthlimit" class="headerlink" title="dalvik.vm.heapgrowthlimit"></a>dalvik.vm.heapgrowthlimit</h6><p>极限堆大小，dvm heap是可增长的，但是正常情况下dvm heap的大小是不会超过dalvik.vm.heapgrowthlimit的值。如果受控的应用dvm heap size超过该值，则将引发oom。 </p>
+<h6 id="dalvik-vm-heapsize"><a href="#dalvik-vm-heapsize" class="headerlink" title="dalvik.vm.heapsize"></a>dalvik.vm.heapsize</h6><p>使用大堆时，极限堆大小。一旦dalvik heap size超过这个值，直接引发oom。在android开发中，如果要使用大堆，需要在manifest中指定android:largeHeap为true。这样dvm heap最大可达dalvik.vm.heapsize。</p>
+<h6 id="dalvik-vm-heaptargetutilization-0-75"><a href="#dalvik-vm-heaptargetutilization-0-75" class="headerlink" title="[dalvik.vm.heaptargetutilization]: [0.75]"></a>[dalvik.vm.heaptargetutilization]: [0.75]</h6><p>可以设定内存利用率的百分比，当实际的利用率偏离这个百分比的时候，虚拟机会在GC的时候调整堆内存大小，让实际占用率向个百分比靠拢。</p>
+<h4 id="2-2-内存管理"><a href="#2-2-内存管理" class="headerlink" title="2.2 内存管理"></a>2.2 内存管理</h4><p>Dalvik虚拟机使用常用的Mark-Sweep（标记回收）算法，该算法分Mark阶段（标记出活动对象）、Sweep阶段（回收垃圾内存）和可选的Compact阶段（减少堆中的碎片）。</p>
+<p><a href="https://www.cnblogs.com/killmyday/archive/2013/06/12/3132518.html?spm=a2c4e.10696291.0.0.30e519a4DNYvzK" target="_blank" rel="noopener">Android内存管理原理</a></p>
+<p>垃圾收集的第一步是标记出活动对象。当进行垃圾收集时，需要停止Dalvik虚拟机的运行（除垃圾收集外），因此垃圾收集又被称作STW（stop-the-world）。Dalvik虚拟机在运行过程中要维护一些状态信息，这些信息包括：每个线程所保存的寄存器、Java类中的静态字段、局部和全局的JNI引用，JVM中的所有函数调用会对应一个相应C的栈帧。每一个栈帧里可能包含对对象的引用，比如包含对象引用的局部变量和参数。所有这些引用信息被加入到一个根集合中，然后从根集合开始，递归查找可以从根集合出发访问的对象。因此，Mark过程又叫做追踪，追踪所有可被访问的对象。</p>
+<p>垃圾收集的第二步就是回收内存。在Mark阶段通过markBits位图可以得到所有可访问的对象集合，而liveBits位图表示所有已经分配的对象集合。通过比较liveBits位图和markBits位图的差异就是所有可回收的对象集合。Sweep阶段调用free来释放这些内存给堆。</p>
+<p>在底层内存实现上，Android系统使用的是msspace，这是一个轻量级的malloc实现。除了创建和初始化用于存储普通Java对象的内存堆，Android还创建三个额外的内存堆：</p>
+<ul>
+<li>“livebits”（用来存放堆上内存被占用情况的位图索引）</li>
+<li>“markbits”（在GC时用于标注存活对象的位图索引）</li>
+<li>“markstack”（在GC中遍历存活对象引用的标注栈）</li>
+</ul>
+<p>虚拟机通过一个名为gHs的全局HeapSource变量来操控GC内存堆，而HeapSource里通过heaps数组可以管理多个堆（Heap），以满足动态调整GC内存堆大小的要求。另外HeapSource里还维护一个名为”livebits”的位图索引，以跟踪各个堆（Heap）的内存使用情况。剩下两个数据结构”markstack”和”markbits”都是用在垃圾回收阶段。</p>
+<p><img src="https://yqfile.alicdn.com/img_f7ea79530e153dabccef7a72afd69fc8.png" alt="image"></p>
+<p>上图中”livebits”维护堆上已用的内存信息，而”markbits”这个位图索引则指向存活的对象。 A、C、F、G、H对象需要保留，因此”markbits”分别指向他们（最后的H对象尚在标注过程中，因此没有指针指向它）。而”markstack”就是在标注过程中跟踪当前需要处理的对象要用到的标志栈，此时其保存了正在处理的对象F、G和H。</p>
+<hr>
+<h3 id="3-Dalvik-GC"><a href="#3-Dalvik-GC" class="headerlink" title="3.Dalvik GC"></a>3.Dalvik GC</h3><p>Davlik上的垃圾回收主要是在下面的这些时机会触发：</p>
+<ul>
+<li>堆中无法再创建对象的时候</li>
+<li>堆中的内存使用率超过阈值的时候</li>
+<li>程序通过Runtime.gc()主动GC的时候</li>
+<li>在OOM发生之前的时候</li>
+</ul>
+<p>不同时机下GC的策略是有区别的，在Heap.h中定义了这四种GC的策略：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">/ Heap.h</span><br><span class="line">//内存分配时，发现可用内存不够时触发的GC事件</span><br><span class="line">/* Not enough space for an &quot;ordinary&quot; Object to be allocated. */</span><br><span class="line">extern const GcSpec *GC_FOR_MALLOC;</span><br><span class="line">//给Java层的class分配内存后，计算已分配的大小达到阈值(当前DVM heap size小一点)时会触发的GC事件。</span><br><span class="line">/* Automatic GC triggered by exceeding a heap occupancy threshold. */</span><br><span class="line">extern const GcSpec *GC_CONCURRENT;</span><br><span class="line"></span><br><span class="line">//应用主动调用System.gc()产生的GC事件。</span><br><span class="line">/* Explicit GC via Runtime.gc(), VMRuntime.gc(), or SIGUSR1. */</span><br><span class="line">extern const GcSpec *GC_EXPLICIT;</span><br><span class="line"></span><br><span class="line">/* Final attempt to reclaim memory before throwing an OOM. */</span><br><span class="line">extern const GcSpec *GC_BEFORE_OOM;</span><br></pre></td></tr></table></figure>
+<p>GC_FOR_MALLOC、GC_CONCURRENT和GC_BEFORE_OOM三种类型的GC都是在分配对象的过程触发的。而并发和非并发GC的区别主要在于,前者在GC过程中，有条件地挂起和唤醒非GC线程，而后者在执行GC的过程中，一直都是挂起非GC线程的。并行GC通过有条件地挂起和唤醒非GC线程，就可以使得应用程序获得更好的响应性。但是同时并行GC需要多执行一次标记根集对象以及递归标记那些在GC过程被访问了的对象的操作，所以也需要花费更多的CPU资源</p>
+<h4 id="Davilk-GC策略"><a href="#Davilk-GC策略" class="headerlink" title="Davilk GC策略"></a>Davilk GC策略</h4><p>因为GC_CONCURRENT和GC_FOR_MALLOC是由系统触发的，所以应用是无法减少这两种类型的GC事件。但需要减少这两种GC事件是，可以通过配置dalvik的系统属性或者修改dalvik的GC算法来实现。</p>
+<ol>
+<li><p>在一次GC后，根据当前Heap中已分配的内存大小除以dalvik.vm.heaputilization(0.75),得到一个目标值。</p>
+</li>
+<li><p>如果目标值不在（已分配的值+dalvik.vm.heapminfree）到（已分配的值+dalvik.vm.heapmaxfree）这个区间，即取区间边界值做为目标值(运行一段时间后第1步得到的目标值肯定会超过这个范围)。</p>
+</li>
+<li><p>虚拟机记录这个目标值，当做当前允许总的可以分配到的内存。同时根据目标值减去固定值（200~500K),当做触发GC_CONCURRENT事件的阈值。</p>
+</li>
+<li><p>当下一次分配内存，分配成功时。重新计算已分配的内存大小；若有达到GC_CONCURRENT的阈值，则产生GC。</p>
+</li>
+<li><p>当下一次分配内存，开始分配失败时。则会产生GC_FOR_ALLOC事件，释放内存；然后再尝试分配。</p>
+</li>
+</ol>
+<blockquote>
+<p>可以通过调整dalvik.vm.heapminfree 和dalvik.vm.heapmaxfree属性的值，减少GC_FOR_ALLOC和GC_CONCURRENT的次数，如果这两个值设置的过大，则会导致一次GC的时间过长，从而会看到明显的卡顿现象，设置的值既要使GC的次数减少，也不能是一次GC的时间过长。</p>
+</blockquote>
+<p>在有的平台上，可以通过代码对单个应用的dalvik的属性进行设置，以减少对全局设置对系统的影响。</p>
+<p>可以再App里面通过如下的方式对当前的App的dalvik属性设置：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">import dalvik.system.VMRuntime; </span><br><span class="line">import android.os.SystemProperties; </span><br><span class="line"></span><br><span class="line">VMRuntime.getRuntime().setTargetHeapUtilization(0.75f); </span><br><span class="line">VMRuntime.getRuntime().setTargetHeapMinFree(2*1024*1024); </span><br><span class="line">VMRuntime.getRuntime().setTargetHeapConcurrentStart(8*1024*1024);</span><br></pre></td></tr></table></figure></p>
+<p>如果想通过系统进行控制，也可以在framework里面的ActivityThread的handleBindApplication函数里面进行设置</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">import dalvik.system.VMRuntime; </span><br><span class="line">import android.os.SystemProperties; </span><br><span class="line">import java.lang.*; ... </span><br><span class="line">if( data.processName.equals(&quot;com.android.launcher&quot;)) &#123;</span><br><span class="line">VMRuntime.getRuntime().setTargetHeapUtilization(0.75f);</span><br><span class="line">VMRuntime.getRuntime().setTargetHeapMinFree(2*1024*1024);</span><br><span class="line">VMRuntime.getRuntime().setTargetHeapConcurrentStart(8*1024*1024); &#125;</span><br></pre></td></tr></table></figure>
+<hr>
+<p><a href="http://wossoneri.github.io/2019/04/09/[JVM]dalvik-and-jvm/" target="_blank" rel="noopener">Dalvik配置与JVM</a></p>
+<p><a href="http://wossoneri.github.io/2018/01/13/[JVM]Note-of-JVM-Charpter3/" target="_blank" rel="noopener">垃圾收集器与内存分配策略</a></p>
+<p><a href="https://www.cnblogs.com/muhe221/articles/5313131.html" target="_blank" rel="noopener">gc heap parameter</a></p>
+<p><a href="https://yq.aliyun.com/articles/270460?spm=a2c4e.11153940.0.0.15e66442tABkeG" target="_blank" rel="noopener">理解Android虚拟机体系结构(转)</a></p>
+<p><a href="https://www.infoq.cn/article/android-in-depth-dalvik/?spm=a2c4e.10696291.0.0.1a9219a4I4XIVm" target="_blank" rel="noopener">深入理解 Android（二）：Java 虚拟机 Dalvik</a></p>
+<p><a href="https://paul.pub/android-dalvik-vm/" target="_blank" rel="noopener">Android上的Dalvik虚拟机</a></p>
+</section>
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a href="/tags#Android VM" >
+    <span class="tag-code">Android VM</span>
+  </a>
+
+  <a href="/tags#Dalvik" >
+    <span class="tag-code">Dalvik</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2020/07/15/Android-VM-01-JVM-DVM-introduce/">
+        <span class="nav-arrow">← </span>
+        
+          Android VM 01 JVM 、DVM、ART简介
+        
+      </a>
+    
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+      <div class="qrcode">
+        <canvas id="share-qrcode"></canvas>
+        <p class="notice">扫描二维码，分享此文章</p>
+      </div>
+    
+    <!-- 二维码 END -->
+    
+      <!-- Gitment START -->
+      <div id="comments"></div>
+      <!-- Gitment END -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#1-DVM启动流程"><span class="toc-nav-text"><a href="#1-DVM&#x542F;&#x52A8;&#x6D41;&#x7A0B;" class="headerlink" title="1. DVM&#x542F;&#x52A8;&#x6D41;&#x7A0B;"></a>1. DVM&#x542F;&#x52A8;&#x6D41;&#x7A0B;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#base-cmds-app-process-app-main-cpp"><span class="toc-nav-text"><a href="#base-cmds-app-process-app-main-cpp" class="headerlink" title="base/cmds/app_process/app_main.cpp"></a>base/cmds/app_process/app_main.cpp</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#1-1-AndroidRuntime启动"><span class="toc-nav-text"><a href="#1-1-AndroidRuntime&#x542F;&#x52A8;" class="headerlink" title="1.1 AndroidRuntime&#x542F;&#x52A8;"></a>1.1 AndroidRuntime&#x542F;&#x52A8;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#start"><span class="toc-nav-text"><a href="#start" class="headerlink" title="start()"></a>start()</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#1-2-决定启动Art还是Dalvik"><span class="toc-nav-text"><a href="#1-2-&#x51B3;&#x5B9A;&#x542F;&#x52A8;Art&#x8FD8;&#x662F;Dalvik" class="headerlink" title="1.2 &#x51B3;&#x5B9A;&#x542F;&#x52A8;Art&#x8FD8;&#x662F;Dalvik"></a>1.2 &#x51B3;&#x5B9A;&#x542F;&#x52A8;Art&#x8FD8;&#x662F;Dalvik</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#1-3-重点分析startVM"><span class="toc-nav-text"><a href="#1-3-&#x91CD;&#x70B9;&#x5206;&#x6790;startVM" class="headerlink" title="1.3 &#x91CD;&#x70B9;&#x5206;&#x6790;startVM()"></a>1.3 &#x91CD;&#x70B9;&#x5206;&#x6790;startVM()</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2-Davilk内存"><span class="toc-nav-text"><a href="#2-Davilk&#x5185;&#x5B58;" class="headerlink" title="2.Davilk&#x5185;&#x5B58;"></a>2.Davilk&#x5185;&#x5B58;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#2-1-内存分配"><span class="toc-nav-text"><a href="#2-1-&#x5185;&#x5B58;&#x5206;&#x914D;" class="headerlink" title="2.1 &#x5185;&#x5B58;&#x5206;&#x914D;"></a>2.1 &#x5185;&#x5B58;&#x5206;&#x914D;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#源码中heap-parameter的位置"><span class="toc-nav-text"><a href="#&#x6E90;&#x7801;&#x4E2D;heap-parameter&#x7684;&#x4F4D;&#x7F6E;" class="headerlink" title="&#x6E90;&#x7801;&#x4E2D;heap parameter&#x7684;&#x4F4D;&#x7F6E;"></a>&#x6E90;&#x7801;&#x4E2D;heap parameter&#x7684;&#x4F4D;&#x7F6E;</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#内存分配流程"><span class="toc-nav-text"><a href="#&#x5185;&#x5B58;&#x5206;&#x914D;&#x6D41;&#x7A0B;" class="headerlink" title="&#x5185;&#x5B58;&#x5206;&#x914D;&#x6D41;&#x7A0B;"></a>&#x5185;&#x5B58;&#x5206;&#x914D;&#x6D41;&#x7A0B;</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#重要调优参数"><span class="toc-nav-text"><a href="#&#x91CD;&#x8981;&#x8C03;&#x4F18;&#x53C2;&#x6570;" class="headerlink" title="&#x91CD;&#x8981;&#x8C03;&#x4F18;&#x53C2;&#x6570;"></a>&#x91CD;&#x8981;&#x8C03;&#x4F18;&#x53C2;&#x6570;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-6"><a class="toc-nav-link" href="#dalvik-vm-heapstartsize"><span class="toc-nav-text"><a href="#dalvik-vm-heapstartsize" class="headerlink" title="dalvik.vm.heapstartsize"></a>dalvik.vm.heapstartsize</span></a></li><li class="toc-nav-item toc-nav-level-6"><a class="toc-nav-link" href="#dalvik-vm-heapgrowthlimit"><span class="toc-nav-text"><a href="#dalvik-vm-heapgrowthlimit" class="headerlink" title="dalvik.vm.heapgrowthlimit"></a>dalvik.vm.heapgrowthlimit</span></a></li><li class="toc-nav-item toc-nav-level-6"><a class="toc-nav-link" href="#dalvik-vm-heapsize"><span class="toc-nav-text"><a href="#dalvik-vm-heapsize" class="headerlink" title="dalvik.vm.heapsize"></a>dalvik.vm.heapsize</span></a></li><li class="toc-nav-item toc-nav-level-6"><a class="toc-nav-link" href="#dalvik-vm-heaptargetutilization-0-75"><span class="toc-nav-text"><a href="#dalvik-vm-heaptargetutilization-0-75" class="headerlink" title="[dalvik.vm.heaptargetutilization]: [0.75]"></a>[dalvik.vm.heaptargetutilization]: [0.75]</span></a></li></ol></li></ol></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#2-2-内存管理"><span class="toc-nav-text"><a href="#2-2-&#x5185;&#x5B58;&#x7BA1;&#x7406;" class="headerlink" title="2.2 &#x5185;&#x5B58;&#x7BA1;&#x7406;"></a>2.2 &#x5185;&#x5B58;&#x7BA1;&#x7406;</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#3-Dalvik-GC"><span class="toc-nav-text"><a href="#3-Dalvik-GC" class="headerlink" title="3.Dalvik GC"></a>3.Dalvik GC</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#Davilk-GC策略"><span class="toc-nav-text"><a href="#Davilk-GC&#x7B56;&#x7565;" class="headerlink" title="Davilk GC&#x7B56;&#x7565;"></a>Davilk GC&#x7B56;&#x7565;</span></a></li></ol></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'http://yoursite.com/2020/07/15/Android-VM-02-Dalvik/';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+  <script>
+    var qr = new QRious({
+      element: document.getElementById('share-qrcode'),
+      value: document.location.href
+    });
+  </script>
+
+
+
+  <script>
+    var gitmentConfig = "";
+    if (gitmentConfig !== 'undefined') {
+      var gitment = new Gitment({
+        id: "Android VM 02.Davilk 启动 内存 GC",
+        owner: "",
+        repo: "",
+        oauth: {
+          client_id: "",
+          client_secret: ""
+        },
+        theme: {
+          render(state, instance) {
+            const container = document.createElement('div')
+            container.lang = "en-US"
+            container.className = 'gitment-container gitment-root-container'
+            container.appendChild(instance.renderHeader(state, instance))
+            container.appendChild(instance.renderEditor(state, instance))
+            container.appendChild(instance.renderComments(state, instance))
+            container.appendChild(instance.renderFooter(state, instance))
+            return container;
+          }
+        }
+      })
+      gitment.render(document.getElementById('comments'))
+    }
+  </script>
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2020 | Proudly powered by <a href="https://hexo.io" target="_blank">Hexo</a>
+    <br>
+    Theme by <a href="https://github.com/yanm1ng">yanm1ng</a>
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+<script src="/js/script.js"></script>
+  </body>
+</html>
