@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="it is a personal blogs">
+  <meta name="keyword" content="hexo-theme, vuejs">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      Android7.0自动亮度调节分析 | tracyliu
+    
+  </title>
+  <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+  
+    <link rel="stylesheet" href="/css/plugins/gitment.css">
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+    <script src="/js/qrious.js"></script>
+  
+  
+    <script src="/js/gitment.js"></script>
+  
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+  
+</head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>tracyliu</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">Tags</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/project/" class="item-link">Projects</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">About</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">Tags</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">Archives</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/project/" class="menu-link">Projects</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">About</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>Android7.0自动亮度调节分析</h2>
+  <p class="post-date">2020-11-05</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><p>/Users/tracyliu/AndroidStudioProjects/EBook3.2-7.1/frameworks/base/services/core/java/com/android/server/power/PowerManagerService.java</p>
+<h4 id="PowerManagerService-java"><a href="#PowerManagerService-java" class="headerlink" title="PowerManagerService.java"></a>PowerManagerService.java</h4><p>mScreenBrightnessModeSetting 表示亮度调节的模式，分为自动和手动，对应设置中的选项。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">mScreenBrightnessModeSetting = Settings.System.getIntForUser(resolver,</span><br><span class="line">               Settings.System.SCREEN_BRIGHTNESS_MODE,</span><br><span class="line">               Settings.System.SCREEN_BRIGHTNESS_MODE_MANUAL, UserHandle.USER_CURRENT);</span><br></pre></td></tr></table></figure>
+<h5 id="PowerManagerService-updateDisplayPowerStateLocked"><a href="#PowerManagerService-updateDisplayPowerStateLocked" class="headerlink" title="PowerManagerService#updateDisplayPowerStateLocked()"></a>PowerManagerService#updateDisplayPowerStateLocked()</h5><p>mScreenBrightnessModeSetting在updateDisplayPowerStateLocked()中被使用</p>
+<p>该方法用于更新设备显示状态，在这个方法中，会计算出最终需要显示的亮度值和其他值，然后将这些值封装到<code>DisplayPowerRequest</code>对象中，向DisplayMangerService请求Display状态，完成屏幕亮度显示等</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br></pre></td><td class="code"><pre><span class="line">private boolean updateDisplayPowerStateLocked(int dirty) &#123;</span><br><span class="line">        final boolean oldDisplayReady = mDisplayReady;</span><br><span class="line">        if ((dirty &amp; (DIRTY_WAKE_LOCKS | DIRTY_USER_ACTIVITY | DIRTY_WAKEFULNESS</span><br><span class="line">                | DIRTY_ACTUAL_DISPLAY_POWER_STATE_UPDATED | DIRTY_BOOT_COMPLETED</span><br><span class="line">                | DIRTY_SETTINGS | DIRTY_SCREEN_BRIGHTNESS_BOOST | DIRTY_VR_MODE_CHANGED)) != 0) &#123;</span><br><span class="line">            mDisplayPowerRequest.policy = getDesiredScreenPolicyLocked();</span><br><span class="line"></span><br><span class="line">            // Determine appropriate screen brightness and auto-brightness adjustments.</span><br><span class="line">            boolean brightnessSetByUser = true;</span><br><span class="line">            int screenBrightness = mScreenBrightnessSettingDefault;//默认亮度120</span><br><span class="line">            float screenAutoBrightnessAdjustment = 0.0f;</span><br><span class="line">            boolean autoBrightness = (mScreenBrightnessModeSetting ==</span><br><span class="line">                    Settings.System.SCREEN_BRIGHTNESS_MODE_AUTOMATIC);</span><br><span class="line">            if (!mBootCompleted) &#123;</span><br><span class="line">                // Keep the brightness steady during boot. This requires the</span><br><span class="line">                // bootloader brightness and the default brightness to be identical.</span><br><span class="line">                autoBrightness = false;</span><br><span class="line">                brightnessSetByUser = false;</span><br><span class="line">            &#125; else if (mIsVrModeEnabled) &#123; //判断VR模式</span><br><span class="line">                screenBrightness = mScreenBrightnessForVrSetting;</span><br><span class="line">                autoBrightness = false;//亮度值是否有效</span><br><span class="line">            &#125; else if (isValidBrightness(mScreenBrightnessOverrideFromWindowManager)) &#123;</span><br><span class="line">                screenBrightness = mScreenBrightnessOverrideFromWindowManager;</span><br><span class="line">                autoBrightness = false;</span><br><span class="line">                brightnessSetByUser = false;//亮度值是否有效</span><br><span class="line">            &#125; else if (isValidBrightness(mTemporaryScreenBrightnessSettingOverride)) &#123;</span><br><span class="line">                screenBrightness = mTemporaryScreenBrightnessSettingOverride;</span><br><span class="line">            &#125; else if (isValidBrightness(mScreenBrightnessSetting)) &#123;</span><br><span class="line">                screenBrightness = mScreenBrightnessSetting;</span><br><span class="line">            &#125;</span><br><span class="line">            if (autoBrightness) &#123;</span><br><span class="line">                screenBrightness = mScreenBrightnessSettingDefault;</span><br><span class="line">                if (isValidAutoBrightnessAdjustment(</span><br><span class="line">                        mTemporaryScreenAutoBrightnessAdjustmentSettingOverride)) &#123;</span><br><span class="line">                    screenAutoBrightnessAdjustment =</span><br><span class="line">                            mTemporaryScreenAutoBrightnessAdjustmentSettingOverride;</span><br><span class="line">                &#125; else if (isValidAutoBrightnessAdjustment(</span><br><span class="line">                        mScreenAutoBrightnessAdjustmentSetting)) &#123;</span><br><span class="line">                    screenAutoBrightnessAdjustment = mScreenAutoBrightnessAdjustmentSetting;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            screenBrightness = Math.max(Math.min(screenBrightness,</span><br><span class="line">                    mScreenBrightnessSettingMaximum), mScreenBrightnessSettingMinimum);//亮度</span><br><span class="line">            screenAutoBrightnessAdjustment = Math.max(Math.min(</span><br><span class="line">                    screenAutoBrightnessAdjustment, 1.0f), -1.0f);</span><br><span class="line"></span><br><span class="line">            // Update display power request.//更新DisplayPowerRequest</span><br><span class="line">            mDisplayPowerRequest.screenBrightness = screenBrightness;</span><br><span class="line">            mDisplayPowerRequest.screenAutoBrightnessAdjustment =</span><br><span class="line">                    screenAutoBrightnessAdjustment;</span><br><span class="line">            mDisplayPowerRequest.brightnessSetByUser = brightnessSetByUser;</span><br><span class="line">            mDisplayPowerRequest.useAutoBrightness = autoBrightness;</span><br><span class="line">            mDisplayPowerRequest.useProximitySensor = shouldUseProximitySensorLocked();</span><br><span class="line">            mDisplayPowerRequest.lowPowerMode = mLowPowerModeEnabled;</span><br><span class="line">            mDisplayPowerRequest.boostScreenBrightness = shouldBoostScreenBrightness();</span><br><span class="line">            mDisplayPowerRequest.useTwilight = mBrightnessUseTwilight;</span><br><span class="line">            if (mDisplayPowerRequest.policy == DisplayPowerRequest.POLICY_DOZE) &#123;</span><br><span class="line">                mDisplayPowerRequest.dozeScreenState = mDozeScreenStateOverrideFromDreamManager;</span><br><span class="line">                if (mDisplayPowerRequest.dozeScreenState == Display.STATE_DOZE_SUSPEND</span><br><span class="line">                        &amp;&amp; (mWakeLockSummary &amp; WAKE_LOCK_DRAW) != 0) &#123;</span><br><span class="line">                    mDisplayPowerRequest.dozeScreenState = Display.STATE_DOZE;</span><br><span class="line">                &#125;</span><br><span class="line">                mDisplayPowerRequest.dozeScreenBrightness =</span><br><span class="line">                        mDozeScreenBrightnessOverrideFromDreamManager;</span><br><span class="line">            &#125; else &#123;</span><br><span class="line">                mDisplayPowerRequest.dozeScreenState = Display.STATE_UNKNOWN;</span><br><span class="line">                mDisplayPowerRequest.dozeScreenBrightness = PowerManager.BRIGHTNESS_DEFAULT;</span><br><span class="line">            &#125;</span><br><span class="line">						//重点关注该方法</span><br><span class="line">            mDisplayReady = mDisplayManagerInternal.requestPowerState(mDisplayPowerRequest,</span><br><span class="line">                    mRequestWaitForNegativeProximity);//</span><br><span class="line">            mRequestWaitForNegativeProximity = false;</span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line">        return mDisplayReady &amp;&amp; !oldDisplayReady;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<h4 id="DisplayManagerInternal-java"><a href="#DisplayManagerInternal-java" class="headerlink" title="DisplayManagerInternal.java"></a>DisplayManagerInternal.java</h4><p>/Users/tracyliu/AndroidStudioProjects/EBook3.2-7.1/frameworks/base/core/java/android/hardware/display/DisplayManagerInternal.java</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">public abstract boolean requestPowerState(DisplayPowerRequest request,</span><br><span class="line">           boolean waitForNegativeProximity);</span><br></pre></td></tr></table></figure>
+<h3 id="DisplayManagerService-java"><a href="#DisplayManagerService-java" class="headerlink" title="DisplayManagerService.java"></a>DisplayManagerService.java</h3><p>DMS中的LocalService继承了DisplayManagerInternal，代码进入DisplayPowerController.java</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">private final class LocalService extends DisplayManagerInternal &#123;</span><br><span class="line">    @Override</span><br><span class="line">   </span><br><span class="line">    @Override</span><br><span class="line">    public boolean requestPowerState(DisplayPowerRequest request,</span><br><span class="line">            boolean waitForNegativeProximity) &#123;</span><br><span class="line">        return mDisplayPowerController.requestPowerState(request,</span><br><span class="line">                waitForNegativeProximity);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<h4 id="DisplayPowerController-java"><a href="#DisplayPowerController-java" class="headerlink" title="DisplayPowerController.java"></a>DisplayPowerController.java</h4><p>/Users/tracyliu/AndroidStudioProjects/EBook3.2-7.1/frameworks/base/services/core/java/com/android/server/display/DisplayPowerController.java</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">public boolean requestPowerState(DisplayPowerRequest request,</span><br><span class="line">        boolean waitForNegativeProximity) &#123;</span><br><span class="line">  </span><br><span class="line">    synchronized (mLock) &#123;</span><br><span class="line">        boolean changed = false;</span><br></pre></td></tr></table></figure>
+<pre><code>if (changed &amp;&amp; !mPendingRequestChangedLocked) {
+    mPendingRequestChangedLocked = true;
+    sendUpdatePowerStateLocked();//重点看这个
+}
+        <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">        return mDisplayReadyLocked;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</code></pre><ul>
+<li><p>sendUpdatePowerStateLocked();   - MSG_UPDATE_POWER_STATE</p>
+</li>
+<li><p>updatePowerState()</p>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">private void updatePowerState() &#123;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">      // Configure auto-brightness.</span><br><span class="line">      boolean autoBrightnessEnabled = false;</span><br><span class="line">      if (mAutomaticBrightnessController != null) &#123;</span><br><span class="line">          final boolean autoBrightnessEnabledInDoze = mAllowAutoBrightnessWhileDozingConfig</span><br><span class="line">                  &amp;&amp; (state == Display.STATE_DOZE || state == Display.STATE_DOZE_SUSPEND);</span><br><span class="line">          autoBrightnessEnabled = (mPowerRequest.useAutoBrightness</span><br><span class="line">                  &amp;&amp; (state == Display.STATE_ON || autoBrightnessEnabledInDoze)</span><br><span class="line">                  || mUseActiveDozeLightSensorConfig &amp;&amp; autoBrightnessEnabledInDoze)</span><br><span class="line">                  &amp;&amp; brightness &lt; 0;</span><br><span class="line">          final boolean userInitiatedChange = autoBrightnessAdjustmentChanged</span><br><span class="line">                  &amp;&amp; mPowerRequest.brightnessSetByUser;</span><br><span class="line">          mAutomaticBrightnessController.configure(autoBrightnessEnabled,</span><br><span class="line">                  mPowerRequest.screenAutoBrightnessAdjustment, state != Display.STATE_ON,</span><br><span class="line">                  userInitiatedChange);</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+<h4 id="AutomaticBrightnessController-java"><a href="#AutomaticBrightnessController-java" class="headerlink" title="AutomaticBrightnessController.java"></a>AutomaticBrightnessController.java</h4><p>/Users/tracyliu/AndroidStudioProjects/EBook3.2-7.1/frameworks/base/services/core/java/com/android/server/display/AutomaticBrightnessController.java</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">public void configure(boolean enable, float adjustment, boolean dozing,</span><br><span class="line">            boolean userInitiatedChange) &#123;</span><br><span class="line">       </span><br><span class="line"></span><br><span class="line">       ···</span><br><span class="line">        boolean changed = setLightSensorEnabled(enableSensor); //控制sensor是否enable</span><br><span class="line">        changed |= setScreenAutoBrightnessAdjustment(adjustment);</span><br><span class="line">        if (changed) &#123;</span><br><span class="line">            updateAutoBrightness(false /*sendUpdate*/);  //进行亮度调节</span><br><span class="line">        &#125;</span><br><span class="line">        if (enableSensor &amp;&amp; userInitiatedChange) &#123;</span><br><span class="line">            prepareBrightnessAdjustmentSample();</span><br><span class="line">        &#125;</span><br><span class="line">        ···</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">private boolean setLightSensorEnabled(boolean enable) &#123;</span><br><span class="line">    if (enable) &#123;</span><br><span class="line">        if (!mLightSensorEnabled) &#123;</span><br><span class="line">            if (DEBUG) &#123;</span><br><span class="line">                Slog.d(TAG, &quot;setLightSensorEnabled: sensor enabled&quot;);</span><br><span class="line">            &#125;</span><br><span class="line">            mLightSensorEnabled = true;</span><br><span class="line">            mAmbientLightRingBuffer.clear();</span><br><span class="line">            mInitialHorizonAmbientLightRingBuffer.clear();</span><br><span class="line">            mAmbientLuxValid = !mResetAmbientLuxAfterWarmUpConfig;</span><br><span class="line">            mLightSensorEnableTime = SystemClock.uptimeMillis();</span><br><span class="line">            mCurrentLightSensorRate = mInitialLightSensorRate;</span><br><span class="line">            mSensorManager.registerListener(mLightSensorListener, mLightSensor, //注册 mLightSensorListener</span><br><span class="line">                    mCurrentLightSensorRate * 1000, mHandler);</span><br><span class="line">            return true;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        if (mLightSensorEnabled) &#123;</span><br><span class="line">            if (DEBUG) &#123;</span><br><span class="line">                Slog.d(TAG, &quot;setLightSensorEnabled: sensor disabled&quot;);</span><br><span class="line">            &#125;</span><br><span class="line">            mLightSensorEnabled = false;</span><br><span class="line">            mRecentLightSamples = 0;</span><br><span class="line">            mCurrentLightSensorRate = -1;</span><br><span class="line">            mHandler.removeMessages(MSG_UPDATE_AMBIENT_LUX);</span><br><span class="line">            mSensorManager.unregisterListener(mLightSensorListener);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    return false;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>SensorEventListener是一个interface 对应的SystemSensorManager在dispatchSensorEvent()会调用lisenter的onSensorChanged源源不断的从native层接受消息</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">private final SensorEventListener mLightSensorListener = new SensorEventListener() &#123;</span><br><span class="line">       @Override</span><br><span class="line">       public void onSensorChanged(SensorEvent event) &#123;</span><br><span class="line">           if (mLightSensorEnabled) &#123;</span><br><span class="line">               final long time = SystemClock.uptimeMillis();</span><br><span class="line">               final float lux = event.values[0];</span><br><span class="line">               handleLightSensorEvent(time, lux);//</span><br><span class="line">           &#125;</span><br><span class="line">       &#125;</span><br><span class="line"></span><br><span class="line">       @Override</span><br><span class="line">       public void onAccuracyChanged(Sensor sensor, int accuracy) &#123;</span><br><span class="line">           // Not used.</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;;</span><br></pre></td></tr></table></figure>
+<h4 id="handleLightSensorEvent-time-lux"><a href="#handleLightSensorEvent-time-lux" class="headerlink" title="handleLightSensorEvent(time, lux);"></a>handleLightSensorEvent(time, lux);</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">private void handleLightSensorEvent(long time, float lux) &#123;</span><br><span class="line">        mHandler.removeMessages(MSG_UPDATE_AMBIENT_LUX);</span><br><span class="line"></span><br><span class="line">        if (mAmbientLightRingBuffer.size() == 0) &#123;</span><br><span class="line">            // switch to using the steady-state sample rate after grabbing the initial light sample</span><br><span class="line">            adjustLightSensorRate(mNormalLightSensorRate);</span><br><span class="line">        &#125;</span><br><span class="line">        applyLightSensorMeasurement(time, lux);</span><br><span class="line">        updateAmbientLux(time); // 循环更新sensor 发送MSG_UPDATE_AMBIENT_LUX消息</span><br><span class="line">        if (mUseActiveDozeLightSensorConfig &amp;&amp; mDozing) &#123;</span><br><span class="line">            // disable the ambient light sensor and update the screen brightness</span><br><span class="line">            setLightSensorEnabled(false);</span><br><span class="line">            updateAutoBrightness(true /*sendUpdate*/); </span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<hr>
+<h3 id="整体流程"><a href="#整体流程" class="headerlink" title="整体流程"></a>整体流程</h3><h5 id="1-从Settings设置的Mode可以锁定PMS中的mScreenBrightnessModeSetting以及updateDisplayPowerStateLocked-调用到DisplayManagerService"><a href="#1-从Settings设置的Mode可以锁定PMS中的mScreenBrightnessModeSetting以及updateDisplayPowerStateLocked-调用到DisplayManagerService" class="headerlink" title="1.从Settings设置的Mode可以锁定PMS中的mScreenBrightnessModeSetting以及updateDisplayPowerStateLocked()调用到DisplayManagerService"></a>1.从Settings设置的Mode可以锁定PMS中的mScreenBrightnessModeSetting以及updateDisplayPowerStateLocked()调用到DisplayManagerService</h5><h5 id="2-DisplayPowerController的requestPowerState-发送MSG-UPDATE-POWER-STATE消息，在updatePowerState-调用AutomaticBrightnessController的configure"><a href="#2-DisplayPowerController的requestPowerState-发送MSG-UPDATE-POWER-STATE消息，在updatePowerState-调用AutomaticBrightnessController的configure" class="headerlink" title="2.DisplayPowerController的requestPowerState()发送MSG_UPDATE_POWER_STATE消息，在updatePowerState()调用AutomaticBrightnessController的configure()"></a>2.DisplayPowerController的requestPowerState()发送MSG_UPDATE_POWER_STATE消息，在updatePowerState()调用AutomaticBrightnessController的configure()</h5><h5 id="3-configure方法中做了两件事儿，一个是更新亮度，另外一个注册sensorlistener从native层接受消息调节亮度"><a href="#3-configure方法中做了两件事儿，一个是更新亮度，另外一个注册sensorlistener从native层接受消息调节亮度" class="headerlink" title="3.configure方法中做了两件事儿，一个是更新亮度，另外一个注册sensorlistener从native层接受消息调节亮度"></a>3.configure方法中做了两件事儿，一个是更新亮度，另外一个注册sensorlistener从native层接受消息调节亮度</h5><p>```</p>
+</section>
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a href="/tags#framework" >
+    <span class="tag-code">framework</span>
+  </a>
+
+  <a href="/tags#PowerManagerService" >
+    <span class="tag-code">PowerManagerService</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2020/07/15/Android-VM-02-Dalvik/">
+        <span class="nav-arrow">← </span>
+        
+          Android VM 02.Davilk 启动 内存 GC
+        
+      </a>
+    
+    
+      <a class="nav-right" href="/2020/11/05/tracyliu-resume/">
+        
+          tracyliu_resume
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+      <div class="qrcode">
+        <canvas id="share-qrcode"></canvas>
+        <p class="notice">扫描二维码，分享此文章</p>
+      </div>
+    
+    <!-- 二维码 END -->
+    
+      <!-- Gitment START -->
+      <div id="comments"></div>
+      <!-- Gitment END -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#PowerManagerService-java"><span class="toc-nav-text"><a href="#PowerManagerService-java" class="headerlink" title="PowerManagerService.java"></a>PowerManagerService.java</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#PowerManagerService-updateDisplayPowerStateLocked"><span class="toc-nav-text"><a href="#PowerManagerService-updateDisplayPowerStateLocked" class="headerlink" title="PowerManagerService#updateDisplayPowerStateLocked()"></a>PowerManagerService#updateDisplayPowerStateLocked()</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#DisplayManagerInternal-java"><span class="toc-nav-text"><a href="#DisplayManagerInternal-java" class="headerlink" title="DisplayManagerInternal.java"></a>DisplayManagerInternal.java</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#DisplayManagerService-java"><span class="toc-nav-text"><a href="#DisplayManagerService-java" class="headerlink" title="DisplayManagerService.java"></a>DisplayManagerService.java</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#DisplayPowerController-java"><span class="toc-nav-text"><a href="#DisplayPowerController-java" class="headerlink" title="DisplayPowerController.java"></a>DisplayPowerController.java</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#AutomaticBrightnessController-java"><span class="toc-nav-text"><a href="#AutomaticBrightnessController-java" class="headerlink" title="AutomaticBrightnessController.java"></a>AutomaticBrightnessController.java</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#handleLightSensorEvent-time-lux"><span class="toc-nav-text"><a href="#handleLightSensorEvent-time-lux" class="headerlink" title="handleLightSensorEvent(time, lux);"></a>handleLightSensorEvent(time, lux);</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#整体流程"><span class="toc-nav-text"><a href="#&#x6574;&#x4F53;&#x6D41;&#x7A0B;" class="headerlink" title="&#x6574;&#x4F53;&#x6D41;&#x7A0B;"></a>&#x6574;&#x4F53;&#x6D41;&#x7A0B;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#1-从Settings设置的Mode可以锁定PMS中的mScreenBrightnessModeSetting以及updateDisplayPowerStateLocked-调用到DisplayManagerService"><span class="toc-nav-text"><a href="#1-&#x4ECE;Settings&#x8BBE;&#x7F6E;&#x7684;Mode&#x53EF;&#x4EE5;&#x9501;&#x5B9A;PMS&#x4E2D;&#x7684;mScreenBrightnessModeSetting&#x4EE5;&#x53CA;updateDisplayPowerStateLocked-&#x8C03;&#x7528;&#x5230;DisplayManagerService" class="headerlink" title="1.&#x4ECE;Settings&#x8BBE;&#x7F6E;&#x7684;Mode&#x53EF;&#x4EE5;&#x9501;&#x5B9A;PMS&#x4E2D;&#x7684;mScreenBrightnessModeSetting&#x4EE5;&#x53CA;updateDisplayPowerStateLocked()&#x8C03;&#x7528;&#x5230;DisplayManagerService"></a>1.&#x4ECE;Settings&#x8BBE;&#x7F6E;&#x7684;Mode&#x53EF;&#x4EE5;&#x9501;&#x5B9A;PMS&#x4E2D;&#x7684;mScreenBrightnessModeSetting&#x4EE5;&#x53CA;updateDisplayPowerStateLocked()&#x8C03;&#x7528;&#x5230;DisplayManagerService</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#2-DisplayPowerController的requestPowerState-发送MSG-UPDATE-POWER-STATE消息，在updatePowerState-调用AutomaticBrightnessController的configure"><span class="toc-nav-text"><a href="#2-DisplayPowerController&#x7684;requestPowerState-&#x53D1;&#x9001;MSG-UPDATE-POWER-STATE&#x6D88;&#x606F;&#xFF0C;&#x5728;updatePowerState-&#x8C03;&#x7528;AutomaticBrightnessController&#x7684;configure" class="headerlink" title="2.DisplayPowerController&#x7684;requestPowerState()&#x53D1;&#x9001;MSG_UPDATE_POWER_STATE&#x6D88;&#x606F;&#xFF0C;&#x5728;updatePowerState()&#x8C03;&#x7528;AutomaticBrightnessController&#x7684;configure()"></a>2.DisplayPowerController&#x7684;requestPowerState()&#x53D1;&#x9001;MSG_UPDATE_POWER_STATE&#x6D88;&#x606F;&#xFF0C;&#x5728;updatePowerState()&#x8C03;&#x7528;AutomaticBrightnessController&#x7684;configure()</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#3-configure方法中做了两件事儿，一个是更新亮度，另外一个注册sensorlistener从native层接受消息调节亮度"><span class="toc-nav-text"><a href="#3-configure&#x65B9;&#x6CD5;&#x4E2D;&#x505A;&#x4E86;&#x4E24;&#x4EF6;&#x4E8B;&#x513F;&#xFF0C;&#x4E00;&#x4E2A;&#x662F;&#x66F4;&#x65B0;&#x4EAE;&#x5EA6;&#xFF0C;&#x53E6;&#x5916;&#x4E00;&#x4E2A;&#x6CE8;&#x518C;sensorlistener&#x4ECE;native&#x5C42;&#x63A5;&#x53D7;&#x6D88;&#x606F;&#x8C03;&#x8282;&#x4EAE;&#x5EA6;" class="headerlink" title="3.configure&#x65B9;&#x6CD5;&#x4E2D;&#x505A;&#x4E86;&#x4E24;&#x4EF6;&#x4E8B;&#x513F;&#xFF0C;&#x4E00;&#x4E2A;&#x662F;&#x66F4;&#x65B0;&#x4EAE;&#x5EA6;&#xFF0C;&#x53E6;&#x5916;&#x4E00;&#x4E2A;&#x6CE8;&#x518C;sensorlistener&#x4ECE;native&#x5C42;&#x63A5;&#x53D7;&#x6D88;&#x606F;&#x8C03;&#x8282;&#x4EAE;&#x5EA6;"></a>3.configure&#x65B9;&#x6CD5;&#x4E2D;&#x505A;&#x4E86;&#x4E24;&#x4EF6;&#x4E8B;&#x513F;&#xFF0C;&#x4E00;&#x4E2A;&#x662F;&#x66F4;&#x65B0;&#x4EAE;&#x5EA6;&#xFF0C;&#x53E6;&#x5916;&#x4E00;&#x4E2A;&#x6CE8;&#x518C;sensorlistener&#x4ECE;native&#x5C42;&#x63A5;&#x53D7;&#x6D88;&#x606F;&#x8C03;&#x8282;&#x4EAE;&#x5EA6;</span></a></li></ol></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'http://yoursite.com/2020/11/05/auto-brightness-control-Android/';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+  <script>
+    var qr = new QRious({
+      element: document.getElementById('share-qrcode'),
+      value: document.location.href
+    });
+  </script>
+
+
+
+  <script>
+    var gitmentConfig = "";
+    if (gitmentConfig !== 'undefined') {
+      var gitment = new Gitment({
+        id: "Android7.0自动亮度调节分析",
+        owner: "",
+        repo: "",
+        oauth: {
+          client_id: "",
+          client_secret: ""
+        },
+        theme: {
+          render(state, instance) {
+            const container = document.createElement('div')
+            container.lang = "en-US"
+            container.className = 'gitment-container gitment-root-container'
+            container.appendChild(instance.renderHeader(state, instance))
+            container.appendChild(instance.renderEditor(state, instance))
+            container.appendChild(instance.renderComments(state, instance))
+            container.appendChild(instance.renderFooter(state, instance))
+            return container;
+          }
+        }
+      })
+      gitment.render(document.getElementById('comments'))
+    }
+  </script>
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2020 | Proudly powered by <a href="https://hexo.io" target="_blank">Hexo</a>
+    <br>
+    Theme by <a href="https://github.com/yanm1ng">yanm1ng</a>
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+<script src="/js/script.js"></script>
+  </body>
+</html>
