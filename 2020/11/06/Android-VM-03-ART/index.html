@@ -17,23 +17,23 @@
   <meta http-equiv="window-target" content="_top" />
   
   
-  <title>Ubantu16.04踩坑小记（没有wifi，无法apt update） | Hexo</title>
-  <meta name="description" content="1.装机后，无法连接wifi.因为ubantu系统没有识别到无线网卡，需要在“设置”——“附加驱动”中 勾选Broadcom。  无法连接wifi.因为ubantu系统没有识别到无线网卡，需要在“设置”——“附加驱动”中 勾选Broadcom。 #如果还不行，尝试禁用secure bootUbuntu 16.04 禁用 Secure boot 问题 我的密码是装系统的时候设置的，该密码并不是每次开">
-<meta name="keywords" content="ubuntu">
+  <title>Android VM 03.ART | Hexo</title>
+  <meta name="description" content="1.ART的改进1.1 AOT编译：Ahead-of-time（AOT）是相对于Just-in-time（JIT）而言的。JIT是在运行时进行字节码到本地机器码的编译，这也是为什么Java普遍被认为效率比C++差的原因。无论是解释器的解释还是运行过程中即时编译，都比C++编译出的本地机器码执行多了一个耗费时间的过程。而AOT就是向C++编译过程靠拢的一项技术：当APK在安装的时候，系统会通过一个名">
+<meta name="keywords" content="Android VM,ART">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Ubantu16.04踩坑小记（没有wifi，无法apt update）">
-<meta property="og:url" content="http://yoursite.com/2017/12/25/Ubantu_bugs/index.html">
+<meta property="og:title" content="Android VM 03.ART">
+<meta property="og:url" content="http://yoursite.com/2020/11/06/Android-VM-03-ART/index.html">
 <meta property="og:site_name" content="tracyliu">
-<meta property="og:description" content="1.装机后，无法连接wifi.因为ubantu系统没有识别到无线网卡，需要在“设置”——“附加驱动”中 勾选Broadcom。  无法连接wifi.因为ubantu系统没有识别到无线网卡，需要在“设置”——“附加驱动”中 勾选Broadcom。 #如果还不行，尝试禁用secure bootUbuntu 16.04 禁用 Secure boot 问题 我的密码是装系统的时候设置的，该密码并不是每次开">
+<meta property="og:description" content="1.ART的改进1.1 AOT编译：Ahead-of-time（AOT）是相对于Just-in-time（JIT）而言的。JIT是在运行时进行字节码到本地机器码的编译，这也是为什么Java普遍被认为效率比C++差的原因。无论是解释器的解释还是运行过程中即时编译，都比C++编译出的本地机器码执行多了一个耗费时间的过程。而AOT就是向C++编译过程靠拢的一项技术：当APK在安装的时候，系统会通过一个名">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/1984280-c4b305cbcc3799c1.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
-<meta property="og:updated_time" content="2018-02-07T11:09:49.787Z">
+<meta property="og:image" content="http://qiangbo-workspace.oss-cn-shanghai.aliyuncs.com/AndroidNewFeatureBook/Chapter3/art_vs_dalvik.png">
+<meta property="og:updated_time" content="2020-11-05T17:18:35.484Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Ubantu16.04踩坑小记（没有wifi，无法apt update）">
-<meta name="twitter:description" content="1.装机后，无法连接wifi.因为ubantu系统没有识别到无线网卡，需要在“设置”——“附加驱动”中 勾选Broadcom。  无法连接wifi.因为ubantu系统没有识别到无线网卡，需要在“设置”——“附加驱动”中 勾选Broadcom。 #如果还不行，尝试禁用secure bootUbuntu 16.04 禁用 Secure boot 问题 我的密码是装系统的时候设置的，该密码并不是每次开">
-<meta name="twitter:image" content="http://upload-images.jianshu.io/upload_images/1984280-c4b305cbcc3799c1.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta name="twitter:title" content="Android VM 03.ART">
+<meta name="twitter:description" content="1.ART的改进1.1 AOT编译：Ahead-of-time（AOT）是相对于Just-in-time（JIT）而言的。JIT是在运行时进行字节码到本地机器码的编译，这也是为什么Java普遍被认为效率比C++差的原因。无论是解释器的解释还是运行过程中即时编译，都比C++编译出的本地机器码执行多了一个耗费时间的过程。而AOT就是向C++编译过程靠拢的一项技术：当APK在安装的时候，系统会通过一个名">
+<meta name="twitter:image" content="http://qiangbo-workspace.oss-cn-shanghai.aliyuncs.com/AndroidNewFeatureBook/Chapter3/art_vs_dalvik.png">
   <!-- Canonical links -->
-  <link rel="canonical" href="http://yoursite.com/2017/12/25/Ubantu_bugs/index.html">
+  <link rel="canonical" href="http://yoursite.com/2020/11/06/Android-VM-03-ART/index.html">
   
     <link rel="alternate" href="/atom.xml" title="tracyliu" type="application/atom+xml">
   
@@ -335,14 +335,14 @@
   
 <main class="main" role="main">
   <div class="content">
-  <article id="post-Ubantu_bugs" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+  <article id="post-Android-VM-03-ART" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
     
     <div class="article-header">
       
         
   
     <h1 class="article-title" itemprop="name">
-      Ubantu16.04踩坑小记（没有wifi，无法apt update）
+      Android VM 03.ART
     </h1>
   
 
@@ -350,73 +350,133 @@
       <div class="article-meta">
         <span class="article-date">
     <i class="icon icon-calendar-check"></i>
-	<a href="/2017/12/25/Ubantu_bugs/" class="article-date">
-	  <time datetime="2017-12-25T05:42:31.000Z" itemprop="datePublished">2017-12-25</time>
+	<a href="/2020/11/06/Android-VM-03-ART/" class="article-date">
+	  <time datetime="2020-11-05T17:16:35.000Z" itemprop="datePublished">2020-11-06</time>
 	</a>
 </span>
         
         
   <span class="article-tag">
     <i class="icon icon-tags"></i>
-	<a class="article-tag-link" href="/tags/ubuntu/">ubuntu</a>
+	<a class="article-tag-link" href="/tags/ART/">ART</a>, <a class="article-tag-link" href="/tags/Android-VM/">Android VM</a>
   </span>
 
 
         
 
-        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2017/12/25/Ubantu_bugs/#comments" class="article-comment-link">Comments</a></span>
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2020/11/06/Android-VM-03-ART/#comments" class="article-comment-link">Comments</a></span>
         
       </div>
     </div>
     <div class="article-entry marked-body" itemprop="articleBody">
       
-        <h3 id="1-装机后，无法连接wifi"><a href="#1-装机后，无法连接wifi" class="headerlink" title="1.装机后，无法连接wifi."></a>1.装机后，无法连接wifi.</h3><p>因为ubantu系统没有识别到无线网卡，需要在“设置”——“附加驱动”中 勾选Broadcom。</p>
-<p><img src="http://upload-images.jianshu.io/upload_images/1984280-c4b305cbcc3799c1.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="微信图片_20170927110623.jpg"></p>
-<p>无法连接wifi.因为ubantu系统没有识别到无线网卡，需要在“设置”——“附加驱动”中 勾选Broadcom。</p>
-<p>#如果还不行，尝试禁用secure boot<br><a href="http://forum.ubuntu.org.cn/viewtopic.php?f=48&amp;t=477854" target="_blank" rel="noopener">Ubuntu 16.04 禁用 Secure boot 问题</a></p>
-<p>我的密码是装系统的时候设置的，该密码并不是每次开机的要输入的密码。</p>
-<h3 id="2-apt-get-update-无法执行"><a href="#2-apt-get-update-无法执行" class="headerlink" title="2.apt-get update 无法执行"></a>2.apt-get update 无法执行</h3><pre><code>E: Problem executing scripts APT::Update::Post-Invoke-Success
-&apos;if /usr/bin/test -w /var/cache/app-info -a -e /usr/bin/appstreamcli;
- then appstreamcli refresh &gt; /dev/null;
- fi&apos;
-E: Sub-process returned an error code
-</code></pre><p>在运行sudo apt-get update时出现如上信息，解决方法如下：</p>
-<pre><code>sudo pkill -KILL appstreamcli
-
-wget -P /tmp https://launchpad.net/ubuntu/+archive/primary/+files/appstream_0.9.4-1ubuntu1_amd64.deb https://launchpad.net/ubuntu/+archive/primary/+files/libappstream3_0.9.4-1ubuntu1_amd64.deb
-
-sudo dpkg -i /tmp/appstream_0.9.4-1ubuntu1_amd64.deb /tmp/libappstream3_0.9.4-1ubuntu1_amd64.deb
-</code></pre><p>执行完上述命令之后再次运行sudo apt-get update就不会再出现上面的错误。</p>
-<p>#####特别注意这一步需要翻墙<br><a href="http://www.cnblogs.com/EasonJim/p/7343892.html" target="_blank" rel="noopener"><a href="http://www.cnblogs.com/EasonJim/p/7343892.html" target="_blank" rel="noopener">Ubuntu 16.04出现：Problem executing scripts APT::Update::Post-Invoke-Success ‘if /usr/bin/test -w /var/cache/app-info -a -e /usr/bin/appstreamcli; then appstreamcli refresh &gt; /dev/null; fi’</a></a></p>
-<h3 id="3-安装ssh"><a href="#3-安装ssh" class="headerlink" title="3.安装ssh"></a>3.安装ssh</h3><p>判断是否安装ssh服务，可以通过如下命令进行：</p>
-<pre><code>ps -e|grep ssh
-</code></pre><p>ssh-agent表示ssh-client启动，sshd表示ssh-server启动了。</p>
-<pre><code> 输出如下：
-root@tracyliu:~$ ps -e|grep ssh
- 2151 ?        00:00:00 ssh-agent
- 5313 ?        00:00:00 sshd
-</code></pre><p>如果缺少sshd，说明ssh服务没有启动或者没有安装。</p>
-<p>安装ssh-client命令：</p>
-<pre><code>sudo apt-get install openssh-client
-</code></pre><p>安装ssh-server命令：</p>
-<pre><code>sudo apt-get install openssh-server
-</code></pre><p>安装完成以后，先启动服务：</p>
-<pre><code>sudo /etc/init.d/ssh start
-</code></pre><p>启动后，可以通过“ps -e|grep ssh”查看是否正确启动。</p>
-<p>ssh服务默认的端口是22，可以更改端口，使用如下命令打开ssh配置文件：</p>
-<pre><code>sudo gedit /etc/ssh/sshd_config
-</code></pre><p>配置文件内容如下：</p>
-<pre><code># Package generated configuration file   
-# See the sshd(8) manpage for details   
-# What ports, IPs and protocols we listen for  
-Port 22
-# Package generated configuration file
-# See the sshd(8) manpage for details
-# What ports, IPs and protocols we listen for
-</code></pre><p>修改端口号（Port）后，重启ssh服务即可生效，命令如下：</p>
-<pre><code>sudo /etc/init.d/ssh restart
-</code></pre><p>ssh服务启动后，即可登陆，登陆命令格式为：ssh 帐号@IP地址<br>例如：ssh test@192.168.135.249<br>根据提示输入test的密码，即可远程登陆。</p>
-<h3 id="4-安装samba"><a href="#4-安装samba" class="headerlink" title="4.安装samba"></a>4.安装samba</h3><p> <a href="http://www.jianshu.com/p/c4579605a737" target="_blank" rel="noopener">Ubuntu下配置Samba服务器</a><br><a href="http://blog.csdn.net/u011091632/article/details/21887385" target="_blank" rel="noopener"> <a href="http://blog.csdn.net/u011091632/article/details/21887385" target="_blank" rel="noopener">ubuntu下samba服务器配置</a></a></p>
+        <h3 id="1-ART的改进"><a href="#1-ART的改进" class="headerlink" title="1.ART的改进"></a>1.ART的改进</h3><h4 id="1-1-AOT编译："><a href="#1-1-AOT编译：" class="headerlink" title="1.1 AOT编译："></a>1.1 AOT编译：</h4><p>Ahead-of-time（AOT）是相对于Just-in-time（JIT）而言的。JIT是在运行时进行字节码到本地机器码的编译，这也是为什么Java普遍被认为效率比C++差的原因。无论是解释器的解释还是运行过程中即时编译，都比C++编译出的本地机器码执行多了一个耗费时间的过程。而AOT就是向C++编译过程靠拢的一项技术：当APK在安装的时候，系统会通过一个名称为dex2oat的工具将APK中的dex文件编译成包含本地机器码的oat文件存放下来。这样做之后，在程序执行的时候，就可以直接使用已经编译好的机器码以加快效率。</p>
+<h4 id="1-2垃圾回收的改进："><a href="#1-2垃圾回收的改进：" class="headerlink" title="1.2垃圾回收的改进："></a>1.2垃圾回收的改进：</h4><p>GC（Garbage Collection）是虚拟机非常重要的一个特性，因为它的实现好坏会影响所有在虚拟机上运行的应用。GC实现得不好可能会导致画面跳跃，掉帧，UI响应过慢等问题。</p>
+<h5 id="ART的垃圾回收机制相较于Dalvik虚拟机有如下改进："><a href="#ART的垃圾回收机制相较于Dalvik虚拟机有如下改进：" class="headerlink" title="ART的垃圾回收机制相较于Dalvik虚拟机有如下改进："></a>ART的垃圾回收机制相较于Dalvik虚拟机有如下改进：</h5><ul>
+<li>将GC的停顿由2次改成1次</li>
+<li>在仅有一次的GC停顿中进行并行处理</li>
+<li>在特殊场景下，对于近期创建的具有较短生命的对象消耗更少的时间进行垃圾回收</li>
+<li>改进垃圾收集的工效，更频繁的执行并行垃圾收集</li>
+<li>对于后台进程的内存在垃圾回收过程进行压缩以解决碎片化的问题</li>
+</ul>
+<p>AOT编译是在应用程序安装时就进行的工作，下图描述了Dalvik虚拟机与（Android 5.0上的）ART虚拟机在安装APK时的区别：</p>
+<p><img src="http://qiangbo-workspace.oss-cn-shanghai.aliyuncs.com/AndroidNewFeatureBook/Chapter3/art_vs_dalvik.png" alt="image"></p>
+<p>两种虚拟机上安装APK时的流程</p>
+<p>从这幅图中我们看到：</p>
+<ul>
+<li><p>在Dalvik虚拟机上，APK中的Dex文件在安装时会被优化成odex文件，在运行时，会被JIT编译器编译成native代码。</p>
+</li>
+<li><p>而在ART虚拟机上安装时，Dex文件会直接由dex2oat工具翻译成oat格式的文件，oat文件中既包含了dex文件中原先的内容，也包含了已经编译好的native代码。</p>
+</li>
+</ul>
+<p>dex2oat生成的oat文件在设备上位于/data/dalvik-cache/目录下。同时，由于32位和64位的机器码有所区别，因此这个目录下还会通过子文件夹对oat文件进行分类。例如，手机上通常会有下面两个目录：</p>
+<ul>
+<li>/data/dalvik-cache/arm/</li>
+<li>/data/dalvik-cache/arm64/</li>
+</ul>
+<h3 id="2-ART虚拟机垃圾回收概述"><a href="#2-ART虚拟机垃圾回收概述" class="headerlink" title="2. ART虚拟机垃圾回收概述"></a>2. ART虚拟机垃圾回收概述</h3><p>ART 有多个不同的 GC 方案，这些方案包括运行不同垃圾回收器。默认方案是 CMS（Concurrent Mark Sweep，并发标记清除）方案，主要使用粘性（sticky）CMS 和部分（partial）CMS。粘性CMS是ART的不移动（non-moving ）分代垃圾回收器。它仅扫描堆中自上次 GC 后修改的部分，并且只能回收自上次GC后分配的对象。除CMS方案外，当应用将进程状态更改为察觉不到卡顿的进程状态（例如，后台或缓存）时，ART 将执行堆压缩。</p>
+<p>除了新的垃圾回收器之外，ART 还引入了一种基于位图的新内存分配程序，称为 RosAlloc（插槽运行分配器）。此新分配器具有分片锁，当分配规模较小时可添加线程的本地缓冲区，因而性能优于 DlMalloc。</p>
+<p>与 Dalvik 相比，ART CMS垃圾回收计划在很多方面都有一定的改善：</p>
+<ul>
+<li>与Dalvik相比，暂停次数2次减少到1次。Dalvik的第一次暂停主要是为了进行根标记。而在ART中，标记过程是并发进行的，它让线程标记自己的根，然后马上就恢复运行。</li>
+<li>与Dalvik类似，ART GC在清除过程开始之前也会暂停1次。两者在这方面的主要差异在于：在此暂停期间，某些Dalvik的处理阶段在ART中以并发的方式进行。这些阶段包括 java.lang.ref.Reference处理、系统弱引用清除（例如，jni全局弱引用等）、重新标记非线程根和卡片预清理。在ART暂停期间仍进行的阶段包括扫描脏卡片以及重新标记线程根，这些操作有助于缩短暂停时间。</li>
+<li>相对于Dalvik，ART GC改进的最后一个方面是粘性 CMS回收器增加了GC吞吐量。不同于普通的分代GC，粘性 CMS 不会移动。年轻对象被保存在一个分配堆栈（基本上是 java.lang. Object 数组）中，而非为其设置一个专用区域。这样可以避免移动所需的对象以维持低暂停次数，但缺点是容易在堆栈中加入大量复杂对象图像而使堆栈变长。</li>
+</ul>
+<p>ART GC 与 Dalvik 的另一个主要区别在于，ART GC 引入了移动垃圾回收器。使用移动 GC 的目的在于通过堆压缩来减少后台应用的内存用量。目前，堆压缩由 ActivityManager 进程状态变化来触发。当应用转到后台运行时，它会通知 ART 已进入不再“感知”卡顿的进程状态。这样可让 ART 执行一些会导致应用线程长时间暂停的操作，如压缩和监控器紧缩。目前正在使用的两个移动GC是同构空间压缩（Homogeneous Space Compact）和半空间（Semispace Compact）压缩。</p>
+<ul>
+<li><p>半空间压缩将对象在两个紧密排列的碰撞指针空间之间进行移动。这种移动 GC 适用于小内存设备，因为它可以比同构空间压缩稍微多节省一点内存。额外节省出的空间主要来自紧密排列的对象，这样可以避免 RosAlloc/DlMalloc 分配器占用开销。由于 CMS 仍在前台使用，且不能从碰撞指针空间中进行收集，因此当应用在前台使用时，半空间还要再进行一次转换。这种情况并不理想，因为它可能引起较长时间的暂停。</p>
+</li>
+<li><p>同构空间压缩通过将对象从一个 RosAlloc 空间复制到另一个 RosAlloc 空间来实现。这有助于通过减少堆碎片来减少内存使用量。这是目前非低内存设备的默认压缩模式。相比半空间压缩，同构空间压缩的主要优势在于应用从后台切换到前台时无需进行堆转换。</p>
+</li>
+</ul>
+<h3 id="3-ART-GC-REASON"><a href="#3-ART-GC-REASON" class="headerlink" title="3. ART GC REASON"></a>3. ART GC REASON</h3><p>在ART虚拟机中，很多场景都会触发垃圾回收的执行。ART代码中通过GcCause这个枚举进行描述，包括下面这些事件：</p>
+<table>
+<thead>
+<tr>
+<th>常量</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>kGcCauseForAlloc</td>
+<td>当要分配内存的时候发现内存不够的情况下引起的GC，这种情况下的GC会Stop World.由于是并发GC，其它线程都会停止，直到GC完成。</td>
+</tr>
+<tr>
+<td>kGcCauseBackground</td>
+<td>当内存达到一定的阀值的时候会去出发GC，这个时候是一个后台GC，不会引起Stop World</td>
+</tr>
+<tr>
+<td>kGcCauseExplicit</td>
+<td>显示调用的时候进行的gc，如果ART打开了这个选项的情况下，在system.gc的时候会进行GC.</td>
+</tr>
+<tr>
+<td>kGcCauseForNativeAlloc</td>
+<td>由于native的内存分配</td>
+</tr>
+<tr>
+<td>kGcCauseCollectorTransition</td>
+<td>垃圾收集器发生了切换</td>
+</tr>
+<tr>
+<td>kGcCauseHomogeneousSpaceCompact</td>
+<td>当前景和后台收集器都是CMS时，发生了后台切换</td>
+</tr>
+<tr>
+<td>kGcCauseClassLinker</td>
+<td>ClassLinker导致</td>
+</tr>
+</tbody>
+</table>
+<p>另外，垃圾回收策略有三种类型：</p>
+<ul>
+<li>Sticky 仅仅释放上次GC之后创建的对象</li>
+<li>Partial 仅仅对应用程序的堆进行垃圾回收，但是不处理Zygote的堆</li>
+<li>Full 会对应用程序和Zygote的堆都会进行垃圾回收</li>
+</ul>
+<p>快速GC策略Sticky GC：Sticky Mark sweep只扫描自从上次GC后被修改过的堆空间，并且也只回收自从上次GC后分配的空间。Sticky是只回收kGcRetentionPolicyAlwaysCollect的space。不回收其他两个，因此sticky的回收的力度是最小的。作为最全面的full mark sweep, 上面的三个策略都是会回收的。</p>
+<p>局部GC策略Partial GC:这是mark sweep收集器里使用的最少的GC收集策略。按照官方文档，一般是使用sticky mark sweep较多。这里有一个概念就是吞吐率，即一次GC释放的字节数和GC持续的时间（秒）的比值。由于一般是sticky mark sweep进行GC，所以当上次GC的吞吐率小于同时的partial mark sweep的吞吐率时，就会把下次GC收集器从sticky变成partial。但是在partial执行一次GC后，就仍然会恢复到stick mark sweep收集器。阅读源码发现，partial重写了父类的成员函数。</p>
+<p>全局GC策略Full GC:对整个堆进行垃圾回收，除了image空间。</p>
+<h3 id="4-Dalvik-and-Art-运行时堆"><a href="#4-Dalvik-and-Art-运行时堆" class="headerlink" title="4. Dalvik and Art 运行时堆"></a>4. Dalvik and Art 运行时堆</h3><p>不管是Dlavik还是ART，运行时堆都分为LinearAlloc（类似于ART的Non Moving Space）、Zygote Space和Alloc Space。</p>
+<p>Dalvik中的Linear Alloc是一个线性内存空间，是一个只读区域，主要用来存储虚拟机中的类，因为类加载后只需要读的属性，并且不会改变它。把这些只读属性以及在整个进程的生命周期都不能结束的永久数据放到线性分配器中管理，能很好地减少堆混乱和GC扫描，提升内存管理的性能。</p>
+<p>Android系统的第一个虚拟机由Zygote进程创建并且只有一个Zygote<br>Space。但是当Zygote进程在fork第一个应用程序进程之前，会将已经使用的那部分堆内存划分为一部分，还没有使用的堆内存划分为另一部分，也就是Allocation Space。但无论是应用程序进程，还是Zygote进程，当他们需要分配对象时，都是在各自的Allocation Space堆上进行。</p>
+<h5 id="Dalvik"><a href="#Dalvik" class="headerlink" title="Dalvik"></a>Dalvik</h5><ul>
+<li>Linear Alloc</li>
+<li>Zygote Space   Zygote进程和应用程序进程之间共享</li>
+<li>Alloc Space  Allocation Space每个进程独占</li>
+</ul>
+<h5 id="ART"><a href="#ART" class="headerlink" title="ART"></a>ART</h5><ul>
+<li>Non Moving Space</li>
+<li>Zygote Space</li>
+<li>Alloc Space</li>
+<li>Image Space 存放一些预加载类，类似于Dalvik中的Linear Alloc。与Zygote Space一样，在Zygote进程和应用程序进程之间共享</li>
+<li>Large Obj Space  离散地址的集合，分配一些大对象，用于提高GC的管理效率和整体性能。</li>
+</ul>
+<p>注意：Image Space的对象只创建一次，而Zygote Space的对象需要在系统每次启动时，根据运行情况都重新创建一遍。</p>
+<hr>
+<p><a href="https://paul.pub/android-art-vm/" target="_blank" rel="noopener">Android上的ART虚拟机</a></p>
+<p><a href="https://cruise1008.github.io/2016/03/30/Android-GC-%E4%BB%8Edalvik%E5%88%B0ART%E7%9A%84%E6%94%B9%E8%BF%9B%E5%88%86%E6%9E%90/" target="_blank" rel="noopener">Android GC 从dalvik到ART的改进分析</a></p>
+<p><a href="https://source.android.google.cn/devices/tech/dalvik/gc-debug?hl=zh-cn" target="_blank" rel="noopener">调试 ART 垃圾回收</a></p>
 
       
     </div>
@@ -426,7 +486,7 @@ Port 22
     
     <li class="post-copyright-link hidden-xs">
       <strong>本文链接：</strong>
-      <a href="http://yoursite.com/2017/12/25/Ubantu_bugs/" title="Ubantu16.04踩坑小记（没有wifi，无法apt update）" target="_blank" rel="external">http://yoursite.com/2017/12/25/Ubantu_bugs/</a>
+      <a href="http://yoursite.com/2020/11/06/Android-VM-03-ART/" title="Android VM 03.ART" target="_blank" rel="external">http://yoursite.com/2020/11/06/Android-VM-03-ART/</a>
     </li>
     
     <li class="post-copyright-license">
@@ -472,10 +532,10 @@ Port 22
   
   <ul class="pager pull-left">
     
-    <li class="prev">
-      <a href="/2018/01/29/Activity-LifeCycle-and-Launch-Mode/" title="艺术探索—一、Activity的生命周期全面分析"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;Newer</span></a>
-    </li>
     
+    <li class="next">
+      <a href="/2020/11/05/tracyliu-resume/" title="我的简历"><span>Older&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
     
     
   </ul>
