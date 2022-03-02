@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000" />
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top" />
+  
+  
+  <title>AMS中内存回收的一些操作 | Hexo</title>
+  <meta name="description" content="AMS 内存回收1.内存回收当 Android 应用程序退出时，并不清理其所占用的内存，Linux 内核进程也相应的继续存在，所谓“退出但不关闭”。从而使得用户调用程序时能够在第一时间得到响应。 当系统内存不足时，系统将激活内存回收过程。为了不因内存回收影响用户体验（如杀死当前的活动进程）， Android 基于进程中运行的组件及其状态规定了默认的五个回收优先级： IMPORTANCE_FOREG">
+<meta name="keywords" content="AMS,GC">
+<meta property="og:type" content="article">
+<meta property="og:title" content="AMS中内存回收的一些操作">
+<meta property="og:url" content="http://yoursite.com/2022/03/02/AMS-GC/index.html">
+<meta property="og:site_name" content="tracyliu">
+<meta property="og:description" content="AMS 内存回收1.内存回收当 Android 应用程序退出时，并不清理其所占用的内存，Linux 内核进程也相应的继续存在，所谓“退出但不关闭”。从而使得用户调用程序时能够在第一时间得到响应。 当系统内存不足时，系统将激活内存回收过程。为了不因内存回收影响用户体验（如杀死当前的活动进程）， Android 基于进程中运行的组件及其状态规定了默认的五个回收优先级： IMPORTANCE_FOREG">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2022-03-02T08:42:15.709Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="AMS中内存回收的一些操作">
+<meta name="twitter:description" content="AMS 内存回收1.内存回收当 Android 应用程序退出时，并不清理其所占用的内存，Linux 内核进程也相应的继续存在，所谓“退出但不关闭”。从而使得用户调用程序时能够在第一时间得到响应。 当系统内存不足时，系统将激活内存回收过程。为了不因内存回收影响用户体验（如杀死当前的活动进程）， Android 基于进程中运行的组件及其状态规定了默认的五个回收优先级： IMPORTANCE_FOREG">
+  <!-- Canonical links -->
+  <link rel="canonical" href="http://yoursite.com/2022/03/02/AMS-GC/index.html">
+  
+    <link rel="alternate" href="/atom.xml" title="tracyliu" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png" type="image/x-icon">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+  
+  
+  
+</head>
+
+
+<body class="main-center" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://github.com/tracyliu1" target="_blank">
+          <img class="img-circle img-rotate" src="/images/avatar.jpg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">Tracyliu</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">Android App &amp; Android Framework</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> Beijing, China</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="Search" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="Type something..." x-webkit-speech />
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">Home</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">Archives</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">Categories</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">Tags</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-repository">
+          <a href="/repository">
+            
+            <i class="icon icon-project"></i>
+            
+            <span class="menu-title">Repository</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-books">
+          <a href="/books">
+            
+            <i class="icon icon-book-fill"></i>
+            
+            <span class="menu-title">Books</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-links">
+          <a href="/links">
+            
+            <i class="icon icon-friendship"></i>
+            
+            <span class="menu-title">Links</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about">
+            
+            <i class="icon icon-cup-fill"></i>
+            
+            <span class="menu-title">About</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/tracyliu1" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">Board</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <p>急迫寻求工作!</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget-body">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AMS/">AMS</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ART/">ART</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AV/">AV</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android-VM/">Android VM</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android开发艺术探索/">Android开发艺术探索</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android调试/">Android调试</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Dalvik/">Dalvik</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GC/">GC</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Gradle/">Gradle</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PowerManagerService/">PowerManagerService</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/framework/">framework</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/leakcanary/">leakcanary</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ubuntu/">ubuntu</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/音视频/">音视频</a><span class="tag-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget-body tagcloud">
+      <a href="/tags/AMS/" style="font-size: 13px;">AMS</a> <a href="/tags/ART/" style="font-size: 13px;">ART</a> <a href="/tags/AV/" style="font-size: 13px;">AV</a> <a href="/tags/Android-VM/" style="font-size: 14px;">Android VM</a> <a href="/tags/Android开发艺术探索/" style="font-size: 13px;">Android开发艺术探索</a> <a href="/tags/Android调试/" style="font-size: 13px;">Android调试</a> <a href="/tags/Dalvik/" style="font-size: 13px;">Dalvik</a> <a href="/tags/GC/" style="font-size: 13px;">GC</a> <a href="/tags/Gradle/" style="font-size: 13px;">Gradle</a> <a href="/tags/PowerManagerService/" style="font-size: 13px;">PowerManagerService</a> <a href="/tags/framework/" style="font-size: 13.5px;">framework</a> <a href="/tags/leakcanary/" style="font-size: 13.5px;">leakcanary</a> <a href="/tags/ubuntu/" style="font-size: 13px;">ubuntu</a> <a href="/tags/音视频/" style="font-size: 13px;">音视频</a>
+    </div>
+  </div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Archive</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/03/">March 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">November 2020</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">July 2020</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">May 2020</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a><span class="archive-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2022/03/02/AMS-GC/" class="title">AMS中内存回收的一些操作</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2022-03-02T08:40:15.000Z" itemprop="datePublished">2022-03-02</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2020/11/06/Android-VM-03-ART/" class="title">Android VM 03.ART</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-11-05T17:16:35.000Z" itemprop="datePublished">2020-11-06</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2020/11/05/tracyliu-resume/" class="title">我的简历</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-11-05T08:38:08.000Z" itemprop="datePublished">2020-11-05</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2020/11/05/auto-brightness-control-Android/" class="title">Android7.0自动亮度调节分析</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-11-05T08:31:58.000Z" itemprop="datePublished">2020-11-05</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2020/07/15/Android-VM-02-Dalvik/" class="title">Android VM 02.Davilk 启动 内存 GC</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-07-15T14:52:44.000Z" itemprop="datePublished">2020-07-15</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-AMS-GC" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      AMS中内存回收的一些操作
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2022/03/02/AMS-GC/" class="article-date">
+	  <time datetime="2022-03-02T08:40:15.000Z" itemprop="datePublished">2022-03-02</time>
+	</a>
+</span>
+        
+        
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link" href="/tags/AMS/">AMS</a>, <a class="article-tag-link" href="/tags/GC/">GC</a>
+  </span>
+
+
+        
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2022/03/02/AMS-GC/#comments" class="article-comment-link">Comments</a></span>
+        
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <h2 id="AMS-内存回收"><a href="#AMS-内存回收" class="headerlink" title="AMS 内存回收"></a>AMS 内存回收</h2><h3 id="1-内存回收"><a href="#1-内存回收" class="headerlink" title="1.内存回收"></a>1.内存回收</h3><p>当 Android 应用程序退出时，并不清理其所占用的内存，Linux 内核进程也相应的继续存在，所谓“退出但不关闭”。从而使得用户调用程序时能够在第一时间得到响应。</p>
+<p>当系统内存不足时，系统将激活内存回收过程。为了不因内存回收影响用户体验（如杀死当前的活动进程），</p>
+<h4 id="Android-基于进程中运行的组件及其状态规定了默认的五个回收优先级："><a href="#Android-基于进程中运行的组件及其状态规定了默认的五个回收优先级：" class="headerlink" title="Android 基于进程中运行的组件及其状态规定了默认的五个回收优先级："></a>Android 基于进程中运行的组件及其状态规定了默认的五个回收优先级：</h4><ul>
+<li><p>IMPORTANCE_FOREGROUND:</p>
+</li>
+<li><p>IMPORTANCE_VISIBLE:</p>
+</li>
+<li><p>IMPORTANCE_SERVICE:</p>
+</li>
+<li><p>IMPORTANCE_BACKGROUND；</p>
+</li>
+<li><p>IMPORTANCE_EMPTY:</p>
+<h4 id="ActivityManagerService-中涉及到内存回收的几个重要的成员方法如下："><a href="#ActivityManagerService-中涉及到内存回收的几个重要的成员方法如下：" class="headerlink" title="ActivityManagerService 中涉及到内存回收的几个重要的成员方法如下："></a>ActivityManagerService 中涉及到内存回收的几个重要的成员方法如下：</h4></li>
+<li><p>activityIdleInternal() </p>
+</li>
+<li><p>trimApplications()</p>
+</li>
+<li><p>updateOomAdjLocked()</p>
+<p>这几个成员方法主要负责 Android 默认的内存回收机制，若 Linux 内核中的内存回收机制没有被禁用，则跳过默认回收。</p>
+</li>
+</ul>
+<h3 id="2-流程分析"><a href="#2-流程分析" class="headerlink" title="2.流程分析"></a>2.流程分析</h3><h4 id="2-1-回收动作入口：ActivityStackSupervisor-activityIdleInternalLocked"><a href="#2-1-回收动作入口：ActivityStackSupervisor-activityIdleInternalLocked" class="headerlink" title="2.1 回收动作入口：ActivityStackSupervisor:activityIdleInternalLocked"></a>2.1 回收动作入口：ActivityStackSupervisor:activityIdleInternalLocked</h4><h5 id="Android-系统中内存回收的触发点大致可分为三种情况："><a href="#Android-系统中内存回收的触发点大致可分为三种情况：" class="headerlink" title="Android 系统中内存回收的触发点大致可分为三种情况："></a>Android 系统中内存回收的触发点大致可分为三种情况：</h5><ol>
+<li>用户程序调用 StartActivity(), 使当前活动的 Activity 被覆盖；  在ActivityThread的handleResumeActivity中在looper中加入一个Idler，idler内部调用AMS中activityIdleInternal()</li>
+<li>用户按 back 键，退出当前应用程序；对应在AMS removeStask()等一些列调用</li>
+<li>启动一个新的应用程序。这些能够触发内存回收的事件最终调用的函数接口就是 activityIdleInternal()。</li>
+</ol>
+<p>当 ActivityStackSupervisor接收到异步消息 IDLE_TIMEOUT_MSG 或者 IDLE_NOW_MSG 时，activityIdleInternal() 将会被调用。代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">case</span> IDLE_NOW_MSG: &#123;</span><br><span class="line">    activityIdleInternal((ActivityRecord)msg.obj);</span><br><span class="line">&#125; <span class="keyword">break</span>;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">case</span> IDLE_TIMEOUT_MSG: &#123;</span><br><span class="line">    activityIdleInternal((ActivityRecord)msg.obj);</span><br><span class="line">&#125; <span class="keyword">break</span>;</span><br></pre></td></tr></table></figure>
+<p>IDLE_NOW_MSG 由 Activity 的切换以及 Activiy 焦点的改变等事件引发，IDLE_TIMEOUT_MS在 Activity 启动超时的情况下引发，一般这个超时时间设为 10s，如果 10s 之内一个 Activity 依然没有成功启动，那么将发送异步消息 IDLE_TIMEOUT_MSG 进行资源回收。</p>
+<p>activityIdleInternal() 的主要任务是改变系统中 Activity 的状态信息，并将其添加到不同状态列表中。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">final</span> ActivityRecord  <span class="title">activityIdleInternalLocked</span><span class="params">(<span class="keyword">final</span> IBinder token, <span class="keyword">boolean</span> fromTimeout,</span></span></span><br><span class="line"><span class="function"><span class="params">        Configuration config)</span> </span>&#123;</span><br><span class="line"> </span><br><span class="line">    ActivityRecord r = ActivityRecord.forTokenLocked(token);  </span><br><span class="line">    <span class="keyword">if</span> (allResumedActivitiesIdle()) &#123;</span><br><span class="line">            <span class="keyword">if</span> (r != <span class="keyword">null</span>) &#123;</span><br><span class="line">                mService.scheduleAppGcsLocked();  <span class="comment">//scheduleAppGcsLocked       </span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">		<span class="comment">//处理需要finish的Activity</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; NF; i++) &#123;</span><br><span class="line">        r = finishes.get(i);</span><br><span class="line">        <span class="keyword">final</span> ActivityStack stack = r.task.stack;</span><br><span class="line">        <span class="keyword">if</span> (stack != <span class="keyword">null</span>) &#123;<span class="comment">//</span></span><br><span class="line">            activityRemoved |= stack.destroyActivityLocked(r, <span class="keyword">true</span>, <span class="string">"finish-idle"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    mService.trimApplications(); <span class="comment">//实际处理内存 trimApplications 最终会调到udateOomAdjLocked</span></span><br><span class="line">    <span class="keyword">if</span> (activityRemoved) &#123;</span><br><span class="line">        resumeFocusedStackTopActivityLocked();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> r;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>ActivityStackSupervisor：activityIdleInternalLocked其主要工作如下：</p>
+<p>调用 scheduleAppGcsLocked() 方法通知所有进行中的任务进行垃圾回收。scheduleAppGcsLocked() 将进行调度 JVM 的 garbage collect，回收一部分内存空间，这里仅仅是通知每个进程自行进程垃圾检查并调度回收时间，而非同步回收。处理需要finish 和需要stop的Activity 对应NS NF。</p>
+<h4 id="scheduleAppGcsLocked-该方法分别在以下情况被调用"><a href="#scheduleAppGcsLocked-该方法分别在以下情况被调用" class="headerlink" title="scheduleAppGcsLocked 该方法分别在以下情况被调用"></a>scheduleAppGcsLocked 该方法分别在以下情况被调用</h4><ul>
+<li><p>ActivityStackSupervisor：activityIdleInternalLocked每次会调用scheduleAppGcsLocked；</p>
+</li>
+<li><p>AMS：doLowMemReportIfNeededLocked lowmemory时候</p>
+</li>
+<li><p>ActivityRecord：windowsVisibleLocked  window可见变化</p>
+</li>
+<li>BroadcastQueue：processNextBroadcast 处理完广播 size = 0</li>
+</ul>
+<h4 id="调用scheduleAppGcsLocked流程-最终走向-ActivityThread-handleLowMemory-调用各级onLowMemory-，以及AT中的GCIdler。"><a href="#调用scheduleAppGcsLocked流程-最终走向-ActivityThread-handleLowMemory-调用各级onLowMemory-，以及AT中的GCIdler。" class="headerlink" title="调用scheduleAppGcsLocked流程 最终走向 ActivityThread handleLowMemory()调用各级onLowMemory()，以及AT中的GCIdler。"></a>调用scheduleAppGcsLocked流程 最终走向 ActivityThread handleLowMemory()调用各级onLowMemory()，以及AT中的GCIdler。</h4><p>判断mProcessesToGc数量大于0，发送GC_BACKGROUND_PROCESSES_MSG</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">final</span> <span class="keyword">void</span> <span class="title">scheduleAppGcsLocked</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (mProcessesToGc.size() &gt; <span class="number">0</span>) &#123;</span><br><span class="line">        ProcessRecord proc = mProcessesToGc.get(<span class="number">0</span>);</span><br><span class="line">      <span class="comment">//判断mProcessesToGc数量大于0，发送GC_BACKGROUND_PROCESSES_MSG</span></span><br><span class="line">        Message msg = mHandler.obtainMessage(GC_BACKGROUND_PROCESSES_MSG);</span><br><span class="line">        <span class="keyword">long</span> when = proc.lastRequestedGc + GC_MIN_INTERVAL;</span><br><span class="line">        <span class="keyword">long</span> now = SystemClock.uptimeMillis();</span><br><span class="line">        <span class="keyword">if</span> (when &lt; (now+GC_TIMEOUT)) &#123;</span><br><span class="line">            when = now + GC_TIMEOUT;</span><br><span class="line">        &#125;</span><br><span class="line">        mHandler.sendMessageAtTime(msg, when);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">final</span> <span class="keyword">void</span> <span class="title">performAppGcsIfAppropriateLocked</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (canGcNowLocked()) &#123; <span class="comment">//判断是否可以GC，根据广播 sleep 等判断</span></span><br><span class="line">        performAppGcsLocked();</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// Still not idle, wait some more.</span></span><br><span class="line">    scheduleAppGcsLocked();  <span class="comment">//不可以则等待</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>performAppGcsLocked()，根据时间判断当前时间和上次时间+GC默认间隔做判断</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">final</span> <span class="keyword">void</span> <span class="title">performAppGcsLocked</span><span class="params">()</span> </span>&#123; </span><br><span class="line">      <span class="keyword">if</span> (canGcNowLocked()) &#123;</span><br><span class="line">          <span class="keyword">while</span> (mProcessesToGc.size() &gt; <span class="number">0</span>) &#123;</span><br><span class="line">              ProcessRecord proc = mProcessesToGc.remove(<span class="number">0</span>);</span><br><span class="line">              <span class="keyword">if</span> (proc.curRawAdj &gt; ProcessList.PERCEPTIBLE_APP_ADJ || proc.reportLowMemory)&#123;</span><br><span class="line">              <span class="comment">//如果上次GC时间 + 最小GC间隔 小于等于 现在时间</span></span><br><span class="line">                  <span class="keyword">if</span> ((proc.lastRequestedGc+GC_MIN_INTERVAL)&lt;= SystemClock.uptimeMillis()) &#123;</span><br><span class="line">                      <span class="comment">// To avoid spamming the system, we will GC processes one</span></span><br><span class="line">                      <span class="comment">// at a time, waiting a few seconds between each.</span></span><br><span class="line">                      performAppGcLocked(proc); <span class="comment">//准备GC 这里最终会调到AT中的GCIdler</span></span><br><span class="line">                      scheduleAppGcsLocked();<span class="comment">//等待</span></span><br><span class="line">                      <span class="keyword">return</span>;</span><br><span class="line">                  &#125;</span><br><span class="line">              &#125;</span><br><span class="line">          &#125;</span><br><span class="line">      &#125;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+<p>performAppGcLocked中会判断当前进程是否LowMemory，如果是则会走ActivityThread handleLowMemory() ,否则对应ActivityThread中scheduleGcIdler()</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">final</span> <span class="keyword">void</span> <span class="title">performAppGcLocked</span><span class="params">(ProcessRecord app)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        app.lastRequestedGc = SystemClock.uptimeMillis();</span><br><span class="line">        <span class="keyword">if</span> (app.thread != <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">if</span> (app.reportLowMemory) &#123;</span><br><span class="line">                app.reportLowMemory = <span class="keyword">false</span>;</span><br><span class="line">                app.thread.scheduleLowMemory();   <span class="comment">//ActivityThread的 handleLowMemory()            </span></span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                app.thread.processInBackground(); </span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="AT-handleLowMemory-最终调用到各级执行onLowMemory回调"><a href="#AT-handleLowMemory-最终调用到各级执行onLowMemory回调" class="headerlink" title="AT#handleLowMemory()  最终调用到各级执行onLowMemory回调"></a>AT#handleLowMemory()  最终调用到各级执行onLowMemory回调</h5><p>处理了各级onLowMemory的回调，释放非system的sqlite 释放service，调用GC</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">final</span> <span class="keyword">void</span> <span class="title">handleLowMemory</span><span class="params">()</span> </span>&#123;</span><br><span class="line">     ArrayList&lt;ComponentCallbacks2&gt; callbacks = collectComponentCallbacks(<span class="keyword">true</span>, <span class="keyword">null</span>);</span><br><span class="line">     <span class="keyword">final</span> <span class="keyword">int</span> N = callbacks.size();</span><br><span class="line">     <span class="keyword">for</span> (<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;N; i++) &#123;</span><br><span class="line">         callbacks.get(i).onLowMemory();<span class="comment">//各级执行onLowMemory回调</span></span><br><span class="line">     &#125;</span><br><span class="line">     <span class="comment">// Ask SQLite to free up as much memory as it can, mostly from its page caches.</span></span><br><span class="line">     <span class="keyword">if</span> (Process.myUid() != Process.SYSTEM_UID) &#123; <span class="comment">//释放sqlite</span></span><br><span class="line">         <span class="keyword">int</span> sqliteReleased = SQLiteDatabase.releaseMemory();</span><br><span class="line">         EventLog.writeEvent(SQLITE_MEM_RELEASED_EVENT_LOG_TAG, sqliteReleased);</span><br><span class="line">     &#125;</span><br><span class="line">     <span class="comment">// Ask graphics to free up as much as possible (font/image caches)</span></span><br><span class="line">     Canvas.freeCaches();<span class="comment">//释放canvas</span></span><br><span class="line">     <span class="comment">// Ask text layout engine to free also as much as possible</span></span><br><span class="line">     Canvas.freeTextLayoutCaches();</span><br><span class="line">     BinderInternal.forceGc(<span class="string">"mem"</span>); <span class="comment">// 注意这里</span></span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+<p>上面performAppGcLocked(proc)最终会调到AT#scheduleGcIdler(),再消息队列里添加一个mGcIdler，mGcIdler是一个IdleHandler</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">scheduleGcIdler</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (!mGcIdlerScheduled) &#123;</span><br><span class="line">        mGcIdlerScheduled = <span class="keyword">true</span>;</span><br><span class="line">        Looper.myQueue().addIdleHandler(mGcIdler);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>接下来可以看下doGcIfNeeded  根据上次GC的时间加上两次GC间隔的最小时间5s，判断当前是否要GC</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">doGcIfNeeded</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    mGcIdlerScheduled = <span class="keyword">false</span>;</span><br><span class="line">    <span class="keyword">final</span> <span class="keyword">long</span> now = SystemClock.uptimeMillis();</span><br><span class="line">    <span class="keyword">if</span> ((BinderInternal.getLastGcTime()+MIN_TIME_BETWEEN_GCS) &lt; now) &#123;</span><br><span class="line">        BinderInternal.forceGc(<span class="string">"bg"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="2-2-回收过程函数-trimApplications"><a href="#2-2-回收过程函数-trimApplications" class="headerlink" title="2.2. 回收过程函数 trimApplications()"></a>2.2. 回收过程函数 trimApplications()</h3><p>trimApplications()在系统中调用地方</p>
+<ol>
+<li>ActivityStackSupervisor: activityIdleInternalLocked</li>
+<li>AMS:activityStopped</li>
+<li>AMS:setProcessLimit</li>
+<li>AMS:unregisterReceiver</li>
+<li>AMS:finishReceiver </li>
+</ol>
+<p>trimApplications() 函数的结构如下 :</p>
+<p>mRemovedProcesses 列表中主要包含了 crash 的进程、5 秒内没有响应并被用户选在强制关闭的进程、以及应用开发这调用 killBackgroundProcess 想要杀死的进程。调用 Process.killProcess 将所有此类进程全部杀死。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">final</span> <span class="keyword">void</span> <span class="title">trimApplications</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">synchronized</span> (<span class="keyword">this</span>) &#123;</span><br><span class="line">        <span class="keyword">int</span> i;</span><br><span class="line">        <span class="comment">// First remove any unused application processes whose package has been removed.     </span></span><br><span class="line">      <span class="keyword">for</span> (i=mRemovedProcesses.size()-<span class="number">1</span>; i&gt;=<span class="number">0</span>; i--) &#123;</span><br><span class="line">            <span class="keyword">final</span> ProcessRecord app = mRemovedProcesses.get(i);</span><br><span class="line">            <span class="keyword">if</span> (app.activities.size() == <span class="number">0</span> &amp;&amp; app.curReceiver == <span class="keyword">null</span> &amp;&amp; app.services.size() == <span class="number">0</span>) &#123;             </span><br><span class="line">                <span class="keyword">if</span> (app.pid &gt; <span class="number">0</span> &amp;&amp; app.pid != MY_PID) &#123;</span><br><span class="line">                    app.kill(<span class="string">"empty"</span>, <span class="keyword">false</span>);</span><br><span class="line">                &#125; <span class="keyword">else</span> &#123;         </span><br><span class="line">                        app.thread.scheduleExit();                </span><br><span class="line">                &#125;</span><br><span class="line">                cleanUpApplicationRecordLocked(app, <span class="keyword">false</span>, <span class="keyword">true</span>, -<span class="number">1</span>, <span class="keyword">false</span><span class="comment">/*replacingPid*/</span>);</span><br><span class="line">                mRemovedProcesses.remove(i);</span><br><span class="line">                <span class="keyword">if</span> (app.persistent) &#123;</span><br><span class="line">                    addAppLocked(app.info, <span class="keyword">false</span>, <span class="keyword">null</span> <span class="comment">/* ABI override */</span>);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// Now update the oom adj for all processes.</span></span><br><span class="line">        updateOomAdjLocked();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p> 从上面代码中可以看出，进程被杀死的条件是：</p>
+<ol>
+<li><p>必须是非 persistent 进程，即非系统进程；</p>
+</li>
+<li><p>必须是空进程，即进程中没有任何 activity 存在。如果杀死存在 Activity 的进程，有可能关闭用户正在使用的程序，或者使应用程序恢复的时延变大，从而影响用户体验；</p>
+</li>
+<li><p>必须无 broadcast receiver。运行 broadcast receiver 一般都在等待一个事件的发生，用户并不希望此类程序被系统强制关闭；</p>
+</li>
+<li><p>进程中 service 的数量必须为 0。存在 service 的进程很有可能在为一个或者多个程序提供某种服务，如GPS 定位服务。杀死此类进程将使其他进程无法正常服务。 </p>
+</li>
+</ol>
+<h3 id="2-3-updateOomAdjLocked"><a href="#2-3-updateOomAdjLocked" class="headerlink" title="2.3 updateOomAdjLocked"></a>2.3 updateOomAdjLocked</h3><p>AMS相关各种操作都会碰到这个调用，主要在做了两个事情 一个就是更新各个进程adj， 另一个是最终调用到onTrimMemory；</p>
+<h3 id="ADJ级别"><a href="#ADJ级别" class="headerlink" title="ADJ级别"></a>ADJ级别</h3><table>
+<thead>
+<tr>
+<th><strong>ADJ**</strong>级别**</th>
+<th><strong>取值</strong></th>
+<th><strong>含义</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>NATIVE_ADJ</td>
+<td>-1000</td>
+<td>native进程</td>
+</tr>
+<tr>
+<td>SYSTEM_ADJ</td>
+<td>-900</td>
+<td>仅指system_server进程</td>
+</tr>
+<tr>
+<td>PERSISTENT_PROC_ADJ</td>
+<td>-800</td>
+<td>系统persistent进程</td>
+</tr>
+<tr>
+<td>PERSISTENT_SERVICE_ADJ</td>
+<td>-700</td>
+<td>关联着系统或persistent进程</td>
+</tr>
+<tr>
+<td><code>FOREGROUND_APP_ADJ</code></td>
+<td>0</td>
+<td>前台进程</td>
+</tr>
+<tr>
+<td><code>VISIBLE_APP_ADJ</code></td>
+<td>100</td>
+<td>可见进程</td>
+</tr>
+<tr>
+<td><code>PERCEPTIBLE_APP_ADJ</code></td>
+<td>200</td>
+<td>可感知进程，比如后台音乐播放</td>
+</tr>
+<tr>
+<td>BACKUP_APP_ADJ</td>
+<td>300</td>
+<td>备份进程</td>
+</tr>
+<tr>
+<td>HEAVY_WEIGHT_APP_ADJ</td>
+<td>400</td>
+<td>重量级进程</td>
+</tr>
+<tr>
+<td><code>SERVICE_ADJ</code></td>
+<td>500</td>
+<td>服务进程</td>
+</tr>
+<tr>
+<td>HOME_APP_ADJ</td>
+<td>600</td>
+<td>Home进程</td>
+</tr>
+<tr>
+<td>PREVIOUS_APP_ADJ</td>
+<td>700</td>
+<td>上一个进程</td>
+</tr>
+<tr>
+<td><code>SERVICE_B_ADJ</code></td>
+<td>800</td>
+<td>B List中的Service</td>
+</tr>
+<tr>
+<td><code>CACHED_APP_MIN_ADJ</code></td>
+<td>900</td>
+<td>不可见进程的adj最小值</td>
+</tr>
+<tr>
+<td>CACHED_APP_MAX_ADJ</td>
+<td>906</td>
+<td>不可见进程的adj最大值</td>
+</tr>
+</tbody>
+</table>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">final</span> <span class="keyword">boolean</span> <span class="title">updateOomAdjLocked</span><span class="params">(ProcessRecord app)</span> </span>&#123;</span><br><span class="line">  </span><br><span class="line">    <span class="keyword">final</span> <span class="keyword">int</span> cachedAdj = app.curRawAdj &gt;= ProcessList.CACHED_APP_MIN_ADJ</span><br><span class="line">            ? app.curRawAdj : ProcessList.UNKNOWN_ADJ;</span><br><span class="line">  <span class="comment">//判断是否updateOomAdj成功 当需要杀掉目标进程则返回false；否则返回true。 </span></span><br><span class="line">    <span class="keyword">boolean</span> success = updateOomAdjLocked(app, cachedAdj, TOP_APP, <span class="keyword">false</span>，SystemClock.uptimeMillis());</span><br><span class="line">    <span class="keyword">if</span> (wasCached != app.cached || app.curRawAdj == ProcessList.UNKNOWN_ADJ) &#123;</span><br><span class="line">        <span class="comment">// Changed to/from cached state, so apps after it in the LRU list may also be changed.</span></span><br><span class="line">        updateOomAdjLocked();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> success;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>app.thread.scheduleTrimMemory</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">final</span> <span class="keyword">void</span> <span class="title">updateOomAdjLocked</span><span class="params">()</span> </span>&#123;</span><br><span class="line">   </span><br><span class="line">    </span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (mLowRamStartTime != <span class="number">0</span>) &#123;</span><br><span class="line">            mLowRamTimeSinceLastIdle += now - mLowRamStartTime;</span><br><span class="line">            mLowRamStartTime = <span class="number">0</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i=N-<span class="number">1</span>; i&gt;=<span class="number">0</span>; i--) &#123;</span><br><span class="line">            ProcessRecord app = mLruProcesses.get(i);</span><br><span class="line">            <span class="keyword">if</span> (allChanged || app.procStateChanged) &#123;</span><br><span class="line">                setProcessTrackerStateLocked(app, trackerMemFactor, now);</span><br><span class="line">                app.procStateChanged = <span class="keyword">false</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span> ((app.curProcState &gt;= ActivityManager.PROCESS_STATE_IMPORTANT_BACKGROUND</span><br><span class="line">                    || app.systemNoUi) &amp;&amp; app.pendingUiClean) &#123;</span><br><span class="line">                <span class="keyword">if</span> (app.trimMemoryLevel &lt; ComponentCallbacks2.TRIM_MEMORY_UI_HIDDEN</span><br><span class="line">                        &amp;&amp; app.thread != <span class="keyword">null</span>) &#123;</span><br><span class="line">                    <span class="keyword">try</span> &#123;</span><br><span class="line">                        <span class="keyword">if</span> (DEBUG_SWITCH || DEBUG_OOM_ADJ) Slog.v(TAG_OOM_ADJ,</span><br><span class="line">                                <span class="string">"Trimming memory of ui hidden "</span> + app.processName</span><br><span class="line">                                + <span class="string">" to "</span> + ComponentCallbacks2.TRIM_MEMORY_UI_HIDDEN);</span><br><span class="line">                        app.thread.scheduleTrimMemory(</span><br><span class="line">                                ComponentCallbacks2.TRIM_MEMORY_UI_HIDDEN);</span><br><span class="line">                    &#125; <span class="keyword">catch</span> (RemoteException e) &#123;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">                app.pendingUiClean = <span class="keyword">false</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            app.trimMemoryLevel = <span class="number">0</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="3-onLowMemory、-onTrimMemory优化"><a href="#3-onLowMemory、-onTrimMemory优化" class="headerlink" title="3.onLowMemory、 onTrimMemory优化"></a>3.onLowMemory、 onTrimMemory优化</h4><h5 id="OnTrimMemory的主要作用就是指导应用程序在不同的情况下进行自身的内存释放，以避免被系统直接杀掉，提高应用程序的用户体验"><a href="#OnTrimMemory的主要作用就是指导应用程序在不同的情况下进行自身的内存释放，以避免被系统直接杀掉，提高应用程序的用户体验" class="headerlink" title="OnTrimMemory的主要作用就是指导应用程序在不同的情况下进行自身的内存释放，以避免被系统直接杀掉，提高应用程序的用户体验"></a>OnTrimMemory的主要作用就是指导应用程序在不同的情况下进行自身的内存释放，以避免被系统直接杀掉，提高应用程序的用户体验</h5><p>OnTrimMemory：Android 4.0之后提供的API，系统会根据不同的内存状态来回调。根据不同的内存状态，来响应不同的内存释放策略。</p>
+<h5 id="onLowMemory-方法在使用过程只要低内存状态下-就会回调"><a href="#onLowMemory-方法在使用过程只要低内存状态下-就会回调" class="headerlink" title="onLowMemory()方法在使用过程只要低内存状态下,就会回调."></a>onLowMemory()方法在使用过程只要低内存状态下,就会回调.</h5><p>OnLowMemory：Android提供的API，在系统内存不足，所有后台程序（优先级为background的进程，不是指后台运行的进程）都被杀死时，系统会调用OnLowMemory。</p>
+<h5 id="onTrimMemory传入的几个内存级别释放内存："><a href="#onTrimMemory传入的几个内存级别释放内存：" class="headerlink" title="onTrimMemory传入的几个内存级别释放内存："></a>onTrimMemory传入的几个内存级别释放内存：</h5><ul>
+<li><p>TRIM_MEMORY_RUNNING_MODERATE<br>你的应用正在运行，并且不会被杀死，但设备已经处于低内存状态，并且开始杀死LRU缓存里的内存。(后台进程超过5个)，并且该进程优先级比较高，需要清理内存 </p>
+</li>
+<li><p>TRIM_MEMORY_RUNNING_LOW<br>你的应用正在运行，并且不会被杀死，但设备处于内存更低的状态，所以你应该释放无用资源以提高系统性能(直接影响app性能)</p>
+</li>
+<li><p>TRIM_MEMORY_RUNNING_CRITICAL<br>你的应用还在运行，但系统已经杀死了LRU缓存里的大多数进程，所以你应该在此时释放所有非关键的资源。如果系统无法回收足够的内存，它会清理掉所有LRU缓存，并且开始杀死之前优先保持的进程，像那些运行着service的。(后台进程不足3个)，并且该进程优先级比较高，需要清理内存</p>
+</li>
+<li><p>TRIM_MEMORY_BACKGROUND<br>系统运行在低内存状态，并且你的进程已经接近LRU列表的顶端(即将被清理).虽然你的app进程还没有很高的被杀死风险，系统可能已经清理LRU里的进程，你应该释放那些容易被恢复的资源，如此可以让你的进程留在缓存里，并且当用户回到app时快速恢复.该进程是后台进程。</p>
+</li>
+<li><p>TRIM_MEMORY_MODERATE<br>系统运行在低内存状态，你的进程在LRU列表中间附近。如果系统变得内存紧张，可能会导致你的进程被杀死。并且该进程在后台进程列表的中部。</p>
+</li>
+<li><p>TRIM_MEMORY_COMPLETE<br>系统运行在低内存状态，如果系统没有恢复内存，你的进程是首先被杀死的进程之一。你应该释放所有不重要的资源来恢复你的app状态。该进程在后台进程列表最后一个，马上就要被清</p>
+</li>
+<li><p>TRIM_MEMORY_UI_HIDDEN：内存不足，并且该进程的UI已经不可见了。 </p>
+</li>
+</ul>
+<h5 id="onLowMemory、-onTrimMemory优化，需要释放什么资源？"><a href="#onLowMemory、-onTrimMemory优化，需要释放什么资源？" class="headerlink" title="onLowMemory、 onTrimMemory优化，需要释放什么资源？"></a>onLowMemory、 onTrimMemory优化，需要释放什么资源？</h5><p>  在内存紧张的时候，会回调OnLowMemory/OnTrimMemory，需要在回调方法中编写释放资源的代码。<br>  可以在资源紧张的时候，释放UI 使用的资源资：Bitmap、数组、控件资源。<br>  注意回调时刻：<br>  OnLowMemory被回调时，已经没有后台进程；而onTrimMemory被回调时，还有后台进程。<br>  OnLowMemory是在最后一个后台进程被杀时调用，一般情况是low memory killer 杀进程后触发；而OnTrimMemory的触发更频繁，每次计算进程优先级时，只要满足条件，都会触发。<br>  在Application、 Activity、Fragement、Service、ContentProvider中都可以重写回调方法，对OnLowMemory/OnTrimMemory进行回调，在回调方法中实现资源释放的实现。<br>  以Activity为例，在Activity源码中能够看到对于onTrimMemory的定义，因此在回调的时候重写方法即可。</p>
+<h3 id="4-BinderInternal"><a href="#4-BinderInternal" class="headerlink" title="4.BinderInternal"></a>4.BinderInternal</h3><p>BinderInternal内部有sGcWatchers对应一个runnable list，BinderInternal重写了finalize()方法。</p>
+<h5 id="根据JVM的原理，JVM垃圾回收器准备释放内存前，会先调用该对象finalize。"><a href="#根据JVM的原理，JVM垃圾回收器准备释放内存前，会先调用该对象finalize。" class="headerlink" title="根据JVM的原理，JVM垃圾回收器准备释放内存前，会先调用该对象finalize。"></a>根据JVM的原理，JVM垃圾回收器准备释放内存前，会先调用该对象finalize。</h5><p>当执行GC的时候，会依次执行每个runnabe的run()方法，</p>
+<p>并根据具体内存情况（3/4 davilk memory）进行操作。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">BinderInternal</span> </span>&#123;</span><br><span class="line">    <span class="keyword">static</span> WeakReference&lt;GcWatcher&gt; sGcWatcher</span><br><span class="line">            = <span class="keyword">new</span> WeakReference&lt;GcWatcher&gt;(<span class="keyword">new</span> GcWatcher());</span><br><span class="line">    <span class="keyword">static</span> ArrayList&lt;Runnable&gt; sGcWatchers = <span class="keyword">new</span> ArrayList&lt;&gt;(); <span class="comment">//</span></span><br><span class="line">    <span class="keyword">static</span> Runnable[] sTmpWatchers = <span class="keyword">new</span> Runnable[<span class="number">1</span>]; <span class="comment">//数组</span></span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">long</span> sLastGcTime;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">final</span> <span class="class"><span class="keyword">class</span> <span class="title">GcWatcher</span> </span>&#123;</span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">finalize</span><span class="params">()</span> <span class="keyword">throws</span> Throwable </span>&#123;</span><br><span class="line">            handleGc();</span><br><span class="line">            sLastGcTime = SystemClock.uptimeMillis();</span><br><span class="line">            <span class="keyword">synchronized</span> (sGcWatchers) &#123;</span><br><span class="line">                sTmpWatchers = sGcWatchers.toArray(sTmpWatchers);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;sTmpWatchers.length; i++) &#123;</span><br><span class="line">                <span class="keyword">if</span> (sTmpWatchers[i] != <span class="keyword">null</span>) &#123;</span><br><span class="line">                    sTmpWatchers[i].run();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            sGcWatcher = <span class="keyword">new</span> WeakReference&lt;GcWatcher&gt;(<span class="keyword">new</span> GcWatcher());</span><br><span class="line">            <span class="comment">/*finallize方法最后重新创建了一个GcWatcher的弱引用。sGcWatcher是一个静态对象，</span></span><br><span class="line"><span class="comment">            如果它是一个强引用，那么他就会存在静态引用方法区，就会导致这个强引用的GC线程无法回收。</span></span><br><span class="line"><span class="comment">            所以作为弱引用，引用对象在被回收时就会触发sGcWatcher的finalize方法，执行结束时仔new一个弱引用出来，以保证下次的调用。*/</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">forceGc</span><span class="params">(String reason)</span> </span>&#123;</span><br><span class="line">        EventLog.writeEvent(<span class="number">2741</span>, reason);</span><br><span class="line">        VMRuntime.getRuntime().requestConcurrentGC();</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<h3 id="5-单个应用内存限制"><a href="#5-单个应用内存限制" class="headerlink" title="5. 单个应用内存限制"></a>5. 单个应用内存限制</h3><p>Android 内存 - 获取单个应用内存限制</p>
+<ul>
+<li>adb shell getprop | grep dalvik.vm.heapgrowthlimit</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ActivityManager activityManager =(ActivityManager)context.getSystemService(Context.ACTIVITY_SERVICE);</span><br><span class="line">``activityManager.getMemoryClass();</span><br><span class="line">``activityManager.getLargeMemoryClass();</span><br></pre></td></tr></table></figure>
+<p> Runtime.getRuntime().maxMemory()</p>
+<p><strong>-dalvik.vm.heapstartsize</strong>       </p>
+<p>   堆分配的初始大小，调整这个值会影响到应用的流畅性和整体ram消耗。这个值越小，系统ram消耗越慢，</p>
+<p> 但是由于初始值较小，一些较大的应用需要扩张这个堆，从而引发gc和堆调整的策略，会应用反应更慢。</p>
+<p> 相反，这个值越大系统ram消耗越快，但是程序更流畅。</p>
+<p> <strong>-dalvik.vm.heapgrowthlimit</strong>    </p>
+<p>   受控情况下的极限堆（仅仅针对dalvik堆，不包括native堆）大小，dvm heap是可增长的，但是正常情况下</p>
+<p> dvm heap的大小是不会超过dalvik.vm.heapgrowthlimit的值（非正常情况下面会详细说明）。这个值控制那</p>
+<p> 些受控应用的极限堆大小，如果受控的应用dvm heap size超过该值，则将引发oom（out of memory）。</p>
+<p> <strong>-dalvik.vm.heapsize</strong> </p>
+<p>  不受控情况下的极限堆大小，这个就是堆的最大值。不管它是不是受控的。这个值会影响非受控应用的dalvik</p>
+<p> heap size。一旦dalvik heap size超过这个值，直接引发oom。</p>
+<p> 在android开发中，如果要使用大堆。需要在manifest中指定android:largeHeap为true。这样dvm heap最大可达dalvik.vm.heapsize。</p>
+
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="http://yoursite.com/2022/03/02/AMS-GC/" title="AMS中内存回收的一些操作" target="_blank" rel="external">http://yoursite.com/2022/03/02/AMS-GC/</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/tracyliu1" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/images/avatar.jpg" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/tracyliu1" target="_blank"><span class="text-dark">Tracyliu</span><small class="ml-1x">Android App &amp; Android Framework</small></a></h3>
+        <div>个人简介。</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+      <div id="vcomments"></div>
+    
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    
+    <li class="next">
+      <a href="/2020/11/06/Android-VM-03-ART/" title="Android VM 03.ART"><span>Older&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+  </ul>
+  
+  
+  
+  <div class="bar-right">
+    
+    <div class="share-component" data-sites="weibo,qq,wechat,facebook,twitter" data-mobile-sites="weibo,qq,qzone"></div>
+    
+  </div>
+  </div>
+</nav>
+  
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/tracyliu1" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        <div class="publishby">
+        	Theme by <a href="https://github.com/cofess" target="_blank"> cofess </a>base on <a href="https://github.com/cofess/hexo-theme-pure" target="_blank">pure</a>.
+        </div>
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+<script src="/js/plugin.min.js"></script>
+<script src="/js/application.js"></script>
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+
+
+
+
+   
+
+
+
+
+   
+    
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/valine"></script>
+  <script type="text/javascript">
+  var GUEST = ['nick', 'mail', 'link'];
+  var meta = 'nick,mail,link';
+  meta = meta.split(',').filter(function(item) {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#vcomments',
+    verify: false,
+    notify: false,
+    appId: '',
+    appKey: '',
+    placeholder: 'Just go go',
+    avatar: 'mm',
+    meta: meta,
+    pageSize: '10' || 10,
+    visitor: false
+  });
+  </script>
+
+     
+
+
+
+
+
+
+
+</body>
+</html>
